@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+        "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:p="http://primefaces.org/ui">
+
+    <h:head>
+        <title>Hello</title>
+    </h:head>
+
+    <h:body>
+        <h1 align="center" style="margin-top: 50px">Login page</h1>
+        <hr/>
+        <p:growl id="msgs"  autoUpdate="true"/>
+        <h:form id="form1" >
+            <h:panelGrid columns="2" border="1" style="border-width: 1px; margin-left: auto; margin-right: auto; background-color: lemonchiffon">
+                <p:inputText value="#{loginPage.loginTemprorary}"/>
+                <p>Set login</p>
+                <p:inputText value="#{loginPage.passwordTemprorary}"/>
+                <p>Set password</p>
+            </h:panelGrid>
+            <br/>
+            <p:commandButton style="margin-left: 40%; " value="Send Data (Password/Loggin)"
+                             action="#{loginPage.saveData}" ajax="false" update="form1"/>
+        </h:form>
+    </h:body>
+</html>
