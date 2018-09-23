@@ -6,7 +6,7 @@ import applicationPackage.Specialist;
 import javax.persistence.Entity;
 import java.util.Date;
 
-@Entity
+//@Entity
 public class Visit {
     private Procedure procedure;
     private Date start;

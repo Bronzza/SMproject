@@ -7,24 +7,38 @@
       xmlns:f="http://xmlns.jcp.org/jsf/core"
       xmlns:p="http://primefaces.org/ui">
 
-    <h:head>
-        <title>Hello</title>
-    </h:head>
+<h:head>
+    <title>Hello</title>
+</h:head>
 
-    <h:body>
-        <h1 align="center" style="margin-top: 50px">Login page</h1>
+<h:body style="background-color: darkgrey">
+    <h1 align="center">Login page</h1>
+    <p:separator/>
+
+    <img src="http://35photo.ru/photos_main/127/636630.jpg" style=" margin-left: 39%;
+        max-height:300px; max-width: 300px" alt="Main Page"/>
+
+    <p:growl id="msgs" autoUpdate="true"/>
+    <h:form id="form1">
+        <h:panelGrid columns="2" border="1"
+                     style="border-width: 1px; margin-left: auto; margin-right: auto; background-color: bisque">
+            <p:outputLabel value="Login"/>
+            <p:inputText value="#{loginPage.loginTemprorary}"/>
+            <p:outputLabel value="Password"/>
+            <p:password value="#{loginPage.passwordTemprorary}" feedback="false"/>
+
+        </h:panelGrid>
+        <br/>
+        <p:commandButton style="margin-left: 47.5%" value="Login"
+                         action="#{loginPage.login}" ajax="false" update="form1"/>
+
         <hr/>
-        <p:growl id="msgs"  autoUpdate="true"/>
-        <h:form id="form1" >
-            <h:panelGrid columns="2" border="1" style="border-width: 1px; margin-left: auto; margin-right: auto; background-color: lemonchiffon">
-                <p:inputText value="#{loginPage.loginTemprorary}"/>
-                <p>Set login</p>
-                <p:inputText value="#{loginPage.passwordTemprorary}"/>
-                <p>Set password</p>
-            </h:panelGrid>
-            <br/>
-            <p:commandButton style="margin-left: 40%; " value="Send Data (Password/Loggin)"
-                             action="#{loginPage.saveData}" ajax="false" update="form1"/>
-        </h:form>
-    </h:body>
+        <h:panelGrid columns="1" style="margin-left: auto; margin-right: auto">
+
+            <p:outputPanel ><b><em>Not registered yet?</em></b></p:outputPanel>
+            <p:commandButton action="#{loginPage.goToRegistration}" value="Register now" ajax="false"/>
+        </h:panelGrid>
+
+    </h:form>
+</h:body>
 </html>

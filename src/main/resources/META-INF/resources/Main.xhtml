@@ -8,72 +8,92 @@
       xmlns:p="http://primefaces.org/ui">
 
 <h:head>
-    <title>Hello</title>
+    <title>Login page</title>
 </h:head>
 
 <h:body style="background-color: darkgray">
-    <h:form>
-        <p:growl id="messages" showDetail="true" />
 
-        <h:panelGrid columnClasses="value">
-            <h3 style="margin-top: 0">Editable Schedule</h3>
-            <p:schedule id="schedule" value="#{mainP}" widgetVar="myschedule" timeZone="GMT+2">
+    <p:layout style="min-width:400px; min-height: 630px">
+        <p:layoutUnit position="west" resizable="false" size="200" minSize="40"
+                      maxSize="300" header="Menu bar" collapsible="true">
+            <p:growl id="msgs" autoUpdate="true"/>
+            <div> Position west</div>
+        </p:layoutUnit>
+        <p:layoutUnit position="north" resizable="false" collapsible="true" minSize="100" header="Info panel">
+            <div>Some information</div>
+        </p:layoutUnit>
 
-                <p:ajax event="dateSelect" listener="#{sceduleView.onDateSelect}" update="eventDetails" oncomplete="PF('eventDialog').show();" />
-                <p:ajax event="eventSelect" listener="#{sceduleView.onEventSelect}" update="eventDetails" oncomplete="PF('eventDialog').show();" />
-                <p:ajax event="eventMove" listener="#{sceduleView.onEventMove}" update="messages" />
-                <p:ajax event="eventResize" listener="#{sceduleView.onEventResize}" update="messages" />
-            </p:schedule>
-        </h:panelGrid>
+        <p:layoutUnit position="center" header="Logining to Application">
+            <h:form>
+                <p:growl id="messages" showDetail="true"/>
 
-        <p:dialog widgetVar="eventDialog" header="Event Details" showEffect="clip" hideEffect="clip">
-            <h:panelGrid id="eventDetails" columns="2">
-                <p:outputLabel for="title" value="Titles:" />
-                <p:inputText id="title" value="#{sceduleView.event.title}" required="true" />
+                <h:panelGrid columnClasses="value">
+                    <h3 style="margin-top: 0">Editable Schedule</h3>
+                    <p:schedule id="schedule" value="#{mainPage.eventModel}" widgetVar="myschedule" timeZone="GMT+2"
+                                locale="rs">
 
-                <p:outputLabel for="from" value="From:" />
-                <p:calendar id="from" value="#{sceduleView.event.startDate}" timeZone="GMT+2" pattern="dd/MM/yyyy HH:mm"/>
+                        <p:ajax event="dateSelect" listener="#{mainPage.onDateSelect}" update="eventDetails"
+                                oncomplete="PF('eventDialog').show();"/>
+                        <p:ajax event="eventSelect" listener="#{mainPage.onEventSelect}" update="eventDetails"
+                                oncomplete="PF('eventDialog').show();"/>
+                        <p:ajax event="eventMove" listener="#{mainPage.onEventMove}" update="messages"/>
+                        <p:ajax event="eventResize" listener="#{mainPage.onEventResize}" update="messages"/>
+                    </p:schedule>
+                </h:panelGrid>
 
-                <p:outputLabel for="to" value="To:" />
-                <p:calendar id="to" value="#{sceduleView.event.endDate}" timeZone="GMT+2" pattern="dd/MM/yyyy HH:mm"/>
+                <p:dialog widgetVar="eventDialog" header="Event Details" showEffect="clip" hideEffect="clip">
+                    <h:panelGrid id="eventDetails" columns="2">
+                        <p:outputLabel for="title" value="Titles:"/>
+                        <p:inputText id="title" value="#{mainPage.event.title}" required="true"/>
 
-                <p:outputLabel for="allDay" value="All Day:" />
-                <h:selectBooleanCheckbox id="allDay" value="#{sceduleView.event.allDay}" />
+                        <p:outputLabel for="from" value="From:"/>
+                        <p:calendar id="from" value="#{mainPage.event.startDate}" timeZone="GMT+2"
+                                    pattern="dd/MM/yyyy HH:mm"/>
 
-                <p:commandButton type="reset" value="Reset" />
-                <p:commandButton id="addButton" value="Save" actionListener="#{sceduleView.addEvent}" oncomplete="PF('myschedule').update();PF('eventDialog').hide();" />
-            </h:panelGrid>
-        </p:dialog>
-    </h:form>
-    <script type="text/javascript">
-        PrimeFaces.locales['rus'] = {
-            closeText: 'kapat',
-            prevText: 'предыдущий',
-            nextText: 'следующий',
-            currentText: 'сегодня',
-            monthNames: ['Январь','Февраль','Mart','Апрель','Май','Июнь',
-                'Июль','Август','Сентябрь','Октябрь','Ноябрь','Декабрь'],
-            monthNamesShort: ['Янв','Февр','Март','Апр','Май','Июнь',
-                'Июль','Авг','Сент','Окт','Нбр','Декаб'],
-            dayNames: ['Понедельник','Вторник','Среда','Четверг','Пятница','Суббота', 'Воскресенье'],
-            dayNamesShort: ['Пн','Вт','Ср','Чт','Пт','Сб','Вс'],
-            dayNamesMin: ['Пн','Вт','Ср','Чт','Пт','Сб','Вс'],
-            weekHeader: 'Нед',
-            firstDay: 1,
-            isRTL: false,
-            showMonthAfterYear: false,
-            yearSuffix: '',
-            month: 'Месяц',
-            week: 'Неделя',
-            day: 'День',
-            allDayText : 'Tüm Gün'
-        };
-    </script>
-    <style type="text/css">
-        .value {
-            width: 1000px;
-        }
-    </style>
+                        <p:outputLabel for="to" value="To:"/>
+                        <p:calendar id="to" value="#{mainPage.event.endDate}" timeZone="GMT+2"
+                                    pattern="dd/MM/yyyy HH:mm"/>
+
+                        <p:outputLabel for="allDay" value="All Day:"/>
+                        <h:selectBooleanCheckbox id="allDay" value="#{mainPage.event.allDay}"/>
+
+                        <p:commandButton type="reset" value="Reset"/>
+                        <p:commandButton id="addButton" value="Save" actionListener="#{mainPage.addEvent}"
+                                         oncomplete="PF('myschedule').update();PF('eventDialog').hide();"/>
+                    </h:panelGrid>
+                </p:dialog>
+            </h:form>
+            <script type="text/javascript">
+                PrimeFaces.locales['rs'] = {
+                    closeText: 'закрыть',
+                    prevText: 'предыдущий',
+                    nextText: 'следующий',
+                    currentText: 'сегодня',
+                    monthNames: ['Январь', 'Февраль', 'Mart', 'Апрель', 'Май', 'Июнь',
+                        'Июль', 'Август', 'Сентябрь', 'Октябрь', 'Ноябрь', 'Декабрь'],
+                    monthNamesShort: ['Янв', 'Февр', 'Март', 'Апр', 'Май', 'Июнь',
+                        'Июль', 'Авг', 'Сент', 'Окт', 'Нбр', 'Декаб'],
+                    dayNames: ['Понедельник', 'Вторник', 'Среда', 'Четверг', 'Пятница', 'Суббота', 'Воскресенье'],
+                    dayNamesShort: ['Пн', 'Вт', 'Ср', 'Чт', 'Пт', 'Сб', 'Вс'],
+                    dayNamesMin: ['Пн', 'Вт', 'Ср', 'Чт', 'Пт', 'Сб', 'Вс'],
+                    weekHeader: 'Нед',
+                    firstDay: 1,
+                    isRTL: false,
+                    showMonthAfterYear: false,
+                    yearSuffix: '',
+                    month: 'Месяц',
+                    week: 'Неделя',
+                    day: 'День',
+                    allDayText: 'Весь день'
+                };
+            </script>
+            <style type="text/css">
+                .value {
+                    width: 1000px;
+                }
+            </style>
+        </p:layoutUnit>
+    </p:layout>
 </h:body>
 </html>
 

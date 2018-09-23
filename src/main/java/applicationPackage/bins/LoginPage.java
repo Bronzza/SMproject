@@ -9,6 +9,7 @@ import org.springframework.data.domain.Example;
 
 import javax.faces.application.FacesMessage;
 import javax.faces.context.FacesContext;
+import javax.faces.event.ActionEvent;
 import javax.inject.Inject;
 import javax.inject.Named;
 import javax.persistence.Column;
@@ -56,7 +57,7 @@ public class LoginPage implements Serializable{
 //            sendMessage("Hello");
 //            return "goToMain";
 //        }
-        sendMessage("Your login doesn't exist");
+        sendMessage("Your login or password is incorrent sir");
         return null;
     }
 
@@ -91,5 +92,9 @@ public class LoginPage implements Serializable{
         FacesContext context = FacesContext.getCurrentInstance();
         context.addMessage(null, new FacesMessage(message, null));
 //        context.addMessage(null, new FacesMessage("Second Message", "Additional Message Detail"));
+    }
+    public String goToRegistration(){
+        sendMessage("Registration page");
+        return "goToRegist";
     }
 }
