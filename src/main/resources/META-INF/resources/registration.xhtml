@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+        "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:p="http://primefaces.org/ui">
+
+<h:head>
+    <title>Registration</title>
+</h:head>
+
+<h:body style="background-color: darkgrey">
+    <h1 align="center" style="margin-top: 50px">Welcome on Registration Page</h1>
+    <p:separator/>
+    <p:growl id="msgs" showDetail="true" autoUpdate="true"/>
+    <h:form>
+
+        <h:panelGrid columns="2" cellpadding="10" cellspacing="2" style="margin-left: 5%">
+            <p:outputLabel value="Write your login" />
+            <p:inputText value="#{registrationPage.loginRegistration}" required="true" label="Login"/>
+            <p:outputLabel value="Write your password"/>
+            <p:password id="pswd1" value="#{registrationPage.passwordRegistration}" match="pswd2" required="true"
+                        label="Password 1"/>
+            <p:outputLabel value="Repeat your password"/>
+            <p:password id="pswd2" value="#{registrationPage.passwordRegistration}" required="true"
+                        label="Password 1"/>
+            <p:spacer height="5px"/>
+            <p:spacer height="5px"/>
+
+            <p:outputLabel value="Your first name"/>
+            <p:inputText value="#{registrationPage.name}"/>
+            <p:outputLabel value="Your surname"/>
+            <p:inputText value="#{registrationPage.surName}"/>
+            <p:outputLabel value="Write you e-mail"/>
+            <p:inputText value="#{registrationPage.emailRegistration}"/>
+            <p:outputLabel value="Write your phone number"/>
+            <p:inputText value="#{registrationPage.telNumberRegistration}" />
+            <p:outputLabel value="Write date of your birthday"/>
+            <p:inputText value="#{registrationPage.birthdayRegistration}" />
+            <p:outputLabel value="Choose what is about you"/>
+            <p:selectOneButton value="#{registrationPage.manReg}">
+                <f:selectItem itemLabel="Male" itemValue="true"/>
+                <f:selectItem itemLabel="Female" itemValue="false"/>
+            </p:selectOneButton>
+        </h:panelGrid>
+        <hr/>
+            <p:commandButton value="Save data" style="margin-left: 15%" action="#{registrationPage.saveRegistrationInfo}"/>
+    </h:form>
+</h:body>
+</html>
