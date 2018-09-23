@@ -1,8 +1,9 @@
 package applicationPackage.entitys;
 
 import applicationPackage.Procedure;
-import org.hibernate.annotations.Entity;
 
+
+import javax.persistence.Entity;
 import java.sql.Date;
 import java.util.List;
 
@@ -17,6 +18,6 @@ public class Customer {
 
     // info
     private Date birthday;
-    private boolean isMan;
+    private boolean isMan; //мужчина тру
 
 }
