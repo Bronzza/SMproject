@@ -1,5 +1,8 @@
 package applicationPackage.bins;
 
+import applicationPackage.MyEvent;
+import applicationPackage.Repositories.ProcedureRepository;
+import applicationPackage.Repositories.SpecialistRepository;
 import org.primefaces.event.ScheduleEntryMoveEvent;
 import org.primefaces.event.ScheduleEntryResizeEvent;
 import org.primefaces.event.SelectEvent;
@@ -10,6 +13,7 @@ import javax.faces.application.FacesMessage;
 import javax.faces.context.FacesContext;
 import javax.faces.event.ActionEvent;
 import javax.faces.view.ViewScoped;
+import javax.inject.Inject;
 import javax.inject.Named;
 import java.io.Serializable;
 import java.util.Calendar;
@@ -19,32 +23,23 @@ import java.util.Date;
 @ViewScoped
 public class MainPage implements Serializable{
     private ScheduleModel eventModel;
+    private MyEvent event;
 
-    private ScheduleModel lazyEventModel;
+    @Inject
+    SpecialistRepository specialistRepository;
 
-    private ScheduleEvent event = new DefaultScheduleEvent();
+    @Inject
+    ProcedureRepository procedureRepository;
 
     @PostConstruct
     public void init() {
         eventModel = new DefaultScheduleModel();
-        eventModel.addEvent(new DefaultScheduleEvent("Champions League Match", previousDay8Pm(), previousDay11Pm()));
-        eventModel.addEvent(new DefaultScheduleEvent("Birthday Party", today1Pm(), today6Pm()));
-        eventModel.addEvent(new DefaultScheduleEvent("Breakfast at Tiffanys", nextDay9Am(), nextDay11Am()));
         eventModel.addEvent(new DefaultScheduleEvent("Plant the new garden stuff", theDayAfter3Pm(), fourDaysLater3pm()));
-
-        lazyEventModel = new LazyScheduleModel() {
-
-            @Override
-            public void loadEvents(Date start, Date end) {
-                Date random = getRandomDate(start);
-                addEvent(new DefaultScheduleEvent("Lazy Event 1", random, random));
-
-                random = getRandomDate(start);
-                addEvent(new DefaultScheduleEvent("Lazy Event 2", random, random));
-            }
-        };
     }
 
+    public void setEventModel(ScheduleModel eventModel) {
+        this.eventModel = eventModel;
+    }
     public Date getRandomDate(Date base) {
         Calendar date = Calendar.getInstance();
         date.setTime(base);
@@ -62,10 +57,6 @@ public class MainPage implements Serializable{
 
     public ScheduleModel getEventModel() {
         return eventModel;
-    }
-
-    public ScheduleModel getLazyEventModel() {
-        return lazyEventModel;
     }
 
     private Calendar today() {
@@ -145,29 +136,31 @@ public class MainPage implements Serializable{
         return t.getTime();
     }
 
-    public ScheduleEvent getEvent() {
+    public MyEvent getEvent() {
         return event;
     }
 
-    public void setEvent(ScheduleEvent event) {
+    public void setEvent(MyEvent event) {
         this.event = event;
     }
 
     public void addEvent(ActionEvent actionEvent) {
+        event = new MyEvent();
         if(event.getId() == null)
             eventModel.addEvent(event);
+
         else
             eventModel.updateEvent(event);
 
-        event = new DefaultScheduleEvent();
+        event = new MyEvent();
     }
 
     public void onEventSelect(SelectEvent selectEvent) {
-        event = (ScheduleEvent) selectEvent.getObject();
+        event = (MyEvent) selectEvent.getObject();
     }
 
     public void onDateSelect(SelectEvent selectEvent) {
-        event = new DefaultScheduleEvent("", (Date) selectEvent.getObject(), (Date) selectEvent.getObject());
+        event = new MyEvent("", (Date) selectEvent.getObject(), (Date) selectEvent.getObject());
     }
 
     public void onEventMove(ScheduleEntryMoveEvent event) {

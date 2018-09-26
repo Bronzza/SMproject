@@ -1,13 +1,16 @@
 package applicationPackage.bins;
 
+import applicationPackage.Repositories.CustomerRepository;
 import applicationPackage.Enums.AccessRights;
 import applicationPackage.entitys.Customer;
 
 import javax.faces.application.FacesMessage;
 import javax.faces.context.FacesContext;
+import javax.inject.Inject;
 import javax.inject.Named;
 
-import java.sql.Date;
+
+import java.util.Date;
 
 import static applicationPackage.Enums.AccessRights.VIEWER;
 
@@ -16,6 +19,9 @@ public class RegistrationPage {
     private String loginRegistration;
     private String passwordRegistration;
     private AccessRights accessRights = VIEWER;
+
+    @Inject
+    CustomerRepository cr;
 
     private String Name;
     private String SurName;
@@ -64,6 +70,15 @@ public class RegistrationPage {
         this.telNumberRegistration = telNumberRegistration;
     }
 
+
+    public CustomerRepository getCr() {
+        return cr;
+    }
+
+    public void setCr(CustomerRepository cr) {
+        this.cr = cr;
+    }
+
     public Date getBirthdayRegistration() {
         return birthdayRegistration;
     }
@@ -106,6 +121,7 @@ public class RegistrationPage {
         customerTemp.setEmail(getEmailRegistration());
         customerTemp.setBirthday(getBirthdayRegistration());
         customerTemp.setMan(isManReg());
+        cr.save(customerTemp);
         sendMessage("Going to Main");
         return "goToMain";
 

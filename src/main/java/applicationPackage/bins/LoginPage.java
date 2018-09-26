@@ -1,22 +1,16 @@
 package applicationPackage.bins;
 
-import applicationPackage.UsersRepository;
+import applicationPackage.Repositories.UsersRepository;
 import applicationPackage.entitys.User;
-import org.hibernate.Hibernate;
-import org.springframework.core.Constants;
 import org.springframework.dao.DataIntegrityViolationException;
-import org.springframework.data.domain.Example;
 
 import javax.faces.application.FacesMessage;
 import javax.faces.context.FacesContext;
-import javax.faces.event.ActionEvent;
 import javax.inject.Inject;
 import javax.inject.Named;
 import javax.persistence.Column;
-import javax.validation.ConstraintViolationException;
 import java.io.Serializable;
 import java.util.List;
-import java.util.Optional;
 
 @Named
 public class LoginPage implements Serializable{

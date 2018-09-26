@@ -1,14 +1,17 @@
 package applicationPackage.entitys;
 
-import applicationPackage.Procedure;
-
 
 import javax.persistence.Entity;
-import java.sql.Date;
+import javax.persistence.*;
+
+import java.util.Date;
 import java.util.List;
 
-//@Entity
+@Entity
 public class Customer {
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
     private String login;
     private String password;
 
@@ -18,6 +21,7 @@ public class Customer {
     private String email;
     private int deposit;
     private int discount;
+    @OneToMany
     private List<Procedure> depositProcedure;
 
     // info
@@ -42,6 +46,14 @@ public class Customer {
 
     public String getName() {
         return name;
+    }
+
+    public Long getId() {
+        return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
     }
 
     public void setName(String name) {

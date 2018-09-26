@@ -34,17 +34,19 @@
             <p:outputLabel value="Your surname"/>
             <p:inputText value="#{registrationPage.surName}"/>
             <p:outputLabel value="Write you e-mail"/>
-            <p:inputText value="#{registrationPage.emailRegistration}"/>
+            <p:inputText id="email" value="#{registrationPage.emailRegistration}"/>
             <p:outputLabel value="Write your phone number"/>
-            <p:inputText value="#{registrationPage.telNumberRegistration}" />
+            <p:inputText id="phoneNumb" value="#{registrationPage.telNumberRegistration}" />
             <p:outputLabel value="Write date of your birthday"/>
-            <p:inputText value="#{registrationPage.birthdayRegistration}" />
+            <p:calendar value="#{registrationPage.birthdayRegistration}"/>
             <p:outputLabel value="Choose what is about you"/>
             <p:selectOneButton value="#{registrationPage.manReg}">
                 <f:selectItem itemLabel="Male" itemValue="true"/>
                 <f:selectItem itemLabel="Female" itemValue="false"/>
             </p:selectOneButton>
         </h:panelGrid>
+        <p:keyFilter id="numbers" for="phoneNumb" mask="num"/>
+        <p:keyFilter id="emailFilter" for="email" mask="/[a-z0-9_\.\-@]/i"/>
         <hr/>
             <p:commandButton value="Save data" style="margin-left: 15%" action="#{registrationPage.saveRegistrationInfo}"/>
     </h:form>
