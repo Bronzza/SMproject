@@ -2,7 +2,9 @@ package applicationPackage.bins;
 
 import applicationPackage.Repositories.CustomerRepository;
 import applicationPackage.Enums.AccessRights;
+import applicationPackage.Repositories.UsersRepository;
 import applicationPackage.entitys.Customer;
+import applicationPackage.entitys.User;
 
 import javax.faces.application.FacesMessage;
 import javax.faces.context.FacesContext;
@@ -10,18 +12,22 @@ import javax.inject.Inject;
 import javax.inject.Named;
 
 
+import java.io.Serializable;
 import java.util.Date;
 
 import static applicationPackage.Enums.AccessRights.VIEWER;
 
 @Named
-public class RegistrationPage {
+public class RegistrationPage implements Serializable{
     private String loginRegistration;
     private String passwordRegistration;
     private AccessRights accessRights = VIEWER;
 
     @Inject
     CustomerRepository cr;
+
+    @Inject
+    UsersRepository ur;
 
     private String Name;
     private String SurName;
@@ -112,6 +118,7 @@ public class RegistrationPage {
     }
 
     public String saveRegistrationInfo() {
+        User user = new User();
         Customer customerTemp = new Customer();
         customerTemp.setLogin(getLoginRegistration());
         customerTemp.setPassword(getPasswordRegistration());
@@ -122,8 +129,16 @@ public class RegistrationPage {
         customerTemp.setBirthday(getBirthdayRegistration());
         customerTemp.setMan(isManReg());
         cr.save(customerTemp);
-        sendMessage("Going to Main");
-        return "goToMain";
+        user.setLogin(getLoginRegistration());
+        user.setPassword(getPasswordRegistration());
+        user.setBirthday(getBirthdayRegistration());
+        user.seteMail(getEmailRegistration());
+        user.setMan(isManReg());
+        user.setName(getName());
+        user.setSurName(getSurName());
+        ur.save(user);
+        sendMessage("Going to Login Page");
+        return "goToLogin";
 
     }
 

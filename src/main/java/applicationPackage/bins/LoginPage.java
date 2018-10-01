@@ -35,6 +35,16 @@ public class LoginPage implements Serializable{
     }
 
     public String login (){
+//        User example = new User();
+//        example.setLogin(loginTemprorary);
+//        example.setPassword(passwordTemprorary);
+//        List <User> list = usersRepository.findAll();
+//        for (User user:list) {
+//            if (example.equals(user)) {
+//                sendMessage("Hello");
+//                return "goToMain";
+//            }
+//        }
         User example = new User();
         example.setLogin(loginTemprorary);
         example.setPassword(passwordTemprorary);
@@ -45,6 +55,7 @@ public class LoginPage implements Serializable{
                 return "goToMain";
             }
         }
+
 //       узнать почему не работает. не находит, existing is empty
 //        Optional<User> existing = usersRepository.findOne(Example.of(example));
 //        if (existing.isPresent()) {
@@ -70,17 +81,7 @@ public class LoginPage implements Serializable{
     public void setPasswordTemprorary(String passwordTemprorary) {
         this.passwordTemprorary = passwordTemprorary;
     }
-//        public String checkPassword() {
-//        if (passwordTemprorary.equals("password")) {
-//            sendMessage("Hello");
-//            return "goToMain";
-//        } else {
-//            login = "";
-//            password = "";
-//            sendMessage("Incorrect password");
-//        }
-//        return null;
-//    }
+
 
     public void sendMessage(String message) {
         FacesContext context = FacesContext.getCurrentInstance();

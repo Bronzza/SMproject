@@ -1,29 +1,47 @@
 package applicationPackage.bins;
 
 import applicationPackage.MyEvent;
+import applicationPackage.Repositories.CustomerRepository;
 import applicationPackage.Repositories.ProcedureRepository;
 import applicationPackage.Repositories.SpecialistRepository;
+import applicationPackage.entitys.Customer;
+import applicationPackage.entitys.Procedure;
+import applicationPackage.entitys.Specialist;
+import applicationPackage.entitys.User;
 import org.primefaces.event.ScheduleEntryMoveEvent;
 import org.primefaces.event.ScheduleEntryResizeEvent;
 import org.primefaces.event.SelectEvent;
 import org.primefaces.model.*;
+import org.springframework.data.domain.Example;
 
 import javax.annotation.PostConstruct;
 import javax.faces.application.FacesMessage;
 import javax.faces.context.FacesContext;
 import javax.faces.event.ActionEvent;
+import javax.faces.model.SelectItem;
 import javax.faces.view.ViewScoped;
 import javax.inject.Inject;
 import javax.inject.Named;
 import java.io.Serializable;
-import java.util.Calendar;
-import java.util.Date;
+import java.util.*;
 
 @Named
 @ViewScoped
-public class MainPage implements Serializable{
+public class MainPage implements Serializable {
     private ScheduleModel eventModel;
     private MyEvent event;
+    private String name;
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    @Inject
+    CustomerRepository customerRepository;
 
     @Inject
     SpecialistRepository specialistRepository;
@@ -31,19 +49,145 @@ public class MainPage implements Serializable{
     @Inject
     ProcedureRepository procedureRepository;
 
+    private boolean isClientNew;
+//    private Customer localCustomer;
+
+    //fields for creating Visit, update CustomerBase
+    private String procedureName;
+    private int procedureDurationMin;
+    private int procedureCost;
+    //Visit
+    private Date dateVisit;
+    private int finalPriceVisit;
+    private List<Specialist> specialistsVisit;
+    private Specialist first = new Specialist("Vasya");
+    //Customer
+    private String nameCustomer;
+    private String surNameCustomer;
+    private String telNumberCustomer;
+    private int discountCustomer;
+
+    public String getProcedureName() {
+        return procedureName;
+    }
+
+    public void setProcedureName(String procedureName) {
+        this.procedureName = procedureName;
+    }
+
+    public int getProcedureDurationMin() {
+        return procedureDurationMin;
+    }
+
+    public void setProcedureDurationMin(int procedureDurationMin) {
+        this.procedureDurationMin = procedureDurationMin;
+    }
+
+    public int getProcedureCost() {
+        return procedureCost;
+    }
+
+    public void setProcedureCost(int procedureCost) {
+        this.procedureCost = procedureCost;
+    }
+
+    public Date getDateVisit() {
+        return dateVisit;
+    }
+
+    public void setDateVisit(Date dateVisit) {
+        this.dateVisit = dateVisit;
+    }
+
+    public int getFinalPriceVisit() {
+        return finalPriceVisit;
+    }
+
+    public void setFinalPriceVisit(int finalPriceVisit) {
+        this.finalPriceVisit = finalPriceVisit;
+    }
+
+    public List<Specialist> getSpecialistsVisit() {
+        return specialistsVisit;
+    }
+
+    public void setSpecialistsVisit(List<Specialist> specialistsVisit) {
+        this.specialistsVisit = specialistsVisit;
+    }
+
+    public Specialist getFirst() {
+        return first;
+    }
+
+    public void setFirst(Specialist first) {
+        this.first = first;
+    }
+
+    public String getNameCustomer() {
+        return nameCustomer;
+    }
+
+    public void setNameCustomer(String nameCustomer) {
+        this.nameCustomer = nameCustomer;
+    }
+
+    public String getSurNameCustomer() {
+        return surNameCustomer;
+    }
+
+    public void setSurNameCustomer(String surNameCustomer) {
+        this.surNameCustomer = surNameCustomer;
+    }
+
+    public String getTelNumberCustomer() {
+        return telNumberCustomer;
+    }
+
+    public void setTelNumberCustomer(String telNumberCustomer) {
+        this.telNumberCustomer = telNumberCustomer;
+    }
+
+    public int getDiscountCustomer() {
+        return discountCustomer;
+    }
+
+    public void setDiscountCustomer(int discountCustomer) {
+        this.discountCustomer = discountCustomer;
+    }
+
+    public ProcedureRepository getProcedureRepository() {
+        return procedureRepository;
+    }
+
+    public void setProcedureRepository(ProcedureRepository procedureRepository) {
+        this.procedureRepository = procedureRepository;
+    }
+
+
     @PostConstruct
     public void init() {
         eventModel = new DefaultScheduleModel();
-        eventModel.addEvent(new DefaultScheduleEvent("Plant the new garden stuff", theDayAfter3Pm(), fourDaysLater3pm()));
+        event = new MyEvent();
+        event.setStartDate(new Date());
+        event.setEndDate(new Date());
+        eventModel.addEvent(new DefaultScheduleEvent("Plant the new garden stuff",
+                theDayAfter3Pm(), fourDaysLater3pm()));
+
+
     }
 
     public void setEventModel(ScheduleModel eventModel) {
         this.eventModel = eventModel;
     }
+
+    public ScheduleModel getEventModel() {
+        return eventModel;
+    }
+
     public Date getRandomDate(Date base) {
         Calendar date = Calendar.getInstance();
         date.setTime(base);
-        date.add(Calendar.DATE, ((int) (Math.random()*30)) + 1);    //set random day of month
+        date.add(Calendar.DATE, ((int) (Math.random() * 30)) + 1);    //set random day of month
 
         return date.getTime();
     }
@@ -55,9 +199,6 @@ public class MainPage implements Serializable{
         return calendar.getTime();
     }
 
-    public ScheduleModel getEventModel() {
-        return eventModel;
-    }
 
     private Calendar today() {
         Calendar calendar = Calendar.getInstance();
@@ -66,30 +207,12 @@ public class MainPage implements Serializable{
         return calendar;
     }
 
-    private Date previousDay8Pm() {
-        Calendar t = (Calendar) today().clone();
-        t.set(Calendar.AM_PM, Calendar.PM);
-        t.set(Calendar.DATE, t.get(Calendar.DATE) - 1);
-        t.set(Calendar.HOUR, 8);
-
-        return t.getTime();
+    public boolean getClientNew() {
+        return isClientNew;
     }
 
-    private Date previousDay11Pm() {
-        Calendar t = (Calendar) today().clone();
-        t.set(Calendar.AM_PM, Calendar.PM);
-        t.set(Calendar.DATE, t.get(Calendar.DATE) - 1);
-        t.set(Calendar.HOUR, 11);
-
-        return t.getTime();
-    }
-
-    private Date today1Pm() {
-        Calendar t = (Calendar) today().clone();
-        t.set(Calendar.AM_PM, Calendar.PM);
-        t.set(Calendar.HOUR, 1);
-
-        return t.getTime();
+    public void setClientNew(boolean clientNew) {
+        isClientNew = clientNew;
     }
 
     private Date theDayAfter3Pm() {
@@ -97,32 +220,6 @@ public class MainPage implements Serializable{
         t.set(Calendar.DATE, t.get(Calendar.DATE) + 2);
         t.set(Calendar.AM_PM, Calendar.PM);
         t.set(Calendar.HOUR, 3);
-
-        return t.getTime();
-    }
-
-    private Date today6Pm() {
-        Calendar t = (Calendar) today().clone();
-        t.set(Calendar.AM_PM, Calendar.PM);
-        t.set(Calendar.HOUR, 6);
-
-        return t.getTime();
-    }
-
-    private Date nextDay9Am() {
-        Calendar t = (Calendar) today().clone();
-        t.set(Calendar.AM_PM, Calendar.AM);
-        t.set(Calendar.DATE, t.get(Calendar.DATE) + 1);
-        t.set(Calendar.HOUR, 9);
-
-        return t.getTime();
-    }
-
-    private Date nextDay11Am() {
-        Calendar t = (Calendar) today().clone();
-        t.set(Calendar.AM_PM, Calendar.AM);
-        t.set(Calendar.DATE, t.get(Calendar.DATE) + 1);
-        t.set(Calendar.HOUR, 11);
 
         return t.getTime();
     }
@@ -145,14 +242,10 @@ public class MainPage implements Serializable{
     }
 
     public void addEvent(ActionEvent actionEvent) {
-        event = new MyEvent();
-        if(event.getId() == null)
+        if (event.getId() == null)
             eventModel.addEvent(event);
-
         else
             eventModel.updateEvent(event);
-
-        event = new MyEvent();
     }
 
     public void onEventSelect(SelectEvent selectEvent) {
@@ -177,5 +270,55 @@ public class MainPage implements Serializable{
 
     private void addMessage(FacesMessage message) {
         FacesContext.getCurrentInstance().addMessage(null, message);
+    }
+
+    public void addClient(String surname) {
+        if (!isClientNew) {
+            Customer example = new Customer();
+            Optional<Customer> existing = customerRepository.findOne(Example.of(example));
+            if (existing.isPresent()) {
+                event.setLocalCustomer(existing.get());
+            } else return;
+        } else {
+
+//            event.getLocalCustomer().setName(ge);
+            return;
+        }
+    }
+
+//    public Customer getLocalCustomer() {
+//        return localCustomer;
+//    }
+//
+//    public void setLocalCustomer(Customer localCustomer) {
+//        this.localCustomer = localCustomer;
+//    }
+
+    public List<SelectItem> findProcedres() {
+        List<SelectItem> list = new ArrayList<>();
+        for (Procedure procedure : procedureRepository.findAll()) {
+            list.add(new SelectItem(procedure, procedure.getName()));
+        }
+        return list;
+    }
+
+    public boolean isClientNew() {
+        return isClientNew;
+    }
+
+    public CustomerRepository getCustomerRepository() {
+        return customerRepository;
+    }
+
+    public void setCustomerRepository(CustomerRepository customerRepository) {
+        this.customerRepository = customerRepository;
+    }
+
+    public SpecialistRepository getSpecialistRepository() {
+        return specialistRepository;
+    }
+
+    public void setSpecialistRepository(SpecialistRepository specialistRepository) {
+        this.specialistRepository = specialistRepository;
     }
 }

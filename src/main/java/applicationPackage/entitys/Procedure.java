@@ -14,6 +14,7 @@ public class Procedure {
     private int durationMin;
     private int cost;
 
+
     public String getName() {
         return name;
     }
@@ -36,5 +37,13 @@ public class Procedure {
 
     public void setCost(int cost) {
         this.cost = cost;
+    }
+
+    public Long getId() {
+        return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
     }
 }

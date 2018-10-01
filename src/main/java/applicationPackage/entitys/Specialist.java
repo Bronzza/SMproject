@@ -40,4 +40,11 @@ public class Specialist {
     public void setProffession(Proffession proffession) {
         this.proffession = proffession;
     }
+
+    public Specialist(String name) {
+        this.name = name;
+    }
+    public Specialist() {
+
+    }
 }

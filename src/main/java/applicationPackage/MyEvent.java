@@ -10,17 +10,23 @@ import org.primefaces.model.DefaultScheduleEvent;
 
 
 import javax.inject.Inject;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
 public class MyEvent extends DefaultScheduleEvent {
 
     private String name;
-
-//    private String description;
     private Visit localVisit;
     private Customer localCustomer;
 
+    public MyEvent(String name) {
+        this.name = name;
+        localCustomer = new Customer();
+        localVisit = new Visit();
+        localSpecialistList = new ArrayList<>();
+        localProcedureList = new ArrayList<>();
+    }
 
     private List<Specialist> localSpecialistList;
     private List<Procedure> localProcedureList;

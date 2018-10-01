@@ -12,6 +12,14 @@ public class User {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+    public Long getId() {
+        return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
+    }
+
     //    @Column(unique = true, nullable = false, length = 20)
     private String login;
     private String password;
@@ -60,13 +68,9 @@ public class User {
         return Objects.hash(login, password);
     }
 
-    public long getId() {
-        return id;
-    }
 
-    public void setId(long id) {
-        this.id = id;
-    }
+
+
 
     public String getLogin() {
         return login;
