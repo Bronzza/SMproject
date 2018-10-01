@@ -8,6 +8,7 @@ import applicationPackage.entitys.User;
 
 import javax.faces.application.FacesMessage;
 import javax.faces.context.FacesContext;
+import javax.faces.view.ViewScoped;
 import javax.inject.Inject;
 import javax.inject.Named;
 
@@ -18,6 +19,7 @@ import java.util.Date;
 import static applicationPackage.Enums.AccessRights.VIEWER;
 
 @Named
+@ViewScoped
 public class RegistrationPage implements Serializable{
     private String loginRegistration;
     private String passwordRegistration;

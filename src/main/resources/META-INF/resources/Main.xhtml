@@ -29,7 +29,7 @@
 
                 <h:panelGrid columnClasses="value">
                     <h3 style="margin-top: 0">Editable Schedule</h3>
-                    <p:schedule id="schedule"  value="#{mainPage.eventModel}" widgetVar="myschedule" timeZone="GMT+2"
+                    <p:schedule id="schedule" value="#{mainPage.eventModel}" widgetVar="myschedule" timeZone="GMT+2"
                                 locale="rs">
 
                         <p:ajax event="dateSelect" listener="#{mainPage.onDateSelect}" update="eventDetails"
@@ -43,12 +43,9 @@
 
                 <p:dialog widgetVar="eventDialog" header="Event Details" showEffect="clip" hideEffect="clip">
                     <h:panelGrid id="eventDetails" columns="2">
+                        <p:outputLabel for="title" value="Titles:"/>
+                        <p:inputText id="title" value="#{mainPage.event.title}" required="true"/>
 
-                        <p:outputLabel for="title" value="Titles:" />
-                        <p:inputText id="title" value="#{mainPage.event.title}" required="true" />
-
-                        <p:outputLabel  value="Titles:" />
-                        <p:selectOneMenu value="#{mainPage.name}" />
 
                         <p:outputLabel for="from" value="From:"/>
                         <p:calendar id="from" value="#{mainPage.event.startDate}" timeZone="GMT+2"

@@ -30,6 +30,7 @@ import java.util.*;
 public class MainPage implements Serializable {
     private ScheduleModel eventModel;
     private MyEvent event;
+    List<SelectItem> procedures;
     private String name;
 
     public String getName() {
