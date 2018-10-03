@@ -42,7 +42,7 @@ public class MainPage implements Serializable {
     private Boolean isClientNew;
 
     //fields for creating Visit, update CustomerBase
-    private Procedure localProcedure;
+    private Procedure localProcedure = new Procedure();
     private String procedureName;
     private int procedureDurationMin;
     private int procedureCost;
@@ -62,6 +62,15 @@ public class MainPage implements Serializable {
         return localProcedure;
     }
 
+    public void calculatePrise() {
+        Procedure example = new Procedure();
+        example.setName(event.getTitle());
+        Optional<Procedure> existing = procedureRepository.findOne(Example.of(example));
+        if (existing.isPresent()) {
+            localProcedure.setCost((existing.get().getCost()));
+            procedureCost = localProcedure.getCost();
+        } else return;
+    }
 
     public String getProcedureName() {
         return procedureName;
@@ -298,15 +307,13 @@ public class MainPage implements Serializable {
         this.specialistRepository = specialistRepository;
     }
 
-    public int setProcedureCost() {
+    public void setProcedureCost() {
         Procedure example = new Procedure();
         Optional<Procedure> existing = procedureRepository.findOne(Example.of(example));
         if (existing.isPresent()) {
+
                 localProcedure.setCost((example.getCost()));
-                return example.getCost();
-        } else {
-            return 0;
-        }
+        } else return;
     }
 
 

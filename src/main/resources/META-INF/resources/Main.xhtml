@@ -24,7 +24,7 @@
         </p:layoutUnit>
 
         <p:layoutUnit position="center" header="Logining to Application">
-            <h:form>
+            <h:form id="form1">
                 <p:growl id="messages" showDetail="true"/>
 
                 <h:panelGrid columnClasses="value">
@@ -48,10 +48,11 @@
                         <p:selectOneMenu value="#{mainPage.event.title}">
                             <f:selectItem itemLabel="Select One" itemValue=""/>
                             <f:selectItems value="#{mainPage.selectTitleProcedure()}"/>
+                            <p:ajax update=":form1:costProc"  listener="#{mainPage.calculatePrise}" />
                         </p:selectOneMenu>
 
-                        <p:outputLabel id="costProc" value="Procedure cost"/>
-                        <p:inputText value="#{mainPage.procedureCost}" required="true"/>
+                        <p:outputLabel value="Procedure cost"/>
+                        <p:inputText id="costProc" value="#{mainPage.procedureCost}" required="true"/>
 
                         <p:outputLabel for="title" value="Chose specialist:"/>
                         <p:selectOneMenu value="#{mainPage.specialistsForVisit}">
