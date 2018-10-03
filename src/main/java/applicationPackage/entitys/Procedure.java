@@ -9,9 +9,17 @@ public class Procedure {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     private String name;
-    private int durationMin;
-    private int cost;
+    private Integer durationMin;
+    private Integer cost;
+    private Integer specialistRequired;
 
+    public Long getId() {
+        return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
+    }
 
     public String getName() {
         return name;
@@ -21,27 +29,27 @@ public class Procedure {
         this.name = name;
     }
 
-    public int getDurationMin() {
+    public Integer getDurationMin() {
         return durationMin;
     }
 
-    public void setDurationMin(int durationMin) {
+    public void setDurationMin(Integer durationMin) {
         this.durationMin = durationMin;
     }
 
-    public int getCost() {
+    public Integer getCost() {
         return cost;
     }
 
-    public void setCost(int cost) {
+    public void setCost(Integer cost) {
         this.cost = cost;
     }
 
-    public Long getId() {
-        return id;
+    public Integer getSpecialistRequired() {
+        return specialistRequired;
     }
 
-    public void setId(Long id) {
-        this.id = id;
+    public void setSpecialistRequired(Integer specialistRequired) {
+        this.specialistRequired = specialistRequired;
     }
 }

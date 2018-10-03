@@ -7,7 +7,6 @@ import applicationPackage.Repositories.SpecialistRepository;
 import applicationPackage.entitys.Customer;
 import applicationPackage.entitys.Procedure;
 import applicationPackage.entitys.Specialist;
-import applicationPackage.entitys.User;
 import org.primefaces.event.ScheduleEntryMoveEvent;
 import org.primefaces.event.ScheduleEntryResizeEvent;
 import org.primefaces.event.SelectEvent;
@@ -30,16 +29,6 @@ import java.util.*;
 public class MainPage implements Serializable {
     private ScheduleModel eventModel;
     private MyEvent event;
-    List<SelectItem> procedures;
-    private String name;
-
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
-    }
 
     @Inject
     CustomerRepository customerRepository;
@@ -50,23 +39,29 @@ public class MainPage implements Serializable {
     @Inject
     ProcedureRepository procedureRepository;
 
-    private boolean isClientNew;
-//    private Customer localCustomer;
+    private Boolean isClientNew;
 
     //fields for creating Visit, update CustomerBase
+    private Procedure localProcedure;
     private String procedureName;
     private int procedureDurationMin;
     private int procedureCost;
     //Visit
     private Date dateVisit;
     private int finalPriceVisit;
-    private List<Specialist> specialistsVisit;
-    private Specialist first = new Specialist("Vasya");
+    private List<Specialist> specialistsForVisit;
+
+
     //Customer
     private String nameCustomer;
     private String surNameCustomer;
     private String telNumberCustomer;
     private int discountCustomer;
+
+    public Procedure getLocalProcedure() {
+        return localProcedure;
+    }
+
 
     public String getProcedureName() {
         return procedureName;
@@ -108,20 +103,12 @@ public class MainPage implements Serializable {
         this.finalPriceVisit = finalPriceVisit;
     }
 
-    public List<Specialist> getSpecialistsVisit() {
-        return specialistsVisit;
+    public List<Specialist> getSpecialistsForVisit() {
+        return specialistsForVisit;
     }
 
-    public void setSpecialistsVisit(List<Specialist> specialistsVisit) {
-        this.specialistsVisit = specialistsVisit;
-    }
-
-    public Specialist getFirst() {
-        return first;
-    }
-
-    public void setFirst(Specialist first) {
-        this.first = first;
+    public void setSpecialistsForVisit(List<Specialist> specialistsForVisit) {
+        this.specialistsForVisit = specialistsForVisit;
     }
 
     public String getNameCustomer() {
@@ -171,9 +158,6 @@ public class MainPage implements Serializable {
         event = new MyEvent();
         event.setStartDate(new Date());
         event.setEndDate(new Date());
-        eventModel.addEvent(new DefaultScheduleEvent("Plant the new garden stuff",
-                theDayAfter3Pm(), fourDaysLater3pm()));
-
 
     }
 
@@ -200,7 +184,6 @@ public class MainPage implements Serializable {
         return calendar.getTime();
     }
 
-
     private Calendar today() {
         Calendar calendar = Calendar.getInstance();
         calendar.set(calendar.get(Calendar.YEAR), calendar.get(Calendar.MONTH), calendar.get(Calendar.DATE), 0, 0, 0);
@@ -208,30 +191,12 @@ public class MainPage implements Serializable {
         return calendar;
     }
 
-    public boolean getClientNew() {
+    public Boolean getClientNew() {
         return isClientNew;
     }
 
-    public void setClientNew(boolean clientNew) {
+    public void setClientNew(Boolean clientNew) {
         isClientNew = clientNew;
-    }
-
-    private Date theDayAfter3Pm() {
-        Calendar t = (Calendar) today().clone();
-        t.set(Calendar.DATE, t.get(Calendar.DATE) + 2);
-        t.set(Calendar.AM_PM, Calendar.PM);
-        t.set(Calendar.HOUR, 3);
-
-        return t.getTime();
-    }
-
-    private Date fourDaysLater3pm() {
-        Calendar t = (Calendar) today().clone();
-        t.set(Calendar.AM_PM, Calendar.PM);
-        t.set(Calendar.DATE, t.get(Calendar.DATE) + 4);
-        t.set(Calendar.HOUR, 3);
-
-        return t.getTime();
     }
 
     public MyEvent getEvent() {
@@ -243,9 +208,10 @@ public class MainPage implements Serializable {
     }
 
     public void addEvent(ActionEvent actionEvent) {
-        if (event.getId() == null)
+        if (event.getId() == null) {
             eventModel.addEvent(event);
-        else
+            Procedure procedure = new Procedure();
+        } else
             eventModel.updateEvent(event);
     }
 
@@ -287,23 +253,32 @@ public class MainPage implements Serializable {
         }
     }
 
-//    public Customer getLocalCustomer() {
-//        return localCustomer;
-//    }
-//
-//    public void setLocalCustomer(Customer localCustomer) {
-//        this.localCustomer = localCustomer;
-//    }
-
-    public List<SelectItem> findProcedres() {
+    public List<SelectItem> selectTitleProcedure() {
+//        SelectItemGroup g1 = new SelectItemGroup("Hair cat");
+//        SelectItemGroup g2 = new SelectItemGroup("Massage");
         List<SelectItem> list = new ArrayList<>();
         for (Procedure procedure : procedureRepository.findAll()) {
-            list.add(new SelectItem(procedure, procedure.getName()));
+            list.add(new SelectItem(procedure.getName(), procedure.getName()));
+
+        }
+//        g2.setSelectItems(list.toArray(new SelectItem[] {}));
+//        g1.setSelectItems(new SelectItem[]{new SelectItem("Box", "Box"),
+//                new SelectItem("WomenHair", "WomenHair")});
+//        list = new ArrayList<>();
+//        list.add(g1);
+//        list.add(g2);
+
+        return list;
+    }
+    public List<SelectItem> selectSpecialist() {
+        List<SelectItem> list = new ArrayList<>();
+        for (Specialist specialist : specialistRepository.findAll()) {
+            list.add(new SelectItem(specialist, specialist.getName()));
         }
         return list;
     }
 
-    public boolean isClientNew() {
+    public Boolean isClientNew() {
         return isClientNew;
     }
 
@@ -322,4 +297,17 @@ public class MainPage implements Serializable {
     public void setSpecialistRepository(SpecialistRepository specialistRepository) {
         this.specialistRepository = specialistRepository;
     }
+
+    public int setProcedureCost() {
+        Procedure example = new Procedure();
+        Optional<Procedure> existing = procedureRepository.findOne(Example.of(example));
+        if (existing.isPresent()) {
+                localProcedure.setCost((example.getCost()));
+                return example.getCost();
+        } else {
+            return 0;
+        }
+    }
+
+
 }

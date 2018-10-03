@@ -25,18 +25,42 @@
             <p:inputText value="#{proceduresPage.durationMin}" required="true"/>
             <p:outputLabel value="Procedure COST"/>
             <p:inputText value="#{proceduresPage.cost}" required="true"/>
+            <p:outputLabel value="Specialist required"/>
+            <p:inputText value="#{proceduresPage.specialistRequired}" required="true"/>
 
         </h:panelGrid>
         <br/>
         <p:commandButton style="margin-left: 45.5%" value="SAVE procedure"
-                         action="#{proceduresPage.saveData}" ajax="false" update="form1"/>
+                         action="#{proceduresPage.saveProcedure}" ajax="false" update="form1"/>
 
-        <hr/>
+
+    </h:form>
+    <p:separator/>
+
+    <h:form>
+        <h:panelGrid columns="2" border="1"
+                     style="border-width: 1px; margin-left: auto; margin-right: auto; background-color: bisque">
+            <p:outputLabel value="Specialist NAME"/>
+            <p:inputText value="#{proceduresPage.nameSpecialist}" required="true"/>
+
+            <p:outputLabel id="costProc" value="Specialist proffesion"/>
+            <p:selectOneMenu value="#{proceduresPage.proffession}">
+                <f:selectItem itemLabel="Select One" itemValue=""/>
+                <f:selectItems value="#{proceduresPage.selectProffesion()}"/>
+            </p:selectOneMenu>
+        </h:panelGrid>
+        <br/>
+        <p:commandButton style="margin-left: 45.5%" value="SAVE specialist"
+                         action="#{proceduresPage.saveSpecialist()}" ajax="false" update="form1"/>
+    </h:form>
+    <hr/>
+    <h:form>
         <h:panelGrid columns="1" style="margin-left: auto; margin-right: auto">
 
             <p:commandButton action="#{proceduresPage.goToMainPage()}" value="To Main page" ajax="false"/>
         </h:panelGrid>
-
     </h:form>
+
+
 </h:body>
 </html>

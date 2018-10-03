@@ -22,7 +22,7 @@ public class Customer {
     private int deposit;
     private int discount;
     @OneToMany
-    private List<Procedure> depositProcedure;
+    private List<Procedure> listProcedure;
 
     // info
     private Date birthday;
@@ -92,12 +92,12 @@ public class Customer {
         this.discount = discount;
     }
 
-    public List<Procedure> getDepositProcedure() {
-        return depositProcedure;
+    public List<Procedure> getListProcedure() {
+        return listProcedure;
     }
 
-    public void setDepositProcedure(List<Procedure> depositProcedure) {
-        this.depositProcedure = depositProcedure;
+    public void setListProcedure(List<Procedure> listProcedure) {
+        this.listProcedure = listProcedure;
     }
 
     public Date getBirthday() {

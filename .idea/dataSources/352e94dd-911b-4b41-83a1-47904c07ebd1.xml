@@ -1095,7 +1095,7 @@
     <table id="274" parent="3" name="customer">
       <Engine>InnoDB</Engine>
     </table>
-    <table id="275" parent="3" name="customer_deposit_procedure">
+    <table id="275" parent="3" name="customer_list_procedure">
       <Engine>InnoDB</Engine>
     </table>
     <table id="276" parent="3" name="procedures">
@@ -1181,31 +1181,31 @@
       <NotNull>1</NotNull>
       <ColumnKind>normal</ColumnKind>
     </column>
-    <column id="293" parent="275" name="deposit_procedure_id">
+    <column id="293" parent="275" name="list_procedure_id">
       <Position>2</Position>
       <DataType>bigint(20)|0</DataType>
       <NotNull>1</NotNull>
       <ColumnKind>normal</ColumnKind>
     </column>
-    <index id="294" parent="275" name="UK_cbvvadlukjd76486auhggbxby">
-      <ColNames>deposit_procedure_id</ColNames>
+    <index id="294" parent="275" name="UK_h5ctk87ibcs9t6gef4d4e32nk">
+      <ColNames>list_procedure_id</ColNames>
       <Unique>1</Unique>
     </index>
-    <index id="295" parent="275" name="FK6ahjuyq5iqvh4srjbpdb7hd22">
+    <index id="295" parent="275" name="FK6kj30ty6yvta9crbyjbtp6vyc">
       <ColNames>customer_id</ColNames>
     </index>
-    <key id="296" parent="275" name="UK_cbvvadlukjd76486auhggbxby">
-      <ColNames>deposit_procedure_id</ColNames>
-      <UnderlyingIndexName>UK_cbvvadlukjd76486auhggbxby</UnderlyingIndexName>
+    <key id="296" parent="275" name="UK_h5ctk87ibcs9t6gef4d4e32nk">
+      <ColNames>list_procedure_id</ColNames>
+      <UnderlyingIndexName>UK_h5ctk87ibcs9t6gef4d4e32nk</UnderlyingIndexName>
     </key>
-    <foreign-key id="297" parent="275" name="FK6ahjuyq5iqvh4srjbpdb7hd22">
+    <foreign-key id="297" parent="275" name="FK6kj30ty6yvta9crbyjbtp6vyc">
       <ColNames>customer_id</ColNames>
       <RefSchemaName>sergeybase</RefSchemaName>
       <RefTableName>customer</RefTableName>
       <RefColNames>id</RefColNames>
     </foreign-key>
-    <foreign-key id="298" parent="275" name="FKn1x0uubce3ajiti8i8dnhsfdf">
-      <ColNames>deposit_procedure_id</ColNames>
+    <foreign-key id="298" parent="275" name="FK4dg30itkm4ieyj5qwex0ue7ql">
+      <ColNames>list_procedure_id</ColNames>
       <RefSchemaName>sergeybase</RefSchemaName>
       <RefTableName>procedures</RefTableName>
       <RefColNames>id</RefColNames>

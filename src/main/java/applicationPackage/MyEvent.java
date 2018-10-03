@@ -17,8 +17,8 @@ import java.util.List;
 public class MyEvent extends DefaultScheduleEvent {
 
     private String name;
-    private Visit localVisit;
-    private Customer localCustomer;
+    private Visit localVisit = new Visit();;
+    private Customer localCustomer = new Customer();;
 
     public MyEvent(String name) {
         this.name = name;
@@ -28,8 +28,8 @@ public class MyEvent extends DefaultScheduleEvent {
         localProcedureList = new ArrayList<>();
     }
 
-    private List<Specialist> localSpecialistList;
-    private List<Procedure> localProcedureList;
+    private List<Specialist> localSpecialistList= new ArrayList<>();
+    private List<Procedure> localProcedureList = new ArrayList<>();
 
     public void setLocalVisit(Visit localVisit) {
         this.localVisit = localVisit;
