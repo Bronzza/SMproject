@@ -111,6 +111,7 @@ public class ProceduresPage implements Serializable{
         name=null;
         durationMin = null;
         cost=null;
+        specialistRequired=null;
 
         try{
             procedureRepository.save(procedure);

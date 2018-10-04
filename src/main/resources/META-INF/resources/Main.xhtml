@@ -29,8 +29,8 @@
 
                 <h:panelGrid columnClasses="value">
                     <h3 style="margin-top: 0">Editable Schedule</h3>
-                    <p:schedule id="schedule" value="#{mainPage.eventModel}" widgetVar="myschedule" timeZone="GMT+2"
-                                locale="rs">
+                    <p:schedule id="schedule" value="#{mainPage.eventModel}" widgetVar="myschedule"
+                                timeZone="GMT+2"  locale="rs">
 
                         <p:ajax event="dateSelect" listener="#{mainPage.onDateSelect}" update="eventDetails"
                                 oncomplete="PF('eventDialog').show();"/>
@@ -45,14 +45,14 @@
                     <h:panelGrid id="eventDetails" columns="2">
 
                         <p:outputLabel value="Chose procedure"/>
-                        <p:selectOneMenu value="#{mainPage.event.title}">
+                        <p:selectOneMenu value="#{mainPage.event.title}" >
                             <f:selectItem itemLabel="Select One" itemValue=""/>
                             <f:selectItems value="#{mainPage.selectTitleProcedure()}"/>
                             <p:ajax update=":form1:costProc"  listener="#{mainPage.calculatePrise}" />
                         </p:selectOneMenu>
 
                         <p:outputLabel value="Procedure cost"/>
-                        <p:inputText id="costProc" value="#{mainPage.procedureCost}" required="true"/>
+                        <p:inputText id="costProc" value="#{mainPage.localProcedure.cost}" required="true"/>
 
                         <p:outputLabel for="title" value="Chose specialist:"/>
                         <p:selectOneMenu value="#{mainPage.specialistsForVisit}">
@@ -69,6 +69,12 @@
 
                         <p:outputLabel for="title" value="Client surname:"/>
                         <p:inputText value="#{mainPage.event.localCustomer.surName}"/>
+
+                        <p:outputLabel for="title" value="Client surname AUTOCOMPLETE:"/>
+                        <p:autoComplete  value="#{mainPage.mainPageCustomer}"
+                                        completeMethod="#{mainPage.completeCustomer}"
+                                         itemLabel="#{customerBin.customer.surName}"
+                                        itemValue="#{customerBin.customer}"  forceSelection="true"/>
 
                         <p:outputLabel for="title" value="Client's phone numb:"/>
                         <p:inputText id="title" value="#{mainPage.event.localCustomer.telNumber}" required="true"/>

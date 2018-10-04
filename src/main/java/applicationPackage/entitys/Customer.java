@@ -1,11 +1,13 @@
 package applicationPackage.entitys;
 
 
+import javax.inject.Named;
 import javax.persistence.Entity;
 import javax.persistence.*;
 
 import java.util.Date;
 import java.util.List;
+
 
 @Entity
 public class Customer {
@@ -122,5 +124,10 @@ public class Customer {
 
     public void setEmail(String email) {
         this.email = email;
+    }
+
+    @Override
+    public String toString() {
+        return  surName;
     }
 }

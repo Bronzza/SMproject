@@ -15,6 +15,7 @@ import org.springframework.data.domain.Example;
 
 import javax.annotation.PostConstruct;
 import javax.faces.application.FacesMessage;
+import javax.faces.bean.ManagedProperty;
 import javax.faces.context.FacesContext;
 import javax.faces.event.ActionEvent;
 import javax.faces.model.SelectItem;
@@ -43,20 +44,33 @@ public class MainPage implements Serializable {
 
     //fields for creating Visit, update CustomerBase
     private Procedure localProcedure = new Procedure();
-    private String procedureName;
-    private int procedureDurationMin;
-    private int procedureCost;
+
     //Visit
     private Date dateVisit;
     private int finalPriceVisit;
     private List<Specialist> specialistsForVisit;
 
-
     //Customer
+    private Customer mainPageCustomer = new Customer();
+
+    public void setMainPageCustomer(Customer mainPageCustomer) {
+        this.mainPageCustomer = mainPageCustomer;
+    }
+
     private String nameCustomer;
     private String surNameCustomer;
     private String telNumberCustomer;
     private int discountCustomer;
+
+    public void setLocalProcedure(Procedure localProcedure) {
+        this.localProcedure = localProcedure;
+    }
+
+    public Customer getMainPageCustomer() {
+        return mainPageCustomer;
+    }
+
+
 
     public Procedure getLocalProcedure() {
         return localProcedure;
@@ -67,33 +81,9 @@ public class MainPage implements Serializable {
         example.setName(event.getTitle());
         Optional<Procedure> existing = procedureRepository.findOne(Example.of(example));
         if (existing.isPresent()) {
-            localProcedure.setCost((existing.get().getCost()));
-            procedureCost = localProcedure.getCost();
+            localProcedure = existing.get();
+//            localProcedure.setCost((existing.get().getCost()));
         } else return;
-    }
-
-    public String getProcedureName() {
-        return procedureName;
-    }
-
-    public void setProcedureName(String procedureName) {
-        this.procedureName = procedureName;
-    }
-
-    public int getProcedureDurationMin() {
-        return procedureDurationMin;
-    }
-
-    public void setProcedureDurationMin(int procedureDurationMin) {
-        this.procedureDurationMin = procedureDurationMin;
-    }
-
-    public int getProcedureCost() {
-        return procedureCost;
-    }
-
-    public void setProcedureCost(int procedureCost) {
-        this.procedureCost = procedureCost;
     }
 
     public Date getDateVisit() {
@@ -307,14 +297,19 @@ public class MainPage implements Serializable {
         this.specialistRepository = specialistRepository;
     }
 
-    public void setProcedureCost() {
-        Procedure example = new Procedure();
-        Optional<Procedure> existing = procedureRepository.findOne(Example.of(example));
-        if (existing.isPresent()) {
+    public List<Customer> completeCustomer(String query) {
+        List<Customer> allCustomer = customerRepository.findAll();
 
-                localProcedure.setCost((example.getCost()));
-        } else return;
+        List<Customer> filteredCustomer = new ArrayList<Customer>();
+
+        for (int i = 0; i < allCustomer.size(); i++) {
+            Customer temp = allCustomer.get(i);
+            if(temp.getSurName().toLowerCase().startsWith(query)) {
+                filteredCustomer.add(temp);
+            }
+        }
+
+        return filteredCustomer;
     }
-
 
 }
