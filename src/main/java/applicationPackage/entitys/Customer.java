@@ -130,4 +130,8 @@ public class Customer {
     public String toString() {
         return  surName;
     }
+
+    public String giveName(){
+        return name;
+    }
 }

@@ -17,7 +17,7 @@ import java.util.List;
 public class MyEvent extends DefaultScheduleEvent {
 
     private String name;
-    private Visit localVisit = new Visit();;
+    private Visit localVisit = new Visit();
     private Customer localCustomer = new Customer();;
 
     public MyEvent(String name) {

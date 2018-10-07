@@ -30,7 +30,7 @@
                 <h:panelGrid columnClasses="value">
                     <h3 style="margin-top: 0">Editable Schedule</h3>
                     <p:schedule id="schedule" value="#{mainPage.eventModel}" widgetVar="myschedule"
-                                timeZone="GMT+2"  locale="rs">
+                                timeZone="GMT+2" locale="rs">
 
                         <p:ajax event="dateSelect" listener="#{mainPage.onDateSelect}" update="eventDetails"
                                 oncomplete="PF('eventDialog').show();"/>
@@ -45,39 +45,37 @@
                     <h:panelGrid id="eventDetails" columns="2">
 
                         <p:outputLabel value="Chose procedure"/>
-                        <p:selectOneMenu value="#{mainPage.event.title}" >
+                        <p:selectOneMenu  value="#{mainPage.event.title}">
                             <f:selectItem itemLabel="Select One" itemValue=""/>
                             <f:selectItems value="#{mainPage.selectTitleProcedure()}"/>
-                            <p:ajax update=":form1:costProc"  listener="#{mainPage.calculatePrise}" />
+                            <p:ajax update=":form1:costProc" listener="#{mainPage.calculatePrise}"/>
                         </p:selectOneMenu>
 
                         <p:outputLabel value="Procedure cost"/>
                         <p:inputText id="costProc" value="#{mainPage.localProcedure.cost}" required="true"/>
 
-                        <p:outputLabel for="title" value="Chose specialist:"/>
+                        <p:outputLabel  value="Chose specialist:"/>
                         <p:selectOneMenu value="#{mainPage.specialistsForVisit}">
                             <f:selectItem itemLabel="Select One" itemValue=""/>
                             <f:selectItems value="#{mainPage.selectSpecialist()}"/>
                         </p:selectOneMenu>
 
-                        <p:outputLabel for="title" value="Is client new:"/>
-                        <p:inputSwitch value="#{mainPage.clientNew}"  offLabel="Yes" onLabel="No"
-                                       style="font-size: small" />
+                        <p:outputLabel  value="Is client new:"/>
+                        <p:inputSwitch value="#{mainPage.clientNew}" offLabel="Yes" onLabel="No"
+                                       style="font-size: small"/>
 
-                        <p:outputLabel for="title" value="Client name:"/>
-                        <p:inputText value="#{mainPage.event.localCustomer.name}" required="true"/>
+                        <p:outputLabel value="Client surname:"/>
+                        <p:selectOneMenu value="#{mainPage.event.localCustomer.surName}">
+                            <f:selectItem itemLabel="Select One" itemValue=""/>
+                            <f:selectItems value="#{mainPage.selectCustomer()}"/>
+                            <p:ajax update=":form1:Clientphone, :form1:Clientname"  listener="#{mainPage.setCustomerInfo}"/>
+                        </p:selectOneMenu>
 
-                        <p:outputLabel for="title" value="Client surname:"/>
-                        <p:inputText value="#{mainPage.event.localCustomer.surName}"/>
+                        <p:outputLabel   value="Client name:"/>
+                        <p:inputText id="Clientname" value="#{mainPage.event.localCustomer.name}" />
 
-                        <p:outputLabel for="title" value="Client surname AUTOCOMPLETE:"/>
-                        <p:autoComplete  value="#{mainPage.mainPageCustomer}"
-                                        completeMethod="#{mainPage.completeCustomer}"
-                                         itemLabel="#{customerBin.customer.surName}"
-                                        itemValue="#{customerBin.customer}"  forceSelection="true"/>
-
-                        <p:outputLabel for="title" value="Client's phone numb:"/>
-                        <p:inputText id="title" value="#{mainPage.event.localCustomer.telNumber}" required="true"/>
+                        <p:outputLabel value="Client's phone numb:"/>
+                        <p:inputText id="Clientphone"  value="#{mainPage.event.localCustomer.telNumber}" required="true"/>
 
                         <p:outputLabel for="from" value="From:"/>
                         <p:calendar id="from" value="#{mainPage.event.startDate}" timeZone="GMT+2"

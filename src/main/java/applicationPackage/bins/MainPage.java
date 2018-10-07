@@ -71,7 +71,6 @@ public class MainPage implements Serializable {
     }
 
 
-
     public Procedure getLocalProcedure() {
         return localProcedure;
     }
@@ -269,12 +268,29 @@ public class MainPage implements Serializable {
 
         return list;
     }
+
     public List<SelectItem> selectSpecialist() {
         List<SelectItem> list = new ArrayList<>();
         for (Specialist specialist : specialistRepository.findAll()) {
             list.add(new SelectItem(specialist, specialist.getName()));
         }
         return list;
+    }
+
+    public List<SelectItem> selectCustomer() {
+        List<SelectItem> list = new ArrayList<>();
+        for (Customer customer : customerRepository.findAll()) {
+            list.add(new SelectItem(customer, customer.getSurName()));
+        }
+        return list;
+    }
+
+    public void setCustomerInfo() {
+        for (Customer customer : customerRepository.findAll()) {
+            if (customer.getSurName().equals(event.getLocalCustomer().getSurName())) {
+                event.setLocalCustomer(customer);
+            } else return;
+        }
     }
 
     public Boolean isClientNew() {
@@ -299,16 +315,13 @@ public class MainPage implements Serializable {
 
     public List<Customer> completeCustomer(String query) {
         List<Customer> allCustomer = customerRepository.findAll();
-
         List<Customer> filteredCustomer = new ArrayList<Customer>();
-
         for (int i = 0; i < allCustomer.size(); i++) {
             Customer temp = allCustomer.get(i);
-            if(temp.getSurName().toLowerCase().startsWith(query)) {
+            if (temp.getSurName().toLowerCase().startsWith(query)) {
                 filteredCustomer.add(temp);
             }
         }
-
         return filteredCustomer;
     }
 
