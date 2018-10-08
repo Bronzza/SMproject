@@ -257,7 +257,6 @@ public class MainPage implements Serializable {
         List<SelectItem> list = new ArrayList<>();
         for (Procedure procedure : procedureRepository.findAll()) {
             list.add(new SelectItem(procedure.getName(), procedure.getName()));
-
         }
 //        g2.setSelectItems(list.toArray(new SelectItem[] {}));
 //        g1.setSelectItems(new SelectItem[]{new SelectItem("Box", "Box"),
@@ -265,7 +264,6 @@ public class MainPage implements Serializable {
 //        list = new ArrayList<>();
 //        list.add(g1);
 //        list.add(g2);
-
         return list;
     }
 
@@ -278,11 +276,11 @@ public class MainPage implements Serializable {
     }
 
     public List<SelectItem> selectCustomer() {
-        List<SelectItem> list = new ArrayList<>();
+        List<SelectItem> list1 = new ArrayList<>();
         for (Customer customer : customerRepository.findAll()) {
-            list.add(new SelectItem(customer, customer.getSurName()));
+            list1.add(new SelectItem(customer, customer.getSurName()));
         }
-        return list;
+        return list1;
     }
 
     public void setCustomerInfo() {
