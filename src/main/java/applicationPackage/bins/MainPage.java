@@ -50,6 +50,8 @@ public class MainPage implements Serializable {
     private int finalPriceVisit;
     private List<Specialist> specialistsForVisit;
 
+    private String selectedSpecialistId;
+
     //Customer
     private Customer mainPageCustomer = new Customer();
 
@@ -99,6 +101,14 @@ public class MainPage implements Serializable {
 
     public void setFinalPriceVisit(int finalPriceVisit) {
         this.finalPriceVisit = finalPriceVisit;
+    }
+
+    public String getSelectedSpecialistId() {
+        return selectedSpecialistId;
+    }
+
+    public void setSelectedSpecialistId(String selectedSpecialistId) {
+        this.selectedSpecialistId = selectedSpecialistId;
     }
 
     public List<Specialist> getSpecialistsForVisit() {
@@ -272,7 +282,7 @@ public class MainPage implements Serializable {
     public List<SelectItem> selectSpecialist() {
         List<SelectItem> list = new ArrayList<>();
         for (Specialist specialist : specialistRepository.findAll()) {
-            list.add(new SelectItem(specialist, specialist.getName()));
+            list.add(new SelectItem(specialist.getId(), specialist.getName()));
         }
         return list;
     }
@@ -280,7 +290,7 @@ public class MainPage implements Serializable {
     public List<SelectItem> selectCustomer() {
         List<SelectItem> list = new ArrayList<>();
         for (Customer customer : customerRepository.findAll()) {
-            list.add(new SelectItem(customer, customer.getSurName()));
+            list.add(new SelectItem(customer.getSurName(), customer.getSurName()));
         }
         return list;
     }
@@ -289,7 +299,8 @@ public class MainPage implements Serializable {
         for (Customer customer : customerRepository.findAll()) {
             if (customer.getSurName().equals(event.getLocalCustomer().getSurName())) {
                 event.setLocalCustomer(customer);
-            } else return;
+                return;
+            } 
         }
     }
 

@@ -55,7 +55,7 @@
                         <p:inputText id="costProc" value="#{mainPage.localProcedure.cost}" required="true"/>
 
                         <p:outputLabel  value="Chose specialist:"/>
-                        <p:selectOneMenu value="#{mainPage.specialistsForVisit}">
+                        <p:selectOneMenu value="#{mainPage.selectedSpecialistId}">
                             <f:selectItem itemLabel="Select One" itemValue=""/>
                             <f:selectItems value="#{mainPage.selectSpecialist()}"/>
                         </p:selectOneMenu>
