@@ -18,6 +18,13 @@
             <to-view-id>/registration.xhtml</to-view-id>
             <redirect/>
         </navigation-case>
+
+        <navigation-case>
+            <from-outcome>goToClients</from-outcome>
+            <to-view-id>/clients.xhtml</to-view-id>
+            <redirect/>
+        </navigation-case>
+
         <navigation-case>
             <from-outcome>goToLogin</from-outcome>
             <to-view-id>/login.xhtml</to-view-id>

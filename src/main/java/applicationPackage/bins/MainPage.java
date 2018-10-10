@@ -8,6 +8,7 @@ import applicationPackage.Repositories.VisitRepository;
 import applicationPackage.entitys.Customer;
 import applicationPackage.entitys.Procedure;
 import applicationPackage.entitys.Specialist;
+import applicationPackage.entitys.Visit;
 import org.primefaces.event.ScheduleEntryMoveEvent;
 import org.primefaces.event.ScheduleEntryResizeEvent;
 import org.primefaces.event.SelectEvent;
@@ -240,12 +241,27 @@ public class MainPage implements Serializable {
         event.getLocalVisit().setFanalPrice(finalPriceVisit);
         event.getLocalVisit().setStart(event.getStartDate());
         event.getLocalVisit().getLocalSpecalist().add(findSpectById(selectedSpecialistId));
+        event.getLocalVisit().setCustomer(event.getLocalCustomer());
         visitRepository.save(event.getLocalVisit());
+        updateCustomerInBase();
+//        event.getLocalCustomer().getListVisit().add;
     }
 //
 //    public void confirmEvent(ActionEvent actionEvent){
 //        visitRepository.save(event.getLocalVisit());
 //    }
+
+    public void updateCustomerInBase () {
+        Customer example = new Customer();
+        example.setSurName(event.getLocalCustomer().getSurName());
+        example.setSurName(event.getLocalCustomer().getTelNumber());
+        Optional<Customer> existing = customerRepository.findOne(Example.of(example));
+        if (existing.isPresent()) {
+            Customer temp = existing.get();
+            temp.getListVisit().add(event.getLocalVisit());
+            customerRepository.save(temp);
+        }
+    }
 
     public Specialist findSpectById (String s) {
         Specialist example = new Specialist();
@@ -254,6 +270,18 @@ public class MainPage implements Serializable {
         if (existing.isPresent()) {
             return existing.get();
         } else return null;
+    }
+
+
+
+    public Long fingVisitId () {
+        Visit example = new Visit();
+        example.setStart(event.getLocalVisit().getStart());
+        Optional<Visit> existing = visitRepository.findOne(Example.of(example));
+        if (existing.isPresent()) {
+            return existing.get().getId();
+        }
+        else return null;
     }
 
     public void onEventSelect(SelectEvent selectEvent) {
@@ -368,8 +396,22 @@ public class MainPage implements Serializable {
         }
         return filteredCustomer;
     }
+
+
+
     public void calculateEndDate(){
         Calendar calendar = Calendar.getInstance();
         event.getEndDate().setTime(event.getStartDate().getTime()+localProcedure.getDurationMin()*60000);
+    }
+
+    public String buttonClients (){
+        sendMessage("Going to Clients page");
+        return "goToLogin";
+    }
+
+    public void sendMessage(String message) {
+        FacesContext context = FacesContext.getCurrentInstance();
+        context.addMessage(null, new FacesMessage(message, null));
+//        context.addMessage(null, new FacesMessage("Second Message", "Additional Message Detail"));
     }
 }

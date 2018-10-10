@@ -17,10 +17,23 @@ public class Visit {
 
     private Date start;
 
-    @OneToMany(mappedBy = "visit")
+    @ManyToOne
+    private Customer customer;
+
+    @ManyToMany(mappedBy = "visit", cascade = CascadeType.ALL)
     private List<Specialist> localSpecalist = new ArrayList<>();
 
     private Integer fanalPrice;
+
+    // geters and setters
+
+    public Customer getCustomer() {
+        return customer;
+    }
+
+    public void setCustomer(Customer customer) {
+        this.customer = customer;
+    }
 
     public Long getId() {
         return id;

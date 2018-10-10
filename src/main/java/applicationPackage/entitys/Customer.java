@@ -23,8 +23,9 @@ public class Customer {
     private String email;
     private int deposit;
     private int discount;
-    @OneToMany
-    private List<Procedure> listProcedure;
+
+    @OneToMany(mappedBy = "customer")
+    private List<Visit> listVisit;
 
     // info
     private Date birthday;
@@ -94,12 +95,13 @@ public class Customer {
         this.discount = discount;
     }
 
-    public List<Procedure> getListProcedure() {
-        return listProcedure;
+
+    public List<Visit> getListVisit() {
+        return listVisit;
     }
 
-    public void setListProcedure(List<Procedure> listProcedure) {
-        this.listProcedure = listProcedure;
+    public void setListVisit(List<Visit> listVisit) {
+        this.listVisit = listVisit;
     }
 
     public Date getBirthday() {

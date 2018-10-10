@@ -17,10 +17,19 @@
         <p:layoutUnit position="west" resizable="false" size="200" minSize="40"
                       maxSize="300" header="Menu bar" collapsible="true">
             <p:growl id="msgs" autoUpdate="true"/>
+            <h:form>
             <div> Position west</div>
+            <p:panelGrid columns="1">
+                <p:commandButton style="size: auto" value="Clients" id="nonAjax" update="msgs"
+                                 action="#{mainPage.buttonClients()}" ajax="false" />
+            </p:panelGrid>
+            </h:form>
         </p:layoutUnit>
         <p:layoutUnit position="north" resizable="false" collapsible="true" minSize="100" header="Info panel">
+
             <div>Some information</div>
+
+
         </p:layoutUnit>
 
         <p:layoutUnit position="center" header="Logining to Application">
@@ -84,13 +93,13 @@
 
 
                         <p:outputLabel for="from" value="From:"/>
-                        <p:calendar id="from" value="#{mainPage.event.startDate}" timeZone="GMT+2"
+                        <p:calendar id="from" value="#{mainPage.event.startDate}"
                                     pattern="dd/MM/yy HH:mm">
                         <p:ajax update=":form1:to" listener="#{mainPage.calculateEndDate}"/>
                         </p:calendar>
 
                         <p:outputLabel for="to" value="To:"/>
-                        <p:calendar id="to" value="#{mainPage.event.endDate}" timeZone="GMT+2"
+                        <p:calendar id="to" value="#{mainPage.event.endDate}"
                                     pattern="dd/MM/yy HH:mm"/>
 
                         <p:outputLabel for="allDay" value="All Day:"/>
