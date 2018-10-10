@@ -2,6 +2,7 @@ package applicationPackage.entitys;
 
 import javax.persistence.Entity;
 import javax.persistence.*;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -17,9 +18,9 @@ public class Visit {
     private Date start;
 
     @OneToMany(mappedBy = "visit")
-    private List<Specialist> localSpecalist;
+    private List<Specialist> localSpecalist = new ArrayList<>();
 
-    private int fanalPrice;
+    private Integer fanalPrice;
 
     public Long getId() {
         return id;
@@ -53,11 +54,11 @@ public class Visit {
         this.localSpecalist = localSpecalist;
     }
 
-    public int getFanalPrice() {
+    public Integer getFanalPrice() {
         return fanalPrice;
     }
 
-    public void setFanalPrice(int fanalPrice) {
+    public void setFanalPrice(Integer fanalPrice) {
         this.fanalPrice = fanalPrice;
     }
 }

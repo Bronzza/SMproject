@@ -4,6 +4,7 @@ import applicationPackage.MyEvent;
 import applicationPackage.Repositories.CustomerRepository;
 import applicationPackage.Repositories.ProcedureRepository;
 import applicationPackage.Repositories.SpecialistRepository;
+import applicationPackage.Repositories.VisitRepository;
 import applicationPackage.entitys.Customer;
 import applicationPackage.entitys.Procedure;
 import applicationPackage.entitys.Specialist;
@@ -30,6 +31,9 @@ import java.util.*;
 public class MainPage implements Serializable {
     private ScheduleModel eventModel;
     private MyEvent event;
+
+    @Inject
+    VisitRepository visitRepository;
 
     @Inject
     CustomerRepository customerRepository;
@@ -154,6 +158,14 @@ public class MainPage implements Serializable {
         this.discountCustomer = discountCustomer;
     }
 
+    public VisitRepository getVisitRepository() {
+        return visitRepository;
+    }
+
+    public void setVisitRepository(VisitRepository visitRepository) {
+        this.visitRepository = visitRepository;
+    }
+
     public ProcedureRepository getProcedureRepository() {
         return procedureRepository;
     }
@@ -224,6 +236,24 @@ public class MainPage implements Serializable {
             Procedure procedure = new Procedure();
         } else
             eventModel.updateEvent(event);
+        event.getLocalVisit().setProcedure(localProcedure);
+        event.getLocalVisit().setFanalPrice(finalPriceVisit);
+        event.getLocalVisit().setStart(event.getStartDate());
+        event.getLocalVisit().getLocalSpecalist().add(findSpectById(selectedSpecialistId));
+        visitRepository.save(event.getLocalVisit());
+    }
+//
+//    public void confirmEvent(ActionEvent actionEvent){
+//        visitRepository.save(event.getLocalVisit());
+//    }
+
+    public Specialist findSpectById (String s) {
+        Specialist example = new Specialist();
+        example.setId(Long.parseLong(s));
+        Optional<Specialist> existing = specialistRepository.findOne(Example.of(example));
+        if (existing.isPresent()) {
+            return existing.get();
+        } else return null;
     }
 
     public void onEventSelect(SelectEvent selectEvent) {
