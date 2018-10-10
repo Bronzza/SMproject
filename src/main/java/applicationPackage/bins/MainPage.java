@@ -83,8 +83,11 @@ public class MainPage implements Serializable {
         Optional<Procedure> existing = procedureRepository.findOne(Example.of(example));
         if (existing.isPresent()) {
             localProcedure = existing.get();
-//            localProcedure.setCost((existing.get().getCost()));
-        } else return;
+
+//            event.getLocalVisit().getProcedure().setCost(localProcedure.getCost()-(localProcedure.getCost()*event.getLocalCustomer().getDiscount()/100));
+
+        }
+        finalPriceVisit = localProcedure.getCost()- localProcedure.getCost()/100*event.getLocalCustomer().getDiscount();
     }
 
     public Date getDateVisit() {
@@ -335,5 +338,8 @@ public class MainPage implements Serializable {
         }
         return filteredCustomer;
     }
-
+    public void calculateEndDate(){
+        Calendar calendar = Calendar.getInstance();
+        event.getEndDate().setTime(event.getStartDate().getTime()+localProcedure.getDurationMin()*60000);
+    }
 }
