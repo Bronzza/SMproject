@@ -92,7 +92,7 @@ public class MainPage implements Serializable {
 //            event.getLocalVisit().getProcedure().setCost(localProcedure.getCost()-(localProcedure.getCost()*event.getLocalCustomer().getDiscount()/100));
 
         }
-        finalPriceVisit = localProcedure.getCost()- localProcedure.getCost()/100*event.getLocalCustomer().getDiscount();
+        finalPriceVisit = localProcedure.getCost() - localProcedure.getCost() / 100 * event.getLocalCustomer().getDiscount();
     }
 
     public Date getDateVisit() {
@@ -182,6 +182,17 @@ public class MainPage implements Serializable {
         event = new MyEvent();
         event.setStartDate(new Date());
         event.setEndDate(new Date());
+        for (Visit visit : visitRepository.findAll()) {
+            event = new MyEvent(visit.getProcedure().toString());
+            event.setStartDate(visit.getStart());
+            event.setEndDate(visit.getStart());
+            event.getEndDate().setTime(visit.getStart().getTime() +
+                    visit.getProcedure().getDurationMin() * 60000);
+            event.setLocalVisit(visit);
+            event.setLocalCustomer(visit.getCustomer());
+
+            eventModel.addEvent(event);
+        }
 
     }
 
@@ -251,7 +262,7 @@ public class MainPage implements Serializable {
 //        visitRepository.save(event.getLocalVisit());
 //    }
 
-    public void updateCustomerInBase () {
+    public void updateCustomerInBase() {
         Customer example = new Customer();
         example.setSurName(event.getLocalCustomer().getSurName());
         example.setSurName(event.getLocalCustomer().getTelNumber());
@@ -263,7 +274,7 @@ public class MainPage implements Serializable {
         }
     }
 
-    public Specialist findSpectById (String s) {
+    public Specialist findSpectById(String s) {
         Specialist example = new Specialist();
         example.setId(Long.parseLong(s));
         Optional<Specialist> existing = specialistRepository.findOne(Example.of(example));
@@ -273,15 +284,13 @@ public class MainPage implements Serializable {
     }
 
 
-
-    public Long fingVisitId () {
+    public Long fingVisitId() {
         Visit example = new Visit();
         example.setStart(event.getLocalVisit().getStart());
         Optional<Visit> existing = visitRepository.findOne(Example.of(example));
         if (existing.isPresent()) {
             return existing.get().getId();
-        }
-        else return null;
+        } else return null;
     }
 
     public void onEventSelect(SelectEvent selectEvent) {
@@ -361,7 +370,7 @@ public class MainPage implements Serializable {
             if (customer.getSurName().equals(event.getLocalCustomer().getSurName())) {
                 event.setLocalCustomer(customer);
                 return;
-            } 
+            }
         }
     }
 
@@ -398,13 +407,12 @@ public class MainPage implements Serializable {
     }
 
 
-
-    public void calculateEndDate(){
+    public void calculateEndDate() {
         Calendar calendar = Calendar.getInstance();
-        event.getEndDate().setTime(event.getStartDate().getTime()+localProcedure.getDurationMin()*60000);
+        event.getEndDate().setTime(event.getStartDate().getTime() + localProcedure.getDurationMin() * 60000);
     }
 
-    public String buttonClients (){
+    public String buttonClients() {
         sendMessage("Going to Clients page");
         return "goToLogin";
     }

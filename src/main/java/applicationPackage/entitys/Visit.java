@@ -25,6 +25,8 @@ public class Visit {
 
     private Integer fanalPrice;
 
+    private Boolean isPayed;
+
     // geters and setters
 
     public Customer getCustomer() {
@@ -73,5 +75,13 @@ public class Visit {
 
     public void setFanalPrice(Integer fanalPrice) {
         this.fanalPrice = fanalPrice;
+    }
+
+    public Boolean getPayed() {
+        return isPayed;
+    }
+
+    public void setPayed(Boolean payed) {
+        isPayed = payed;
     }
 }

@@ -24,12 +24,7 @@ public class MyEvent extends DefaultScheduleEvent {
         this.name = name;
         localCustomer = new Customer();
         localVisit = new Visit();
-        localSpecialistList = new ArrayList<>();
-        localProcedureList = new ArrayList<>();
     }
-
-    private List<Specialist> localSpecialistList= new ArrayList<>();
-    private List<Procedure> localProcedureList = new ArrayList<>();
 
     public void setLocalVisit(Visit localVisit) {
         this.localVisit = localVisit;
@@ -37,14 +32,6 @@ public class MyEvent extends DefaultScheduleEvent {
 
     public void setLocalCustomer(Customer localCustomer) {
         this.localCustomer = localCustomer;
-    }
-
-    public void setLocalSpecialistList(List<Specialist> localSpecialistList) {
-        this.localSpecialistList = localSpecialistList;
-    }
-
-    public void setLocalProcedureList(List<Procedure> localProcedureList) {
-        this.localProcedureList = localProcedureList;
     }
 
     public String getName() {
@@ -69,12 +56,5 @@ public class MyEvent extends DefaultScheduleEvent {
         return localCustomer;
     }
 
-    public List<Specialist> getLocalSpecialistList() {
-        return localSpecialistList;
-    }
-
-    public List<Procedure> getLocalProcedureList() {
-        return localProcedureList;
-    }
 
 }
