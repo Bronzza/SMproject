@@ -80,10 +80,10 @@
                         </p:selectOneMenu>
 
                         <p:outputLabel value="Procedure NOMINAL cost"/>
-                        <p:inputText id="costProc" value="#{mainPage.localProcedure.cost}" required="true"/>
+                        <p:inputText id="costProc" value="#{mainPage.event.localVisit.procedure.cost}" required="true"/>
 
                         <p:outputLabel value="Procedure ACTUAL cost"/>
-                        <p:inputText id="costActualProc" value="#{mainPage.finalPriceVisit}" required="true"/>
+                        <p:inputText id="costActualProc" value="#{mainPage.event.localVisit.fanalPrice}" required="true"/>
 
                         <p:outputLabel value="Chose specialist:"/>
                         <p:selectOneMenu value="#{mainPage.selectedSpecialistId}">

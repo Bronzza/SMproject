@@ -88,11 +88,11 @@ public class MainPage implements Serializable {
         Optional<Procedure> existing = procedureRepository.findOne(Example.of(example));
         if (existing.isPresent()) {
             localProcedure = existing.get();
-
-//            event.getLocalVisit().getProcedure().setCost(localProcedure.getCost()-(localProcedure.getCost()*event.getLocalCustomer().getDiscount()/100));
-
+            event.getLocalVisit().setProcedure(localProcedure);
+            event.getLocalVisit().setFanalPrice(localProcedure.getCost()
+                    - (localProcedure.getCost() * event.getLocalCustomer().getDiscount() / 100));
         }
-        finalPriceVisit = localProcedure.getCost() - localProcedure.getCost() / 100 * event.getLocalCustomer().getDiscount();
+//        finalPriceVisit = localProcedure.getCost() - localProcedure.getCost() / 100 * event.getLocalCustomer().getDiscount();
     }
 
     public Date getDateVisit() {
@@ -175,7 +175,6 @@ public class MainPage implements Serializable {
         this.procedureRepository = procedureRepository;
     }
 
-
     @PostConstruct
     public void init() {
         eventModel = new DefaultScheduleModel();
@@ -183,14 +182,17 @@ public class MainPage implements Serializable {
         event.setStartDate(new Date());
         event.setEndDate(new Date());
         for (Visit visit : visitRepository.findAll()) {
-            event = new MyEvent(visit.getProcedure().toString());
+            event = new MyEvent();
+            event.setTitle(visit.getProcedure().getName());
             event.setStartDate(visit.getStart());
             event.setEndDate(visit.getStart());
-            event.getEndDate().setTime(visit.getStart().getTime() +
-                    visit.getProcedure().getDurationMin() * 60000);
+
+//            event.getEndDate().setTime(visit.getStart().getTime() +
+//                    visit.getProcedure().getDurationMin() * 60000);
             event.setLocalVisit(visit);
             event.setLocalCustomer(visit.getCustomer());
-
+            event.getLocalVisit().setFanalPrice(visit.getProcedure().getCost()
+                    - (visit.getProcedure().getCost() * event.getLocalCustomer().getDiscount() / 100));
             eventModel.addEvent(event);
         }
 
