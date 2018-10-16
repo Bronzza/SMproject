@@ -94,13 +94,13 @@
 
                         <p:outputLabel for="from" value="From:"/>
                         <p:calendar id="from" value="#{mainPage.event.startDate}"
-                                    pattern="dd/MM/yy HH:mm">
+                                    timeZone="GMT+2" pattern="dd/MM/yy HH:mm">
                         <p:ajax update=":form1:to" listener="#{mainPage.calculateEndDate}"/>
                         </p:calendar>
 
                         <p:outputLabel for="to" value="To:"/>
                         <p:calendar id="to" value="#{mainPage.event.endDate}"
-                                    pattern="dd/MM/yy HH:mm"/>
+                                    timeZone="GMT+2"  pattern="dd/MM/yy HH:mm"/>
 
                         <p:outputLabel for="allDay" value="All Day:"/>
                         <h:selectBooleanCheckbox id="allDay" value="#{mainPage.event.allDay}"/>
