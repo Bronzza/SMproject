@@ -17,18 +17,18 @@ import org.springframework.data.domain.Example;
 
 import javax.annotation.PostConstruct;
 import javax.faces.application.FacesMessage;
-import javax.faces.bean.ManagedProperty;
+
 import javax.faces.context.FacesContext;
 import javax.faces.event.ActionEvent;
 import javax.faces.model.SelectItem;
-import javax.faces.view.ViewScoped;
+
 import javax.inject.Inject;
 import javax.inject.Named;
 import java.io.Serializable;
 import java.util.*;
 
 @Named
-@ViewScoped
+
 public class MainPage implements Serializable {
     private ScheduleModel eventModel;
     private MyEvent event;
@@ -56,27 +56,19 @@ public class MainPage implements Serializable {
     private List<Specialist> specialistsForVisit;
 
     private String selectedSpecialistId;
-
-    //Customer
-    private Customer mainPageCustomer = new Customer();
-
-    public void setMainPageCustomer(Customer mainPageCustomer) {
-        this.mainPageCustomer = mainPageCustomer;
-    }
-
-    private String nameCustomer;
-    private String surNameCustomer;
-    private String telNumberCustomer;
-    private int discountCustomer;
+    private Customer newCustomer = new Customer();
 
     public void setLocalProcedure(Procedure localProcedure) {
         this.localProcedure = localProcedure;
     }
 
-    public Customer getMainPageCustomer() {
-        return mainPageCustomer;
+    public Customer getNewCustomer() {
+        return newCustomer;
     }
 
+    public void setNewCustomer(Customer newCustomer) {
+        this.newCustomer = newCustomer;
+    }
 
     public Procedure getLocalProcedure() {
         return localProcedure;
@@ -127,38 +119,6 @@ public class MainPage implements Serializable {
         this.specialistsForVisit = specialistsForVisit;
     }
 
-    public String getNameCustomer() {
-        return nameCustomer;
-    }
-
-    public void setNameCustomer(String nameCustomer) {
-        this.nameCustomer = nameCustomer;
-    }
-
-    public String getSurNameCustomer() {
-        return surNameCustomer;
-    }
-
-    public void setSurNameCustomer(String surNameCustomer) {
-        this.surNameCustomer = surNameCustomer;
-    }
-
-    public String getTelNumberCustomer() {
-        return telNumberCustomer;
-    }
-
-    public void setTelNumberCustomer(String telNumberCustomer) {
-        this.telNumberCustomer = telNumberCustomer;
-    }
-
-    public int getDiscountCustomer() {
-        return discountCustomer;
-    }
-
-    public void setDiscountCustomer(int discountCustomer) {
-        this.discountCustomer = discountCustomer;
-    }
-
     public VisitRepository getVisitRepository() {
         return visitRepository;
     }
@@ -187,8 +147,8 @@ public class MainPage implements Serializable {
             event.setStartDate(visit.getStart());
             event.setEndDate(visit.getStart());
 
-//            event.getEndDate().setTime(visit.getStart().getTime() +
-//                    visit.getProcedure().getDurationMin() * 60000);
+            event.getEndDate().setTime(visit.getStart().getTime() +
+                    visit.getProcedure().getDurationMin() * 60000);
             event.setLocalVisit(visit);
             event.setLocalCustomer(visit.getCustomer());
             event.getLocalVisit().setFanalPrice(visit.getProcedure().getCost()
@@ -319,18 +279,12 @@ public class MainPage implements Serializable {
         FacesContext.getCurrentInstance().addMessage(null, message);
     }
 
-    public void addClient(String surname) {
-        if (!isClientNew) {
-            Customer example = new Customer();
-            Optional<Customer> existing = customerRepository.findOne(Example.of(example));
-            if (existing.isPresent()) {
-                event.setLocalCustomer(existing.get());
-            } else return;
-        } else {
+    public void addClient() {
+        Optional<Customer> existing = customerRepository.findOne(Example.of(newCustomer));
+        if (existing.isPresent()) {
+            sendMessage("Customer is not new, please find it in base");
+        } else customerRepository.save(newCustomer);
 
-//            event.getLocalCustomer().setName(ge);
-            return;
-        }
     }
 
     public List<SelectItem> selectTitleProcedure() {
