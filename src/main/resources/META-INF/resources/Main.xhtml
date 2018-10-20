@@ -54,7 +54,7 @@
                 <p:dialog widgetVar="eventDialog" header="Event Details" showEffect="clip" hideEffect="explode">
                     <h:panelGrid id="eventDetails" columns="2">
                         <p:outputLabel value="Is client new:"/>
-                        <p:inputSwitch value="#{mainPage.clientNew}" offLabel="Yes" onLabel="No"
+                        <p:inputSwitch value="#{mainPage.clientNew}" offLabel="No" onLabel="Yes"
                                        style="font-size: small">
                             <p:ajax oncomplete="PF('addClientDialog').show();"/>
                         </p:inputSwitch>

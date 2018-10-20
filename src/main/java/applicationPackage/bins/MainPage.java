@@ -142,18 +142,23 @@ public class MainPage implements Serializable {
         event.setStartDate(new Date());
         event.setEndDate(new Date());
         for (Visit visit : visitRepository.findAll()) {
-            event = new MyEvent();
-            event.setTitle(visit.getProcedure().getName());
-            event.setStartDate(visit.getStart());
-            event.setEndDate(visit.getStart());
+            if ((visit.getPayed()==null || visit.getPayed() == false) && visit.getStart().before(new Date())){
+                //do nothing
+            }  else {
+                event = new MyEvent();
+                event.setTitle(visit.getProcedure().getName());
+                event.setStartDate(visit.getStart());
+                event.setEndDate(visit.getStart());
 
-            event.getEndDate().setTime(visit.getStart().getTime() +
-                    visit.getProcedure().getDurationMin() * 60000);
-            event.setLocalVisit(visit);
-            event.setLocalCustomer(visit.getCustomer());
-            event.getLocalVisit().setFanalPrice(visit.getProcedure().getCost()
-                    - (visit.getProcedure().getCost() * event.getLocalCustomer().getDiscount() / 100));
-            eventModel.addEvent(event);
+                event.getEndDate().setTime(visit.getStart().getTime() +
+                        visit.getProcedure().getDurationMin() * 60000);
+                Date date = event.getEndDate();
+                event.setLocalVisit(visit);
+                event.setLocalCustomer(visit.getCustomer());
+                event.getLocalVisit().setFanalPrice(visit.getProcedure().getCost()
+                        - (visit.getProcedure().getCost() * event.getLocalCustomer().getDiscount() / 100));
+                eventModel.addEvent(event);
+            }
         }
 
     }
@@ -207,15 +212,20 @@ public class MainPage implements Serializable {
     public void addEvent(ActionEvent actionEvent) {
         if (event.getId() == null) {
             eventModel.addEvent(event);
-            Procedure procedure = new Procedure();
-        } else
+        } else {
             eventModel.updateEvent(event);
-        event.getLocalVisit().setProcedure(localProcedure);
-        event.getLocalVisit().setFanalPrice(finalPriceVisit);
-        event.getLocalVisit().setStart(event.getStartDate());
-        event.getLocalVisit().getLocalSpecalist().add(findSpectById(selectedSpecialistId));
-        event.getLocalVisit().setCustomer(event.getLocalCustomer());
-        visitRepository.save(event.getLocalVisit());
+            visitRepository.save(event.getLocalVisit());
+            updateCustomerInBase();
+            return;
+        }
+        Visit visit = event.getLocalVisit();
+        visit.setProcedure(procedureRepository.findById(localProcedure.getId()).get());
+        visit.setFanalPrice(finalPriceVisit);
+        visit.setStart(event.getStartDate());
+        visit.getLocalSpecalist().add(findSpectById(selectedSpecialistId));
+        visit.setCustomer(event.getLocalCustomer());
+        visit.setPayed(event.getLocalVisit().getPayed());
+        visitRepository.save(visit);
         updateCustomerInBase();
 //        event.getLocalCustomer().getListVisit().add;
     }
