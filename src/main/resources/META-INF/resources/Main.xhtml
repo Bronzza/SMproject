@@ -67,6 +67,17 @@
                                     listener="#{mainPage.setCustomerInfo}"/>
                         </p:selectOneMenu>
 
+                        <p:outputLabel value="Client surname AUTOCOMPLETE:"/>
+                        <p:autoComplete  value="#{mainPage.event.localCustomer}"
+                                         completeMethod="#{mainPage.completeCustomer}"
+                                         itemLabel="#{mainPage.event.localCustomer.surName}"
+                                         itemValue="#{mainPage.mainPageCustomer}"
+                                         converter="customerConverter" dynamic="true" forceSelection="true">
+                            <p:ajax id="aj" listener="#{mainPage.setCustomerInfo()}"
+                                    update=":form1:Clientphone, :form1:Clientname"/>
+                        </p:autoComplete>
+
+
                         <p:outputLabel value="Client name:"/>
                         <p:inputText id="Clientname" value="#{mainPage.event.localCustomer.name}"/>
 

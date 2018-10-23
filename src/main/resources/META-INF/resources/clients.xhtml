@@ -1,0 +1,114 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+        "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:p="http://primefaces.org/ui">
+
+<h:head>
+    <title>Login page</title>
+</h:head>
+
+<h:body style="background-color: darkgray">
+
+    <p:layout style="min-width:400px; min-height: 630px">
+        <p:layoutUnit position="west" resizable="false" size="200" minSize="40"
+                      maxSize="300" header="Menu bar" collapsible="true">
+
+            <p:growl id="msgs" autoUpdate="true"/>
+            <div> Position west</div>
+
+        </p:layoutUnit>
+        <p:layoutUnit position="north" resizable="false" collapsible="true" minSize="100" header="Info panel">
+            <div>Some information</div>
+        </p:layoutUnit>
+
+        <p:layoutUnit position="center" header="Logining to Application">
+            <h:form id="form1">
+                <p:growl id="messages" showDetail="true"/>
+                <h:panelGrid columns="4" style="margin:10px 0">
+                    <p:outputLabel for="template" value="Chose client info columes:" style="font-weight:bold"/>
+                    <!--<p:inputText id="template" value="#{dtColumnsView.columnTemplate}" size="50"/>-->
+                    <p:selectManyButton id="template" value="#{clientsPage.columKeys}">
+                        <f:selectItem itemLabel="Surname" itemValue="sur_name"/>
+                        <f:selectItem itemLabel="Name" itemValue="name"/>
+                        <f:selectItem itemLabel="E-mail" itemValue="email"/>
+                        <f:selectItem itemLabel="Deposit" itemValue="deposit"/>
+                        <f:selectItem itemLabel="Discount" itemValue="discount"/>
+                        <f:selectItem itemLabel="Phone number" itemValue="tel_number"/>
+                    </p:selectManyButton>
+                    <p:commandButton update="customerTable" actionListener="#{clientsPage.updateColumns}" value="Update"
+                                     process="@parent" icon="ui-icon-refresh"
+                                     oncomplete="PF('customerEditTable').clearFilters()"/>
+                </h:panelGrid>
+
+                <p:dataTable id="customerTable" var="customerTable" value="#{clientsPage.findAllCustomer()}" rows="15"
+                             editable="true"
+                             editMode="cell" widgetVar="customerEditTable" paginator="true"
+                             paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
+                             rowsPerPageTemplate="20,30,40">
+
+                    <p:ajax event="cellEdit" listener="#{clientsPage.onCellEdit}" update=":form1:messages"/>
+
+                    <!--<p:columns value="#{clientsPage.columns}" var="column" columnIndexVar="colIndex"-->
+                               <!--sortBy="#{customerTable[column.property]}" filterBy="#{customerTable[column.property]}">-->
+                        <!--&lt;!&ndash;<p:cellEditor>&ndash;&gt;-->
+                        <!--&lt;!&ndash;<f:facet name="output"><h:outputText value="#{customerTable.surName}"/></f:facet>&ndash;&gt;-->
+                        <!--&lt;!&ndash;<f:facet name="input"><p:inputText value="#{customerTable.surName}" style="width:100%"&ndash;&gt;-->
+                        <!--&lt;!&ndash;label="Surname"/></f:facet>&ndash;&gt;-->
+                        <!--<f:facet name="header">-->
+                            <!--<h:outputText value="#{column.header}"/>-->
+                        <!--</f:facet>-->
+                        <!--<h:outputText value="#{customerTable[column.property]}"/>-->
+                    <!--</p:columns>-->
+
+                    <p:column headerText="Surname">
+                    <p:cellEditor>
+                    <f:facet name="output"><h:outputText value="#{customerTable.surName}"/></f:facet>
+                    <f:facet name="input"><p:inputText value="#{customerTable.surName}" style="width:100%"
+                    label="Surname"/></f:facet>
+                    </p:cellEditor>
+                    <!--<h:outputText value="#{customerTable.surName}" />-->
+                    </p:column>
+
+                    <p:column headerText="Name">
+                    <h:outputText value="#{customerTable.name}"/>
+                    </p:column>
+
+                    <p:column headerText="Telephone number">
+                    <h:outputText value="#{customerTable.telNumber}"/>
+                    </p:column>
+
+                    <p:column headerText="Deposit">
+                    <h:outputText value="#{customerTable.deposit}"/>
+                    </p:column>
+
+                    <p:column headerText="Deposit">
+                    <h:outputText value="#{customerTable.deposit}"/>
+                    </p:column>
+
+                    <p:column headerText="Birth Day">
+                    <h:outputText value="#{customerTable.birthday}"  />
+                    </p:column>
+
+                    <p:column headerText="Save Changes">
+                    <p:commandButton value="Save" action="#{clientsPage}"/>
+                    </p:column>
+
+
+                    <f:facet name="paginatorTopLeft">
+                        <p:commandButton type="button" icon="fa fa-sync"/>
+                    </f:facet>
+
+                    <f:facet name="paginatorBottomRight">
+                        <p:commandButton type="button" icon="fa fa-cloud-upload"/>
+                    </f:facet>
+                </p:dataTable>
+            </h:form>
+        </p:layoutUnit>
+    </p:layout>
+</h:body>
+</html>
+

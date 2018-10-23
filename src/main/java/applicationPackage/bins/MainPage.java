@@ -46,6 +46,15 @@ public class MainPage implements Serializable {
     ProcedureRepository procedureRepository;
 
     private Boolean isClientNew;
+    private Customer mainPageCustomer = new Customer();
+
+    public Customer getMainPageCustomer() {
+        return mainPageCustomer;
+    }
+
+    public void setMainPageCustomer(Customer mainPageCustomer) {
+        this.mainPageCustomer = mainPageCustomer;
+    }
 
     //fields for creating Visit, update CustomerBase
     private Procedure localProcedure = new Procedure();
@@ -316,6 +325,7 @@ public class MainPage implements Serializable {
     }
 
     public List<SelectItem> selectSpecialist() {
+        selectedSpecialistId = null;
         List<SelectItem> list = new ArrayList<>();
         for (Specialist specialist : specialistRepository.findAll()) {
             list.add(new SelectItem(specialist.getId(), specialist.getName()));
