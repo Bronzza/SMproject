@@ -44,7 +44,12 @@ public class Specialist {
     public Specialist(String name) {
         this.name = name;
     }
-    public Specialist() {
 
+    public Specialist() {
+    }
+
+    @Override
+    public String toString() {
+        return name;
     }
 }

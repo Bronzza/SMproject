@@ -63,10 +63,6 @@ public class ClientsPage implements Serializable {
         return filteredCustomers;
     }
 
-    public void setFilteredCars(List<Customer> filteredCustomers) {
-        this.filteredCustomers = filteredCustomers;
-    }
-
     public void onCellEdit(CellEditEvent event) {
         Object oldValue = event.getOldValue();
         Object newValue = event.getNewValue();
@@ -151,6 +147,7 @@ public class ClientsPage implements Serializable {
 
     public List<Customer> findAllCustomer() {
         return customerRepository.findAll();
+
     }
 
     public List<Visit> findAllVisit() {
@@ -158,13 +155,12 @@ public class ClientsPage implements Serializable {
     }
 
     private void createDynamicColumns() {
-//        String[] columnKeys = columnTemplate.split(" ");
-        columns = new ArrayList<ColumnModel>();
+        columns = new ArrayList<>();
 
         for (String columnKey : columKeys) {
-            String key = columnKey.trim();
+//            String key = columnKey.trim();
 
-            if (VALID_COLUMN_KEYS.contains(key)) {
+            if (VALID_COLUMN_KEYS.contains(columnKey)) {
                 columns.add(new ColumnModel(columnKey.toUpperCase(), columnKey));
             }
         }

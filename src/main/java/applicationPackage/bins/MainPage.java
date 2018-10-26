@@ -5,10 +5,7 @@ import applicationPackage.Repositories.CustomerRepository;
 import applicationPackage.Repositories.ProcedureRepository;
 import applicationPackage.Repositories.SpecialistRepository;
 import applicationPackage.Repositories.VisitRepository;
-import applicationPackage.entitys.Customer;
-import applicationPackage.entitys.Procedure;
-import applicationPackage.entitys.Specialist;
-import applicationPackage.entitys.Visit;
+import applicationPackage.entitys.*;
 import org.primefaces.event.ScheduleEntryMoveEvent;
 import org.primefaces.event.ScheduleEntryResizeEvent;
 import org.primefaces.event.SelectEvent;
@@ -25,6 +22,8 @@ import javax.faces.model.SelectItem;
 import javax.inject.Inject;
 import javax.inject.Named;
 import java.io.Serializable;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.util.*;
 
 @Named
@@ -60,12 +59,20 @@ public class MainPage implements Serializable {
     private Procedure localProcedure = new Procedure();
 
     //Visit
-    private Date dateVisit;
     private int finalPriceVisit;
     private List<Specialist> specialistsForVisit;
 
     private String selectedSpecialistId;
     private Customer newCustomer = new Customer();
+    private Boolean isMan = false;
+
+    public Boolean getMan() {
+        return isMan;
+    }
+
+    public void setMan(Boolean man) {
+        isMan = man;
+    }
 
     public void setLocalProcedure(Procedure localProcedure) {
         this.localProcedure = localProcedure;
@@ -96,13 +103,6 @@ public class MainPage implements Serializable {
 //        finalPriceVisit = localProcedure.getCost() - localProcedure.getCost() / 100 * event.getLocalCustomer().getDiscount();
     }
 
-    public Date getDateVisit() {
-        return dateVisit;
-    }
-
-    public void setDateVisit(Date dateVisit) {
-        this.dateVisit = dateVisit;
-    }
 
     public int getFinalPriceVisit() {
         return finalPriceVisit;
@@ -151,17 +151,16 @@ public class MainPage implements Serializable {
         event.setStartDate(new Date());
         event.setEndDate(new Date());
         for (Visit visit : visitRepository.findAll()) {
-            if ((visit.getPayed()==null || visit.getPayed() == false) && visit.getStart().before(new Date())){
+            if ((visit.getPayed()==null || !visit.getPayed()) && visit.getStart().before(yesterday())) {
                 //do nothing
             }  else {
                 event = new MyEvent();
                 event.setTitle(visit.getProcedure().getName());
                 event.setStartDate(visit.getStart());
-                event.setEndDate(visit.getStart());
-
-                event.getEndDate().setTime(visit.getStart().getTime() +
+                Date temp = new Date();
+                temp.setTime(visit.getStart().getTime() +
                         visit.getProcedure().getDurationMin() * 60000);
-                Date date = event.getEndDate();
+                event.setEndDate(temp);
                 event.setLocalVisit(visit);
                 event.setLocalCustomer(visit.getCustomer());
                 event.getLocalVisit().setFanalPrice(visit.getProcedure().getCost()
@@ -302,8 +301,9 @@ public class MainPage implements Serializable {
         Optional<Customer> existing = customerRepository.findOne(Example.of(newCustomer));
         if (existing.isPresent()) {
             sendMessage("Customer is not new, please find it in base");
-        } else customerRepository.save(newCustomer);
-
+        } else {
+            customerRepository.save(newCustomer);}
+        newCustomer = new Customer();
     }
 
     public List<SelectItem> selectTitleProcedure() {
@@ -382,6 +382,10 @@ public class MainPage implements Serializable {
         return filteredCustomer;
     }
 
+    public void setClientMan(){
+        newCustomer.setMan(isMan);
+
+    }
 
     public void calculateEndDate() {
         Calendar calendar = Calendar.getInstance();
@@ -391,6 +395,12 @@ public class MainPage implements Serializable {
     public String buttonClients() {
         sendMessage("Going to Clients page");
         return "goToLogin";
+    }
+
+    private Date yesterday() {
+        final Calendar cal = Calendar.getInstance();
+        cal.add(Calendar.DATE, -1);
+        return cal.getTime();
     }
 
     public void sendMessage(String message) {

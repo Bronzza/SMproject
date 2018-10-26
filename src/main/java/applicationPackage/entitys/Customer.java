@@ -21,7 +21,7 @@ public class Customer {
     private String surName;
     private String telNumber;
     private String email;
-    private int deposit;
+    private int deposit;// заменить на Интеджер
     private int discount;
 
     @OneToMany(mappedBy = "customer")
@@ -29,7 +29,7 @@ public class Customer {
 
     // info
     private Date birthday;
-    private boolean isMan; //мужчина тру
+    private Boolean isMan; //мужчина тру
 
     public String getLogin() {
         return login;
@@ -112,11 +112,11 @@ public class Customer {
         this.birthday = birthday;
     }
 
-    public boolean isMan() {
+    public Boolean isMan() {
         return isMan;
     }
 
-    public void setMan(boolean man) {
+    public void setMan(Boolean man) {
         isMan = man;
     }
 
@@ -136,4 +136,5 @@ public class Customer {
     public String giveName(){
         return name;
     }
+
 }

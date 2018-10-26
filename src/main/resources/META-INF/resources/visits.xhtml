@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+        "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:p="http://primefaces.org/ui">
+
+<h:head>
+    <title>Visits page</title>
+</h:head>
+
+<h:body style="background-color: darkgray">
+
+    <p:layout style="min-width:400px; min-height: 630px">
+        <p:layoutUnit position="west" resizable="false" size="200" minSize="40"
+                      maxSize="300" header="Menu bar" collapsible="true">
+
+            <p:growl id="msgs" autoUpdate="true"/>
+            <div> Position west</div>
+
+        </p:layoutUnit>
+        <p:layoutUnit position="north" resizable="false" collapsible="true" minSize="100" header="Info panel">
+            <div>Some information</div>
+        </p:layoutUnit>
+
+        <p:layoutUnit position="center" header="Logining to Application">
+            <h:form id="form1">
+                <p:growl id="messages" showDetail="true"/>
+                <h:panelGrid columns="4" style="margin:10px 0">
+                    <p:outputLabel for="template" value="Chose your colums" style="font-weight:bold"/>
+                    <p:selectManyButton id="template" value="#{visitsPage.columnKeys}">
+                        <f:selectItem itemLabel="Customer" itemValue="customer"/>
+                        <f:selectItem itemLabel="Visits date" itemValue="start"/>
+                        <f:selectItem itemLabel="Procedure" itemValue="procedure"/>
+                        <f:selectItem itemLabel="Specialist" itemValue="localSpecalist"/>
+                        <f:selectItem itemLabel="Price" itemValue="fanalPrice"/>
+                    </p:selectManyButton>
+
+                    <p:commandButton update="visits" actionListener="#{visitsPage.updateColumns}"
+                                     value="Update" process="@parent" icon="ui-icon-refresh"
+                                     oncomplete="PF('visitsTable').clearFilters()"/>
+                </h:panelGrid>
+
+                <p:dataTable id="visits" var="visitk" value="#{visitsPage.visitList}" widgetVar="visitsTable"
+                             filteredValue="#{visitsPage.filteredVisits}">
+                    <p:columns value="#{visitsPage.columns}" var="column" columnIndexVar="colIndex"
+                               sortBy="#{visitk[column.property]}" filterBy="#{visitk[column.property]}">
+                        <f:facet name="header">
+                            <h:outputText value="#{column.header}" />
+                        </f:facet>
+                        <h:outputText value="#{visitk[column.property]}" />
+                    </p:columns>
+                </p:dataTable>
+
+
+            </h:form>
+        </p:layoutUnit>
+    </p:layout>
+</h:body>
+</html>
+

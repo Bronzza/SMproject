@@ -39,62 +39,60 @@
                         <f:selectItem itemLabel="Discount" itemValue="discount"/>
                         <f:selectItem itemLabel="Phone number" itemValue="tel_number"/>
                     </p:selectManyButton>
-                    <p:commandButton update="customerTable" actionListener="#{clientsPage.updateColumns}" value="Update"
+                    <p:commandButton update="customTable" actionListener="#{clientsPage.updateColumns}" value="Update"
                                      process="@parent" icon="ui-icon-refresh"
                                      oncomplete="PF('customerEditTable').clearFilters()"/>
                 </h:panelGrid>
 
-                <p:dataTable id="customerTable" var="customerTable" value="#{clientsPage.findAllCustomer()}" rows="15"
-                             editable="true"
+                <p:dataTable id="customTable" var="customerTable" value="#{clientsPage.findAllCustomer()}" rows="15"
+                             editable="true" filteredValue="#{clientsPage.fileterdCustomers}"
                              editMode="cell" widgetVar="customerEditTable" paginator="true"
                              paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
                              rowsPerPageTemplate="20,30,40">
 
                     <p:ajax event="cellEdit" listener="#{clientsPage.onCellEdit}" update=":form1:messages"/>
 
-                    <!--<p:columns value="#{clientsPage.columns}" var="column" columnIndexVar="colIndex"-->
-                               <!--sortBy="#{customerTable[column.property]}" filterBy="#{customerTable[column.property]}">-->
-                        <!--&lt;!&ndash;<p:cellEditor>&ndash;&gt;-->
-                        <!--&lt;!&ndash;<f:facet name="output"><h:outputText value="#{customerTable.surName}"/></f:facet>&ndash;&gt;-->
-                        <!--&lt;!&ndash;<f:facet name="input"><p:inputText value="#{customerTable.surName}" style="width:100%"&ndash;&gt;-->
-                        <!--&lt;!&ndash;label="Surname"/></f:facet>&ndash;&gt;-->
-                        <!--<f:facet name="header">-->
-                            <!--<h:outputText value="#{column.header}"/>-->
-                        <!--</f:facet>-->
-                        <!--<h:outputText value="#{customerTable[column.property]}"/>-->
-                    <!--</p:columns>-->
-
                     <p:column headerText="Surname">
-                    <p:cellEditor>
-                    <f:facet name="output"><h:outputText value="#{customerTable.surName}"/></f:facet>
-                    <f:facet name="input"><p:inputText value="#{customerTable.surName}" style="width:100%"
-                    label="Surname"/></f:facet>
-                    </p:cellEditor>
-                    <!--<h:outputText value="#{customerTable.surName}" />-->
+                        <p:cellEditor>
+                            <f:facet name="output"><h:outputText value="#{customerTable.surName}"/></f:facet>
+                            <f:facet name="input"><p:inputText value="#{customerTable.surName}" style="width:100%"
+                                                               label="Surname"/></f:facet>
+                        </p:cellEditor>
+                        <!--<h:outputText value="#{customerTable.surName}" />-->
                     </p:column>
 
                     <p:column headerText="Name">
-                    <h:outputText value="#{customerTable.name}"/>
+                        <p:cellEditor>
+                            <f:facet name="output"><h:outputText value="#{customerTable.name}"/></f:facet>
+                            <f:facet name="input"><p:inputText value="#{customerTable.name}" style="width:100%"
+                                                               label="Name"/></f:facet>
+                        </p:cellEditor>
+                        <!--<h:outputText value="#{customerTable.name}"/>-->
                     </p:column>
 
                     <p:column headerText="Telephone number">
-                    <h:outputText value="#{customerTable.telNumber}"/>
+                        <p:cellEditor>
+                            <f:facet name="output"><h:outputText value="#{customerTable.telNumber}"/></f:facet>
+                            <f:facet name="input"><p:inputText value="#{customerTable.telNumber}" style="width:100%"
+                                                               label="TelNumber"/></f:facet>
+                        </p:cellEditor>
+                        <!--<h:outputText value="#{customerTable.telNumber}"/>-->
                     </p:column>
 
                     <p:column headerText="Deposit">
-                    <h:outputText value="#{customerTable.deposit}"/>
+                        <h:outputText value="#{customerTable.deposit}"/>
                     </p:column>
 
                     <p:column headerText="Deposit">
-                    <h:outputText value="#{customerTable.deposit}"/>
+                        <h:outputText value="#{customerTable.deposit}"/>
                     </p:column>
 
                     <p:column headerText="Birth Day">
-                    <h:outputText value="#{customerTable.birthday}"  />
+                        <h:outputText value="#{customerTable.birthday}"/>
                     </p:column>
 
                     <p:column headerText="Save Changes">
-                    <p:commandButton value="Save" action="#{clientsPage}"/>
+                        <p:commandButton value="Save" action="#{clientsPage}"/>
                     </p:column>
 
 

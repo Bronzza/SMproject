@@ -54,7 +54,7 @@
                 <p:dialog widgetVar="eventDialog" header="Event Details" showEffect="clip" hideEffect="explode">
                     <h:panelGrid id="eventDetails" columns="2">
                         <p:outputLabel value="Is client new:"/>
-                        <p:inputSwitch value="#{mainPage.clientNew}" offLabel="No" onLabel="Yes"
+                        <p:inputSwitch id="isNew" value="#{mainPage.clientNew}" offLabel="No" onLabel="Yes"
                                        style="font-size: small">
                             <p:ajax oncomplete="PF('addClientDialog').show();"/>
                         </p:inputSwitch>
@@ -143,9 +143,16 @@
                         <p:outputLabel value="Client's phone numb:"/>
                         <p:inputText id="NewClientPhone" value="#{mainPage.newCustomer.telNumber}"
                                      required="true"/>
+
+                        <p:outputLabel value="Man or Woman:"/>
+                        <p:inputSwitch value="#{mainPage.man}" offLabel="Woman" onLabel="Man"
+                                       style="font-size: small" >
+                            <p:ajax oncomplete="#{mainPage.setClientMan()}"/>
+                        </p:inputSwitch>
+
                         <p:commandButton type="reset" value="Reset"/>
                         <p:commandButton id="addNewClientButton" value="Save" actionListener="#{mainPage.addClient()}"
-                                         oncomplete="PF('addClientDialog').hide();" update=":form1:clientSurname"/>
+                                         oncomplete="PF('addClientDialog').hide(); PF('eventDialog').reset();" update=":form1:clientSurname, :form1:isNew"/>
                     </h:panelGrid>
                 </p:dialog>
             </h:form>

@@ -52,4 +52,9 @@ public class Procedure {
     public void setSpecialistRequired(Integer specialistRequired) {
         this.specialistRequired = specialistRequired;
     }
+
+    @Override
+    public String toString() {
+        return name/*+"\n"+durationMin/60+"hours"*/;
+    }
 }

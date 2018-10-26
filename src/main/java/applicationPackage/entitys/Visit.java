@@ -29,6 +29,7 @@ public class Visit {
 
     // geters and setters
 
+
     public Customer getCustomer() {
         return customer;
     }
@@ -84,4 +85,5 @@ public class Visit {
     public void setPayed(Boolean payed) {
         isPayed = payed;
     }
+
 }

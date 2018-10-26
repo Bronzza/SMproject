@@ -15,12 +15,14 @@ import javax.inject.Named;
 
 import java.io.Serializable;
 import java.util.Date;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 import static applicationPackage.Enums.AccessRights.VIEWER;
 
 @Named
 @ViewScoped
-public class RegistrationPage implements Serializable{
+public class RegistrationPage implements Serializable {
     private String loginRegistration;
     private String passwordRegistration;
     private AccessRights accessRights = VIEWER;
@@ -31,8 +33,8 @@ public class RegistrationPage implements Serializable{
     @Inject
     UsersRepository ur;
 
-    private String Name;
-    private String SurName;
+    private String name;
+    private String surName;
     private String emailRegistration;
     private String telNumberRegistration;
     private Date birthdayRegistration;
@@ -104,44 +106,59 @@ public class RegistrationPage implements Serializable{
     }
 
     public String getName() {
-        return Name;
+        return name;
     }
 
     public void setName(String name) {
-        Name = name;
+        this.name = name;
     }
 
     public String getSurName() {
-        return SurName;
+        return surName;
     }
 
     public void setSurName(String surName) {
-        SurName = surName;
+        this.surName = surName;
     }
 
     public String saveRegistrationInfo() {
-        User user = new User();
-        Customer customerTemp = new Customer();
-        customerTemp.setLogin(getLoginRegistration());
-        customerTemp.setPassword(getPasswordRegistration());
-        customerTemp.setName(getName());
-        customerTemp.setSurName(getSurName());
-        customerTemp.setTelNumber(getTelNumberRegistration());
-        customerTemp.setEmail(getEmailRegistration());
-        customerTemp.setBirthday(getBirthdayRegistration());
-        customerTemp.setMan(isManReg());
-        cr.save(customerTemp);
-        user.setLogin(getLoginRegistration());
-        user.setPassword(getPasswordRegistration());
-        user.setBirthday(getBirthdayRegistration());
-        user.seteMail(getEmailRegistration());
-        user.setMan(isManReg());
-        user.setName(getName());
-        user.setSurName(getSurName());
-        ur.save(user);
-        sendMessage("Going to Login Page");
-        return "goToLogin";
+        String emailPattern = "^\\w+([.\\w]+)*\\w@\\w((.\\w)*\\w+)*\\.\\D{2,3}$";
+        Pattern pattern = Pattern.compile(emailPattern);
+        Matcher matcher = pattern.matcher(emailRegistration);
+        if (!matcher.matches()){
 
+//          та же проверка только ручками
+//        int sobaka = emailRegistration.indexOf('@');
+//        int dot = emailRegistration.lastIndexOf('.');
+//        Pattern pattern = Pattern.compile("\\D*");
+//        Matcher matcher = pattern.matcher(emailRegistration.substring(dot+1, emailRegistration.length()-1));
+//        if (sobaka != emailRegistration.lastIndexOf('@') || (dot - sobaka <= 2) || emailRegistration.length()
+//                - dot < 3 || emailRegistration.length() - dot > 4 || !matcher.matches() ) {
+                sendMessage("Incorrect e-mail adress");
+                return "";
+            }             else {
+            User user = new User();
+            Customer customerTemp = new Customer();
+            customerTemp.setLogin(loginRegistration);
+            customerTemp.setPassword(passwordRegistration);
+            customerTemp.setName(name);
+            customerTemp.setSurName(surName);
+            customerTemp.setTelNumber(telNumberRegistration);
+            customerTemp.setEmail(emailRegistration);
+            customerTemp.setBirthday(birthdayRegistration);
+            customerTemp.setMan(isManReg);
+            cr.save(customerTemp);
+//        user.setLogin(getLoginRegistration());
+//        user.setPassword(getPasswordRegistration());
+//        user.setBirthday(getBirthdayRegistration());
+//        user.seteMail(getEmailRegistration());
+//        user.setMan(isManReg());
+//        user.setName(getName());
+//        user.setSurName(getSurName());
+//        ur.save(user);
+            sendMessage("Going to Login Page");
+            return "goToLogin";
+        }
     }
 
     public void sendMessage(String message) {
