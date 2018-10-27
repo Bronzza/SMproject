@@ -133,8 +133,4 @@ public class Customer {
         return  surName+" "+ name;
     }
 
-    public String giveName(){
-        return name;
-    }
-
 }

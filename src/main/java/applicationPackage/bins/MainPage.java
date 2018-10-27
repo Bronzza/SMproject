@@ -15,7 +15,9 @@ import org.springframework.data.domain.Example;
 import javax.annotation.PostConstruct;
 import javax.faces.application.FacesMessage;
 
+import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
+import javax.faces.convert.Converter;
 import javax.faces.event.ActionEvent;
 import javax.faces.model.SelectItem;
 
@@ -103,7 +105,6 @@ public class MainPage implements Serializable {
 //        finalPriceVisit = localProcedure.getCost() - localProcedure.getCost() / 100 * event.getLocalCustomer().getDiscount();
     }
 
-
     public int getFinalPriceVisit() {
         return finalPriceVisit;
     }
@@ -177,14 +178,6 @@ public class MainPage implements Serializable {
 
     public ScheduleModel getEventModel() {
         return eventModel;
-    }
-
-    public Date getRandomDate(Date base) {
-        Calendar date = Calendar.getInstance();
-        date.setTime(base);
-        date.add(Calendar.DATE, ((int) (Math.random() * 30)) + 1);    //set random day of month
-
-        return date.getTime();
     }
 
     public Date getInitialDate() {

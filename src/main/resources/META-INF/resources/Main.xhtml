@@ -18,11 +18,11 @@
                       maxSize="300" header="Menu bar" collapsible="true">
             <p:growl id="msgs" autoUpdate="true"/>
             <h:form>
-            <div> Position west</div>
-            <p:panelGrid columns="1">
-                <p:commandButton style="size: auto" value="Clients" id="nonAjax" update="msgs"
-                                 action="#{mainPage.buttonClients()}" ajax="false" />
-            </p:panelGrid>
+                <div> Position west</div>
+                <p:panelGrid columns="1">
+                    <p:commandButton style="size: auto" value="Clients" id="nonAjax" update="msgs"
+                                     action="#{mainPage.buttonClients()}" ajax="false"/>
+                </p:panelGrid>
             </h:form>
         </p:layoutUnit>
         <p:layoutUnit position="north" resizable="false" collapsible="true" minSize="100" header="Info panel">
@@ -55,20 +55,28 @@
                     <h:panelGrid id="eventDetails" columns="2">
                         <p:outputLabel value="Is client new:"/>
                         <p:inputSwitch id="isNew" value="#{mainPage.clientNew}" offLabel="No" onLabel="Yes"
-                                       style="font-size: small" >
+                                       style="font-size: small">
                             <p:ajax oncomplete="PF('addClientDialog').show(); " update=":form1:clientSurname"/>
                         </p:inputSwitch>
 
                         <p:outputLabel value="Client surname:"/>
-                        <p:selectOneMenu  id="clientSurname" value="#{mainPage.event.localCustomer.surName}">
+                        <p:selectOneMenu id="clientSurname" value="#{mainPage.event.localCustomer.surName}">
                             <f:selectItem itemLabel="Select One" itemValue=""/>
                             <f:selectItems value="#{mainPage.selectCustomer()}"/>
                             <p:ajax update=":form1:Clientphone, :form1:Clientname"
                                     listener="#{mainPage.setCustomerInfo}"/>
                         </p:selectOneMenu>
 
+                        <p:outputLabel value="Client surname AUTOCOMPLETE:"/>
+                        <p:autoComplete value="#{mainPage.mainPageCustomer}"
+                                        completeMethod="#{mainPage.completeCustomer}"
+                                        converter="#{customerConverter}" dynamic="true" forceSelection="true">
+                            <p:ajax id="aj" listener="#{mainPage.setCustomerInfo()}"
+                                    update=":form1:Clientphone, :form1:Clientname"/>
+                        </p:autoComplete>
+
                         <p:outputLabel value="Client name:"/>
-                        <p:inputText id="Clientname" value="#{mainPage.event.localCustomer.name}"/>
+                        <p:inputText id="Clientname" value="#{mainPage.mainPageCustomer.name}"/>
 
                         <p:outputLabel value="Client's phone numb:"/>
                         <p:inputText id="Clientphone" value="#{mainPage.event.localCustomer.telNumber}"
@@ -78,14 +86,16 @@
                         <p:selectOneMenu value="#{mainPage.event.title}">
                             <f:selectItem itemLabel="Select One" itemValue=""/>
                             <f:selectItems value="#{mainPage.selectTitleProcedure()}"/>
-                            <p:ajax update=":form1:costProc, :form1:costActualProc" listener="#{mainPage.calculatePrise}"/>
+                            <p:ajax update=":form1:costProc, :form1:costActualProc"
+                                    listener="#{mainPage.calculatePrise}"/>
                         </p:selectOneMenu>
 
                         <p:outputLabel value="Procedure NOMINAL cost"/>
                         <p:inputText id="costProc" value="#{mainPage.event.localVisit.procedure.cost}" required="true"/>
 
                         <p:outputLabel value="Procedure ACTUAL cost"/>
-                        <p:inputText id="costActualProc" value="#{mainPage.event.localVisit.fanalPrice}" required="true"/>
+                        <p:inputText id="costActualProc" value="#{mainPage.event.localVisit.fanalPrice}"
+                                     required="true"/>
 
                         <p:outputLabel value="Chose specialist:"/>
                         <p:selectOneMenu value="#{mainPage.selectedSpecialistId}">
@@ -97,7 +107,7 @@
                         <p:outputLabel for="from" value="From:"/>
                         <p:calendar id="from" value="#{mainPage.event.startDate}"
                                     timeZone="GMT+2" pattern="dd/MM/yy HH:mm">
-                        <p:ajax update=":form1:to" listener="#{mainPage.calculateEndDate}"/>
+                            <p:ajax update=":form1:to" listener="#{mainPage.calculateEndDate}"/>
                         </p:calendar>
 
                         <p:outputLabel for="to" value="To:"/>
@@ -135,13 +145,14 @@
 
                         <p:outputLabel value="Man or Woman:"/>
                         <p:inputSwitch id="newSex" value="#{mainPage.man}" offLabel="Woman" onLabel="Man"
-                                       style="font-size: small" >
+                                       style="font-size: small">
                             <p:ajax oncomplete="#{mainPage.setClientMan()}"/>
                         </p:inputSwitch>
 
                         <p:commandButton type="reset" value="Reset" oncomplete="PF('addClientDialog').reset();"/>
                         <p:commandButton id="addNewClientButton" value="Save" actionListener="#{mainPage.addClient()}"
-                                         oncomplete="PF('addClientDialog').hide(); PF('addClientDialog').reset(); PF('myschedule').update();" update=":form1:eventDetails"/>
+                                         oncomplete="PF('addClientDialog').hide(); PF('addClientDialog').reset(); PF('myschedule').update();"
+                                         update=":form1:eventDetails"/>
                     </h:panelGrid>
                 </p:dialog>
             </h:form>
