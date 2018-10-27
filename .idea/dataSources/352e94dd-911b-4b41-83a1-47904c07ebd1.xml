@@ -1122,13 +1122,11 @@
     <column id="281" parent="274" name="deposit">
       <Position>3</Position>
       <DataType>int(11)|0</DataType>
-      <NotNull>1</NotNull>
       <ColumnKind>normal</ColumnKind>
     </column>
     <column id="282" parent="274" name="discount">
       <Position>4</Position>
       <DataType>int(11)|0</DataType>
-      <NotNull>1</NotNull>
       <ColumnKind>normal</ColumnKind>
     </column>
     <column id="283" parent="274" name="email">
@@ -1139,7 +1137,6 @@
     <column id="284" parent="274" name="is_man">
       <Position>6</Position>
       <DataType>bit(1)|0</DataType>
-      <NotNull>1</NotNull>
       <ColumnKind>normal</ColumnKind>
     </column>
     <column id="285" parent="274" name="login">
@@ -1321,39 +1318,44 @@
       <DataType>int(11)|0</DataType>
       <ColumnKind>normal</ColumnKind>
     </column>
-    <column id="319" parent="278" name="start">
+    <column id="319" parent="278" name="is_payed">
       <Position>3</Position>
+      <DataType>bit(1)|0</DataType>
+      <ColumnKind>normal</ColumnKind>
+    </column>
+    <column id="320" parent="278" name="start">
+      <Position>4</Position>
       <DataType>datetime(6)|0</DataType>
       <ColumnKind>normal</ColumnKind>
     </column>
-    <column id="320" parent="278" name="customer_id">
-      <Position>4</Position>
-      <DataType>bigint(20)|0</DataType>
-      <ColumnKind>normal</ColumnKind>
-    </column>
-    <column id="321" parent="278" name="procedure_id">
+    <column id="321" parent="278" name="customer_id">
       <Position>5</Position>
       <DataType>bigint(20)|0</DataType>
       <ColumnKind>normal</ColumnKind>
     </column>
-    <index id="322" parent="278" name="FKeppsqp936tyry29a33fe7spoe">
+    <column id="322" parent="278" name="procedure_id">
+      <Position>6</Position>
+      <DataType>bigint(20)|0</DataType>
+      <ColumnKind>normal</ColumnKind>
+    </column>
+    <index id="323" parent="278" name="FKeppsqp936tyry29a33fe7spoe">
       <ColNames>customer_id</ColNames>
     </index>
-    <index id="323" parent="278" name="FKgltsechx1g6l0i0nc4oxpqe60">
+    <index id="324" parent="278" name="FKgltsechx1g6l0i0nc4oxpqe60">
       <ColNames>procedure_id</ColNames>
     </index>
-    <key id="324" parent="278" name="PRIMARY">
+    <key id="325" parent="278" name="PRIMARY">
       <NameSurrogate>1</NameSurrogate>
       <ColNames>id</ColNames>
       <Primary>1</Primary>
     </key>
-    <foreign-key id="325" parent="278" name="FKeppsqp936tyry29a33fe7spoe">
+    <foreign-key id="326" parent="278" name="FKeppsqp936tyry29a33fe7spoe">
       <ColNames>customer_id</ColNames>
       <RefSchemaName>sergeybase</RefSchemaName>
       <RefTableName>customer</RefTableName>
       <RefColNames>id</RefColNames>
     </foreign-key>
-    <foreign-key id="326" parent="278" name="FKgltsechx1g6l0i0nc4oxpqe60">
+    <foreign-key id="327" parent="278" name="FKgltsechx1g6l0i0nc4oxpqe60">
       <ColNames>procedure_id</ColNames>
       <RefSchemaName>sergeybase</RefSchemaName>
       <RefTableName>procedures</RefTableName>

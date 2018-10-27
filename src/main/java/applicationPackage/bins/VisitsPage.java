@@ -1,7 +1,10 @@
 package applicationPackage.bins;
 
+import applicationPackage.Repositories.CustomerRepository;
 import applicationPackage.Repositories.VisitRepository;
+import applicationPackage.entitys.Customer;
 import applicationPackage.entitys.Visit;
+import org.springframework.data.domain.Example;
 
 import javax.annotation.PostConstruct;
 import javax.faces.component.UIComponent;
@@ -20,6 +23,9 @@ public class VisitsPage implements Serializable {
 
     @Inject
     VisitRepository visitRepository;
+
+    @Inject
+    CustomerRepository customerRepository;
 
     public VisitRepository getVisitRepository() {
         return visitRepository;
@@ -94,6 +100,7 @@ public class VisitsPage implements Serializable {
                     case ("fanalPrice"):
                         String correctHeader = "Final Price";
                         columns.add(new ColumnModel(correctHeader, columnKey));
+
                         break;
                     case ("start"):
                         correctHeader = "Start time";
@@ -102,22 +109,22 @@ public class VisitsPage implements Serializable {
                     case ("customer"):
                         correctHeader = "Customer's Surname";
                         columns.add(new ColumnModel(correctHeader, columnKey));
+
+                        Customer exampleCustomer = new Customer();
+                        exampleCustomer.setSurName(columnKey);
+
                         break;
                     case ("procedure"):
                         correctHeader = "Procedure";
                         columns.add(new ColumnModel(correctHeader, columnKey));
                         break;
+                    case ("localSpecalist"):
+                            correctHeader = "Procedure";
+                        columns.add(new ColumnModel(correctHeader, columnKey));
+                        break;
                     default:
                         columns.add(new ColumnModel(columnKey, columnKey));
                 }
-//                columns.add(new ColumnModel(columnKey.toUpperCase(), columnKey));
-//                if (columnKey.equals("fanalPrice")) {
-//                    String correctHeader = "Final Price";
-//                    columns.add(new ColumnModel(correctHeader, columnKey));
-//                } else if (columnKey.equals("localSpecalist")) {
-//
-//                } else
-//                columns.add(new ColumnModel(columnKey, columnKey));
             }
         }
     }

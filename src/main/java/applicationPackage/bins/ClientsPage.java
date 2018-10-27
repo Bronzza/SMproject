@@ -109,13 +109,13 @@ public class ClientsPage implements Serializable {
 
             }
             try {
-                Date value = (Date) oldValue;
+                String value = (String) oldValue;
                 Customer example = new Customer();
                 example.setBirthday(value);
                 Optional<Customer> optionalCustomer = customerRepository.findOne(Example.of(example));
                 if (optionalCustomer.isPresent()) {
                     Customer updatedCustomer = optionalCustomer.get();
-                    updatedCustomer.setBirthday((Date) newValue);
+                    updatedCustomer.setBirthday((String) newValue);
                     customerRepository.save(updatedCustomer);
                 }
             } catch (ClassCastException exc) {

@@ -235,6 +235,7 @@ public class MainPage implements Serializable {
         visit.setPayed(event.getLocalVisit().getPayed());
         visitRepository.save(visit);
         updateCustomerInBase();
+        isClientNew = false;
 //        event.getLocalCustomer().getListVisit().add;
     }
 //
@@ -304,6 +305,9 @@ public class MainPage implements Serializable {
         } else {
             customerRepository.save(newCustomer);}
         newCustomer = new Customer();
+        isMan = false;
+        isClientNew = false;
+        event.setLocalCustomer(newCustomer);
     }
 
     public List<SelectItem> selectTitleProcedure() {
@@ -384,7 +388,6 @@ public class MainPage implements Serializable {
 
     public void setClientMan(){
         newCustomer.setMan(isMan);
-
     }
 
     public void calculateEndDate() {
@@ -408,4 +411,5 @@ public class MainPage implements Serializable {
         context.addMessage(null, new FacesMessage(message, null));
 //        context.addMessage(null, new FacesMessage("Second Message", "Additional Message Detail"));
     }
+
 }

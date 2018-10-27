@@ -14,7 +14,9 @@ import javax.inject.Named;
 
 
 import java.io.Serializable;
+import java.util.Calendar;
 import java.util.Date;
+import java.util.StringTokenizer;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -23,9 +25,10 @@ import static applicationPackage.Enums.AccessRights.VIEWER;
 @Named
 @ViewScoped
 public class RegistrationPage implements Serializable {
-    private String loginRegistration;
-    private String passwordRegistration;
+
     private AccessRights accessRights = VIEWER;
+
+    String passwordRegistration;
 
     @Inject
     CustomerRepository cr;
@@ -37,24 +40,9 @@ public class RegistrationPage implements Serializable {
     private String surName;
     private String emailRegistration;
     private String telNumberRegistration;
-    private Date birthdayRegistration;
+    private String birthdayRegistration;
     private boolean isManReg;
-
-    public String getLoginRegistration() {
-        return loginRegistration;
-    }
-
-    public void setLoginRegistration(String loginRegistration) {
-        this.loginRegistration = loginRegistration;
-    }
-
-    public String getPasswordRegistration() {
-        return passwordRegistration;
-    }
-
-    public void setPasswordRegistration(String passwordRegistration) {
-        this.passwordRegistration = passwordRegistration;
-    }
+    private String notesField;
 
     public AccessRights getAccessRights() {
         return accessRights;
@@ -89,11 +77,11 @@ public class RegistrationPage implements Serializable {
         this.cr = cr;
     }
 
-    public Date getBirthdayRegistration() {
+    public String getBirthdayRegistration() {
         return birthdayRegistration;
     }
 
-    public void setBirthdayRegistration(Date birthdayRegistration) {
+    public void setBirthdayRegistration(String birthdayRegistration) {
         this.birthdayRegistration = birthdayRegistration;
     }
 
@@ -122,24 +110,15 @@ public class RegistrationPage implements Serializable {
     }
 
     public String saveRegistrationInfo() {
-        String emailPattern = "^\\w+([.\\w]+)*\\w@\\w((.\\w)*\\w+)*\\.\\D{2,3}$";
-        Pattern pattern = Pattern.compile(emailPattern);
-        Matcher matcher = pattern.matcher(emailRegistration);
-        if (!matcher.matches()){
-
-//          та же проверка только ручками
-//        int sobaka = emailRegistration.indexOf('@');
-//        int dot = emailRegistration.lastIndexOf('.');
-//        Pattern pattern = Pattern.compile("\\D*");
-//        Matcher matcher = pattern.matcher(emailRegistration.substring(dot+1, emailRegistration.length()-1));
-//        if (sobaka != emailRegistration.lastIndexOf('@') || (dot - sobaka <= 2) || emailRegistration.length()
-//                - dot < 3 || emailRegistration.length() - dot > 4 || !matcher.matches() ) {
-                sendMessage("Incorrect e-mail adress");
-                return "";
-            }             else {
+        if (!checkEmail(emailRegistration)) {
+            sendMessage("Incorrect e-mail adress");
+            return "";
+        } else if (!checkDate(birthdayRegistration)) {
+            sendMessage("Incorrect birthday date ");
+            return "";
+        } else {
             User user = new User();
             Customer customerTemp = new Customer();
-            customerTemp.setLogin(loginRegistration);
             customerTemp.setPassword(passwordRegistration);
             customerTemp.setName(name);
             customerTemp.setSurName(surName);
@@ -148,17 +127,94 @@ public class RegistrationPage implements Serializable {
             customerTemp.setBirthday(birthdayRegistration);
             customerTemp.setMan(isManReg);
             cr.save(customerTemp);
-//        user.setLogin(getLoginRegistration());
-//        user.setPassword(getPasswordRegistration());
-//        user.setBirthday(getBirthdayRegistration());
-//        user.seteMail(getEmailRegistration());
-//        user.setMan(isManReg());
-//        user.setName(getName());
-//        user.setSurName(getSurName());
-//        ur.save(user);
-            sendMessage("Going to Login Page");
-            return "goToLogin";
+
+            user.setPassword(passwordRegistration);
+            user.setBirthday(birthdayRegistration);
+            user.seteMail(emailRegistration);
+            user.setMan(isManReg);
+            user.setName(name);
+            user.setSurName(surName);
+            ur.save(user);
+            sendMessage("Your data is saved");
+            return "";
         }
+    }
+
+    public String getPasswordRegistration() {
+        return passwordRegistration;
+    }
+
+    public void setPasswordRegistration(String passwordRegistration) {
+        this.passwordRegistration = passwordRegistration;
+    }
+
+    public String getNotesField() {
+        return notesField;
+    }
+
+    public void setNotesField(String notesField) {
+        this.notesField = notesField;
+    }
+
+    public boolean checkDate(String date) {
+        StringTokenizer st = new StringTokenizer(date, "/");
+        String[] delimBrithDay = new String[3];
+        int i = 0;
+        while (st.hasMoreElements()) {
+            delimBrithDay[i] = (String) st.nextElement();
+            i++;
+        }
+        boolean isDate = false;
+        Calendar calendar = Calendar.getInstance();
+        int year = Calendar.getInstance().get(Calendar.YEAR);
+        try {
+            if (Integer.parseInt(delimBrithDay[1]) > 0 && Integer.parseInt(delimBrithDay[1]) <= 12 &&
+                    Integer.parseInt(delimBrithDay[2]) > 1920 &&
+                    (year - Integer.parseInt(delimBrithDay[2]) > 5)) {
+                switch (Integer.parseInt(delimBrithDay[1])) {
+                    case 1:
+                    case 3:
+                    case 5:
+                    case 7:
+                    case 8:
+                    case 10:
+                    case 12:
+                        if (Integer.parseInt(delimBrithDay[0]) < 0 && Integer.parseInt(delimBrithDay[0]) >= 31)
+                            break;
+                    case 4:
+                    case 6:
+                    case 9:
+                    case 11:
+                        if (Integer.parseInt(delimBrithDay[0]) < 0 && Integer.parseInt(delimBrithDay[0]) >= 30)
+                            break;
+                    case 2:
+                        if (Integer.parseInt(delimBrithDay[0]) < 0 && Integer.parseInt(delimBrithDay[0]) >= 29)
+                            break;
+                    default:
+                        isDate = true;
+                        break;
+                }
+            }
+        } catch (ClassCastException e) {
+            sendMessage("incorrect input of Date");
+        }
+        return isDate;
+    }
+
+    public boolean checkEmail (String email){
+         boolean checkEmail=false;
+        String emailPattern = "^\\w+([.\\w]+)*\\w@\\w((.\\w)*\\w+)*\\.\\D{2,3}$";
+        Pattern pattern = Pattern.compile(emailPattern);
+        Matcher matcher = pattern.matcher(emailRegistration);
+        if (matcher.matches()) checkEmail=true;
+            return checkEmail;
+        //          та же проверка только ручками
+//        int sobaka = emailRegistration.indexOf('@');
+//        int dot = emailRegistration.lastIndexOf('.');
+//        Pattern pattern = Pattern.compile("\\D*");
+//        Matcher matcher = pattern.matcher(emailRegistration.substring(dot+1, emailRegistration.length()-1));
+//        if (sobaka != emailRegistration.lastIndexOf('@') || (dot - sobaka <= 2) || emailRegistration.length()
+//                - dot < 3 || emailRegistration.length() - dot > 4 || !matcher.matches() ) {
     }
 
     public void sendMessage(String message) {

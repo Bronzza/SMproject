@@ -51,12 +51,12 @@
                     </p:schedule>
                 </h:panelGrid>
 
-                <p:dialog widgetVar="eventDialog" header="Event Details" showEffect="clip" hideEffect="explode">
+                <p:dialog widgetVar="eventDialog" header="Event Details" showEffect="clip" hideEffect="blind">
                     <h:panelGrid id="eventDetails" columns="2">
                         <p:outputLabel value="Is client new:"/>
                         <p:inputSwitch id="isNew" value="#{mainPage.clientNew}" offLabel="No" onLabel="Yes"
-                                       style="font-size: small">
-                            <p:ajax oncomplete="PF('addClientDialog').show();"/>
+                                       style="font-size: small" >
+                            <p:ajax oncomplete="PF('addClientDialog').show(); " update=":form1:clientSurname"/>
                         </p:inputSwitch>
 
                         <p:outputLabel value="Client surname:"/>
@@ -66,17 +66,6 @@
                             <p:ajax update=":form1:Clientphone, :form1:Clientname"
                                     listener="#{mainPage.setCustomerInfo}"/>
                         </p:selectOneMenu>
-
-                        <p:outputLabel value="Client surname AUTOCOMPLETE:"/>
-                        <p:autoComplete  value="#{mainPage.event.localCustomer}"
-                                         completeMethod="#{mainPage.completeCustomer}"
-                                         itemLabel="#{mainPage.event.localCustomer.surName}"
-                                         itemValue="#{mainPage.mainPageCustomer}"
-                                         converter="customerConverter" dynamic="true" forceSelection="true">
-                            <p:ajax id="aj" listener="#{mainPage.setCustomerInfo()}"
-                                    update=":form1:Clientphone, :form1:Clientname"/>
-                        </p:autoComplete>
-
 
                         <p:outputLabel value="Client name:"/>
                         <p:inputText id="Clientname" value="#{mainPage.event.localCustomer.name}"/>
@@ -122,16 +111,16 @@
                         <p:inputSwitch value="#{mainPage.event.localVisit.payed}" offLabel="No" onLabel="Yes"
                                        style="font-size: small"/>
 
-                        <p:commandButton type="reset" value="Reset"/>
+                        <p:commandButton type="reset" value="Reset" oncomplete="PF('eventDialog').reset();"/>
                         <p:commandButton id="addButton" value="Save" actionListener="#{mainPage.addEvent}"
-                                         oncomplete="PF('myschedule').update();PF('eventDialog').hide();"/>
+                                         oncomplete="PF('myschedule').update(); PF('eventDialog').hide();"/>
                     </h:panelGrid>
                 </p:dialog>
             </h:form>
 
             <h:form id="form2">
                 <p:dialog widgetVar="addClientDialog" header="Add new Client Details" showEffect="clip"
-                          hideEffect="clip">
+                          hideEffect="clip" closable="false">
                     <h:panelGrid id="AddClientGrid" columns="2">
 
                         <p:outputLabel value="Client Surname:"/>
@@ -145,14 +134,14 @@
                                      required="true"/>
 
                         <p:outputLabel value="Man or Woman:"/>
-                        <p:inputSwitch value="#{mainPage.man}" offLabel="Woman" onLabel="Man"
+                        <p:inputSwitch id="newSex" value="#{mainPage.man}" offLabel="Woman" onLabel="Man"
                                        style="font-size: small" >
                             <p:ajax oncomplete="#{mainPage.setClientMan()}"/>
                         </p:inputSwitch>
 
-                        <p:commandButton type="reset" value="Reset"/>
+                        <p:commandButton type="reset" value="Reset" oncomplete="PF('addClientDialog').reset();"/>
                         <p:commandButton id="addNewClientButton" value="Save" actionListener="#{mainPage.addClient()}"
-                                         oncomplete="PF('addClientDialog').hide(); PF('eventDialog').reset();" update=":form1:clientSurname, :form1:isNew"/>
+                                         oncomplete="PF('addClientDialog').hide(); PF('addClientDialog').reset(); PF('myschedule').update();" update=":form1:eventDetails"/>
                     </h:panelGrid>
                 </p:dialog>
             </h:form>

@@ -3,6 +3,7 @@ package applicationPackage.bins;
 import applicationPackage.Repositories.UsersRepository;
 import applicationPackage.entitys.User;
 import org.springframework.dao.DataIntegrityViolationException;
+import org.springframework.data.domain.Example;
 
 import javax.faces.application.FacesMessage;
 import javax.faces.context.FacesContext;
@@ -19,36 +20,24 @@ public class LoginPage implements Serializable{
 
     @Inject
     UsersRepository usersRepository;
-    @Column (/*unique = true,*/ nullable = false)
-    private String loginTemprorary;
 
+    @Column (unique = true, nullable = false)
+    private String emailTemprorary;
     private String passwordTemprorary;
 
     public void saveData (){
         User user = new User();
-        user.setLogin(loginTemprorary);
+        user.seteMail(emailTemprorary);
         user.setPassword(passwordTemprorary);
-        try{
-        usersRepository.save(user);}
-        catch (DataIntegrityViolationException e){
-            sendMessage("Login is already exists");
+        if(usersRepository.findOne(Example.of(user)).isPresent()) {
+            sendMessage("Email is already exists");
             return;
         }
     }
 
     public String login (){
-//        User example = new User();
-//        example.setLogin(loginTemprorary);
-//        example.setPassword(passwordTemprorary);
-//        List <User> list = usersRepository.findAll();
-//        for (User user:list) {
-//            if (example.equals(user)) {
-//                sendMessage("Hello");
-//                return "goToMain";
-//            }
-//        }
         User example = new User();
-        example.setLogin(loginTemprorary);
+        example.seteMail(emailTemprorary);
         example.setPassword(passwordTemprorary);
         List <User> list = usersRepository.findAll();
         for (User user:list) {
@@ -57,23 +46,16 @@ public class LoginPage implements Serializable{
                 return "goToMain";
             }
         }
-
-//       узнать почему не работает. не находит, existing is empty
-//        Optional<User> existing = usersRepository.findOne(Example.of(example));
-//        if (existing.isPresent()) {
-//            sendMessage("Hello");
-//            return "goToMain";
-//        }
         sendMessage("Your login or password is incorrent sir");
         return null;
     }
 
-    public String getLoginTemprorary() {
-        return loginTemprorary;
+    public String getEmailTemprorary() {
+        return emailTemprorary;
     }
 
-    public void setLoginTemprorary(String loginTemprorary) {
-        this.loginTemprorary = loginTemprorary;
+    public void setEmailTemprorary(String emailTemprorary) {
+        this.emailTemprorary = emailTemprorary;
     }
 
     public String getPasswordTemprorary() {

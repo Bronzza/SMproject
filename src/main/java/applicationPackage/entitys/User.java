@@ -21,7 +21,7 @@ public class User {
     }
 
     //    @Column(unique = true, nullable = false, length = 20)
-    private String login;
+
     private String password;
     private AccessRights accessRights;
     // info
@@ -29,7 +29,7 @@ public class User {
     private String surName;
     private String telNub;
     private boolean isMan;
-    private Date birthday; // возможно переделать Calendar
+    private String birthday;
     private String eMail;
 
 
@@ -58,26 +58,14 @@ public class User {
         if (this == o) return true;
         if (!(o instanceof User)) return false;
         User user = (User) o;
-        return Objects.equals(login, user.login) &&
+        return Objects.equals(eMail, user.eMail) &&
                 Objects.equals(password, user.password);
     }
 
     @Override
     public int hashCode() {
 
-        return Objects.hash(login, password);
-    }
-
-
-
-
-
-    public String getLogin() {
-        return login;
-    }
-
-    public void setLogin(String login) {
-        this.login = login;
+        return Objects.hash(eMail, password);
     }
 
     public String getPassword() {
@@ -120,11 +108,11 @@ public class User {
         isMan = man;
     }
 
-    public Date getBirthday() {
+    public String getBirthday() {
         return birthday;
     }
 
-    public void setBirthday(Date birthday) {
+    public void setBirthday(String birthday) {
         this.birthday = birthday;
     }
 

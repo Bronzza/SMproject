@@ -18,9 +18,9 @@
     <h:form>
 
         <h:panelGrid columns="2" cellpadding="10" cellspacing="2" style="margin-left: 5%">
-            <p:outputLabel value="Write your login" />
-            <p:inputText value="#{registrationPage.loginRegistration}" required="true" label="Login"/>
-            <p:outputLabel value="Write your password"/>
+
+            <p:outputLabel value="Enter your password. You may need it later"/>
+
             <p:password id="pswd1" value="#{registrationPage.passwordRegistration}" match="pswd2" required="true"
                         label="Password 1"/>
             <p:outputLabel value="Repeat your password"/>
@@ -30,15 +30,15 @@
             <p:spacer height="5px"/>
 
             <p:outputLabel value="Your first name"/>
-            <p:inputText value="#{registrationPage.name}"/>
+            <p:inputText value="#{registrationPage.name}" required="true"/>
             <p:outputLabel value="Your surname"/>
-            <p:inputText value="#{registrationPage.surName}"/>
-            <p:outputLabel value="Write you e-mail"/>
-            <p:inputText id="email" value="#{registrationPage.emailRegistration}"/>
+            <p:inputText value="#{registrationPage.surName}" required="true"/>
+            <p:outputLabel value="Write you e-mail. It will be you login"/>
+            <p:inputText id="email" value="#{registrationPage.emailRegistration}" required="true"/>
             <p:outputLabel value="Write your phone number"/>
-            <p:inputText id="phoneNumb" value="#{registrationPage.telNumberRegistration}" />
+            <p:inputMask id="phoneNumb" value="#{registrationPage.telNumberRegistration}" mask="(999) 999-99-99"/>
             <p:outputLabel value="Write date of your birthday"/>
-            <p:calendar value="#{registrationPage.birthdayRegistration}"/>
+            <p:inputMask value="#{registrationPage.birthdayRegistration}" mask="99/99/9999"/>
             <p:outputLabel value="Choose what is about you"/>
             <p:selectOneButton value="#{registrationPage.manReg}">
                 <f:selectItem itemLabel="Male" itemValue="true"/>
@@ -48,7 +48,7 @@
         <p:keyFilter id="numbers" for="phoneNumb" mask="num"/>
         <p:keyFilter id="emailFilter" for="email" mask="/[a-z0-9_\.\-@]/i"/>
         <hr/>
-            <p:commandButton value="Save data" style="margin-left: 15%" action="#{registrationPage.saveRegistrationInfo}"/>
+        <p:commandButton value="Save data" style="margin-left: 15%" action="#{registrationPage.saveRegistrationInfo}"/>
     </h:form>
 </h:body>
 </html>

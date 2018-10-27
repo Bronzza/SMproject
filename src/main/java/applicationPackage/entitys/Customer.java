@@ -21,14 +21,14 @@ public class Customer {
     private String surName;
     private String telNumber;
     private String email;
-    private int deposit;// заменить на Интеджер
-    private int discount;
+    private Integer deposit = 0;
+    private Integer discount = 0;
 
     @OneToMany(mappedBy = "customer")
     private List<Visit> listVisit;
 
     // info
-    private Date birthday;
+    private String birthday;
     private Boolean isMan; //мужчина тру
 
     public String getLogin() {
@@ -79,19 +79,19 @@ public class Customer {
         this.telNumber = telNumber;
     }
 
-    public int getDeposit() {
+    public Integer getDeposit() {
         return deposit;
     }
 
-    public void setDeposit(int deposit) {
+    public void setDeposit(Integer deposit) {
         this.deposit = deposit;
     }
 
-    public int getDiscount() {
+    public Integer getDiscount() {
         return discount;
     }
 
-    public void setDiscount(int discount) {
+    public void setDiscount(Integer discount) {
         this.discount = discount;
     }
 
@@ -104,11 +104,11 @@ public class Customer {
         this.listVisit = listVisit;
     }
 
-    public Date getBirthday() {
+    public String getBirthday() {
         return birthday;
     }
 
-    public void setBirthday(Date birthday) {
+    public void setBirthday(String birthday) {
         this.birthday = birthday;
     }
 
@@ -130,7 +130,7 @@ public class Customer {
 
     @Override
     public String toString() {
-        return  surName;
+        return  surName+" "+ name;
     }
 
     public String giveName(){
