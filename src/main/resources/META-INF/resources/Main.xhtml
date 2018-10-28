@@ -51,7 +51,7 @@
                     </p:schedule>
                 </h:panelGrid>
 
-                <p:dialog widgetVar="eventDialog" header="Event Details" showEffect="clip" hideEffect="blind">
+                <p:dialog widgetVar="eventDialog" header="Event Details" showEffect="clip" hideEffect="blind" dynamic="true">
                     <h:panelGrid id="eventDetails" columns="2">
                         <p:outputLabel value="Is client new:"/>
                         <p:inputSwitch id="isNew" value="#{mainPage.clientNew}" offLabel="No" onLabel="Yes"
@@ -76,7 +76,7 @@
                         </p:autoComplete>
 
                         <p:outputLabel value="Client name:"/>
-                        <p:inputText id="Clientname" value="#{mainPage.mainPageCustomer.name}"/>
+                        <p:inputText id="Clientname" value="#{mainPage.event.localCustomer.name}"/>
 
                         <p:outputLabel value="Client's phone numb:"/>
                         <p:inputText id="Clientphone" value="#{mainPage.event.localCustomer.telNumber}"
@@ -130,7 +130,7 @@
 
             <h:form id="form2">
                 <p:dialog widgetVar="addClientDialog" header="Add new Client Details" showEffect="clip"
-                          hideEffect="clip" closable="false">
+                          hideEffect="clip"  dynamic="true">
                     <h:panelGrid id="AddClientGrid" columns="2">
 
                         <p:outputLabel value="Client Surname:"/>
@@ -151,7 +151,7 @@
 
                         <p:commandButton type="reset" value="Reset" oncomplete="PF('addClientDialog').reset();"/>
                         <p:commandButton id="addNewClientButton" value="Save" actionListener="#{mainPage.addClient()}"
-                                         oncomplete="PF('addClientDialog').hide(); PF('addClientDialog').reset(); PF('myschedule').update();"
+                                         oncomplete="PF('addClientDialog').hide(); PF('myschedule').update();"
                                          update=":form1:eventDetails"/>
                     </h:panelGrid>
                 </p:dialog>
