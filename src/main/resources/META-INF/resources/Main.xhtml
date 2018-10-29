@@ -8,6 +8,11 @@
       xmlns:p="http://primefaces.org/ui">
 
 <h:head>
+    <style type="text/css">
+        .color-red {
+            background: coral;
+        }
+    </style>
     <title>Login page</title>
 </h:head>
 
@@ -51,7 +56,8 @@
                     </p:schedule>
                 </h:panelGrid>
 
-                <p:dialog widgetVar="eventDialog" header="Event Details" showEffect="clip" hideEffect="blind" dynamic="true">
+                <p:dialog widgetVar="eventDialog" header="Event Details" showEffect="clip" hideEffect="blind"
+                          dynamic="true">
                     <h:panelGrid id="eventDetails" columns="2">
                         <p:outputLabel value="Is client new:"/>
                         <p:inputSwitch id="isNew" value="#{mainPage.clientNew}" offLabel="No" onLabel="Yes"
@@ -130,7 +136,7 @@
 
             <h:form id="form2">
                 <p:dialog widgetVar="addClientDialog" header="Add new Client Details" showEffect="clip"
-                          hideEffect="clip"  dynamic="true">
+                          hideEffect="clip" dynamic="true">
                     <h:panelGrid id="AddClientGrid" columns="2">
 
                         <p:outputLabel value="Client Surname:"/>

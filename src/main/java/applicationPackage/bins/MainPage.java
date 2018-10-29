@@ -156,6 +156,7 @@ public class MainPage implements Serializable {
                 //do nothing
             }  else {
                 event = new MyEvent();
+                event.setStyleClass("color-red");
                 event.setTitle(visit.getProcedure().getName());
                 event.setStartDate(visit.getStart());
                 Date temp = new Date();
