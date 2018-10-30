@@ -14,7 +14,7 @@ public class Customer {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-    private String login;
+
     private String password;
 
     private String name;
@@ -23,6 +23,7 @@ public class Customer {
     private String email;
     private Integer deposit = 0;
     private Integer discount = 0;
+    private String notes;
 
     @OneToMany(mappedBy = "customer")
     private List<Visit> listVisit;
@@ -31,13 +32,6 @@ public class Customer {
     private String birthday;
     private Boolean isMan; //мужчина тру
 
-    public String getLogin() {
-        return login;
-    }
-
-    public void setLogin(String login) {
-        this.login = login;
-    }
 
     public String getPassword() {
         return password;
@@ -126,6 +120,14 @@ public class Customer {
 
     public void setEmail(String email) {
         this.email = email;
+    }
+
+    public String getNotes() {
+        return notes;
+    }
+
+    public void setNotes(String notes) {
+        this.notes = notes;
     }
 
     @Override

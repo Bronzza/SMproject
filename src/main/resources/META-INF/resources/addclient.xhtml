@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+        "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:p="http://primefaces.org/ui">
+
+<h:head>
+    <title>Registration</title>
+</h:head>
+
+<h:body style="background-color: darkgrey">
+    <h1 align="center" style="margin-top: 50px">Welcome on Registration Page</h1>
+    <p:separator/>
+    <p:growl id="msgs" showDetail="true" autoUpdate="true"/>
+    <h:form>
+
+        <h:panelGrid columns="2" cellpadding="10" cellspacing="2" style="margin-left: 5%">
+
+            <p:outputLabel value="Enter your password. You may need it later"/>
+
+            <p:password id="pswd1" value="#{addClientPage.passwordRegistration}" match="pswd2" required="true"
+                        label="Password 1"/>
+            <p:outputLabel value="Repeat your password"/>
+            <p:password id="pswd2" value="#{addClientPage.passwordRegistration}" required="true"
+                        label="Password 1"/>
+            <p:spacer height="5px"/>
+            <p:spacer height="5px"/>
+
+            <p:outputLabel value="Your first name"/>
+            <p:inputText value="#{addClientPage.name}" required="true"/>
+
+            <p:outputLabel value="Your surname"/>
+            <p:inputText value="#{addClientPage.surName}" required="true"/>
+
+            <p:outputLabel value="Write you e-mail. It will be you login"/>
+            <p:inputText id="email" value="#{addClientPage.emailRegistration}" required="true"/>
+
+            <p:outputLabel value="Write your phone number"/>
+            <p:inputMask id="phoneNumb" value="#{addClientPage.telNumberRegistration}" mask="(999) 999-99-99"/>
+
+            <p:outputLabel value="Write date of your birthday"/>
+            <p:inputMask value="#{addClientPage.birthdayRegistration}" mask="99/99/9999"/>
+
+            <p:outputLabel value="Notes about yourself/customer"/>
+            <p:inputTextarea value="#{addClientPage.notesField}" rows="5" cols="20" />
+
+            <p:outputLabel value="Choose what is about you"/>
+            <p:selectOneButton value="#{addClientPage.manReg}">
+                <f:selectItem itemLabel="Male" itemValue="true"/>
+                <f:selectItem itemLabel="Female" itemValue="false"/>
+            </p:selectOneButton>
+        </h:panelGrid>
+        <p:keyFilter id="emailFilter" for="email" mask="/[a-z0-9_\.\-@]/i"/>
+        <hr/>
+        <p:commandButton value="Save data" style="margin-left: 15%" action="#{addClientPage.saveRegistrationInfo}"/>
+    </h:form>
+</h:body>
+</html>

@@ -60,12 +60,10 @@ public class MainPage implements Serializable {
 
     //fields for creating Visit, update CustomerBase
     private Procedure localProcedure = new Procedure();
+    private Customer newCustomer = new Customer();
 
     //Visit
-    private List<Specialist> specialistsForVisit;
-
     private String selectedSpecialistId;
-    private Customer newCustomer = new Customer();
     private Boolean isMan = false;
 
     public Boolean getMan() {
@@ -113,13 +111,7 @@ public class MainPage implements Serializable {
         this.selectedSpecialistId = selectedSpecialistId;
     }
 
-    public List<Specialist> getSpecialistsForVisit() {
-        return specialistsForVisit;
-    }
 
-    public void setSpecialistsForVisit(List<Specialist> specialistsForVisit) {
-        this.specialistsForVisit = specialistsForVisit;
-    }
 
     public VisitRepository getVisitRepository() {
         return visitRepository;
@@ -216,7 +208,8 @@ public class MainPage implements Serializable {
             event.setTitle(title);
             eventModel.addEvent(event);
         } else {
-            makeEventTitle(event);
+            String title = makeEventTitle(event);
+            event.setTitle(title);
             eventModel.updateEvent(event);
             saveVisitInBase(event);
             updateCustomerInBase(event);
@@ -236,7 +229,7 @@ public class MainPage implements Serializable {
                 visit.getProcedure().getDurationMin() * 60000);
         sb.append(temp.toString());
         sb.append('\n');
-        sb.append(visit.getLocalSpecalist().get(0).getName());
+        sb.append(visit.getLocalSpecalist().getName());
         return sb.toString();
     }
 
@@ -257,14 +250,14 @@ public class MainPage implements Serializable {
         if (isVisitExist(event.getLocalVisit())){
             event.getLocalVisit().setCustomer(event.getLocalCustomer());
             event.getLocalVisit().setStart(event.getStartDate());
-            event.getLocalVisit().getLocalSpecalist().add(0,findSpectById(event.getSelectedSpecialistId()));
+            event.getLocalVisit().setLocalSpecalist(findSpectById(event.getSelectedSpecialistId()));
             visitRepository.save(event.getLocalVisit());
         } else {
             Visit visit = event.getLocalVisit();
             visit.setProcedure(procedureRepository.findById(localProcedure.getId()).get());
             visit.setFanalPrice(event.getLocalVisit().getFanalPrice());
             visit.setStart(event.getStartDate());
-            visit.getLocalSpecalist().add(findSpectById(event.getSelectedSpecialistId()));
+            visit.setLocalSpecalist(findSpectById(event.getSelectedSpecialistId()));
             visit.setCustomer(event.getLocalCustomer());
             visit.setPayed(event.getLocalVisit().getPayed());
             visitRepository.save(visit);
@@ -293,7 +286,7 @@ public class MainPage implements Serializable {
 
     public void onEventSelect(SelectEvent selectEvent) {
         event = (MyEvent) selectEvent.getObject();
-        selectedSpecialistId = String.valueOf(event.getLocalVisit().getLocalSpecalist().get(0).getId());
+        selectedSpecialistId = String.valueOf(event.getLocalVisit().getLocalSpecalist().getId());
     }
 
     public void onDateSelect(SelectEvent selectEvent) {
@@ -317,9 +310,10 @@ public class MainPage implements Serializable {
     }
 
     public void addClient() {
+        newCustomer.setMan(isMan);
         Optional<Customer> existing = customerRepository.findOne(Example.of(newCustomer));
         if (existing.isPresent()) {
-            sendMessage("Customer is not new, please find it in base");
+            sendMessage("Customer is not new, please find him/her in base");
         } else {
             customerRepository.save(newCustomer);
         }
@@ -327,7 +321,6 @@ public class MainPage implements Serializable {
         newCustomer = new Customer();
         isMan = false;
         isClientNew = false;
-
     }
 
     public List<SelectItem> selectTitleProcedure() {

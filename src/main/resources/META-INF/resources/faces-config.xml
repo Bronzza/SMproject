@@ -14,8 +14,8 @@
             <redirect/>
         </navigation-case>
         <navigation-case>
-            <from-outcome>goToRegist</from-outcome>
-            <to-view-id>/registration.xhtml</to-view-id>
+            <from-outcome>goToAddClient</from-outcome>
+            <to-view-id>/addclient.xhtml</to-view-id>
             <redirect/>
         </navigation-case>
 
