@@ -4,9 +4,11 @@ import applicationPackage.Repositories.CustomerRepository;
 import applicationPackage.Repositories.VisitRepository;
 import applicationPackage.entitys.Customer;
 import applicationPackage.entitys.Visit;
+import org.primefaces.event.CellEditEvent;
 import org.springframework.data.domain.Example;
 
 import javax.annotation.PostConstruct;
+import javax.faces.application.FacesMessage;
 import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
 import javax.faces.view.ViewScoped;
@@ -49,7 +51,11 @@ public class VisitsPage implements Serializable {
 
     @PostConstruct
     public void init() {
-        visitList = visitRepository.findAll();
+        List <Visit> allVisits = visitRepository.findAll();
+        visitList = new ArrayList<>();
+        for (Visit visit: allVisits) {
+            if(visit.getPayed()) visitList.add(visit);
+        }
         columnKeys.add("customer");
         columnKeys.add("start");
         columnKeys.add("procedure");
@@ -119,7 +125,7 @@ public class VisitsPage implements Serializable {
                         columns.add(new ColumnModel(correctHeader, columnKey));
                         break;
                     case ("localSpecalist"):
-                            correctHeader = "Procedure";
+                            correctHeader = "Specialist";
                         columns.add(new ColumnModel(correctHeader, columnKey));
                         break;
                     default:
@@ -156,4 +162,17 @@ public class VisitsPage implements Serializable {
             return property;
         }
     }
+
+    public void onCellEdit(CellEditEvent event) {
+        Object oldValue = event.getOldValue();
+        Object newValue = event.getNewValue();
+
+        if (newValue != null && !newValue.equals(oldValue)) {
+            FacesMessage msg = new FacesMessage(FacesMessage.SEVERITY_INFO, "Cell Changed", "Old: " + oldValue + ", New:" + newValue);
+            FacesContext.getCurrentInstance().addMessage(null, msg);
+
+
+        }
+    }
+
 }

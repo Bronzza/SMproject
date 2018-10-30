@@ -89,7 +89,7 @@
                                      required="true"/>
 
                         <p:outputLabel value="Chose procedure"/>
-                        <p:selectOneMenu value="#{mainPage.event.title}">
+                        <p:selectOneMenu value="#{mainPage.event.selectedProcedureName}">
                             <f:selectItem itemLabel="Select One" itemValue=""/>
                             <f:selectItems value="#{mainPage.selectTitleProcedure()}"/>
                             <p:ajax update=":form1:costProc, :form1:costActualProc"
@@ -104,7 +104,7 @@
                                      required="true"/>
 
                         <p:outputLabel value="Chose specialist:"/>
-                        <p:selectOneMenu value="#{mainPage.selectedSpecialistId}">
+                        <p:selectOneMenu value="#{mainPage.event.selectedSpecialistId}">
                             <f:selectItem itemLabel="Select One" itemValue=""/>
                             <f:selectItems value="#{mainPage.selectSpecialist()}"/>
                         </p:selectOneMenu>

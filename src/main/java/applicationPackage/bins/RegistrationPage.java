@@ -136,7 +136,7 @@ public class RegistrationPage implements Serializable {
             user.setSurName(surName);
             ur.save(user);
             sendMessage("Your data is saved");
-            return "";
+            return "goToRegist";
         }
     }
 

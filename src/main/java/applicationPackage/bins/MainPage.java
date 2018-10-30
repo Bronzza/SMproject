@@ -21,6 +21,7 @@ import javax.faces.convert.Converter;
 import javax.faces.event.ActionEvent;
 import javax.faces.model.SelectItem;
 
+import javax.faces.model.SelectItemGroup;
 import javax.inject.Inject;
 import javax.inject.Named;
 import java.io.Serializable;
@@ -61,7 +62,6 @@ public class MainPage implements Serializable {
     private Procedure localProcedure = new Procedure();
 
     //Visit
-    private int finalPriceVisit;
     private List<Specialist> specialistsForVisit;
 
     private String selectedSpecialistId;
@@ -94,7 +94,7 @@ public class MainPage implements Serializable {
 
     public void calculatePrise() {
         Procedure example = new Procedure();
-        example.setName(event.getTitle());
+        example.setName(event.getSelectedProcedureName());
         Optional<Procedure> existing = procedureRepository.findOne(Example.of(example));
         if (existing.isPresent()) {
             localProcedure = existing.get();
@@ -103,14 +103,6 @@ public class MainPage implements Serializable {
                     - (localProcedure.getCost() * event.getLocalCustomer().getDiscount() / 100));
         }
 //        finalPriceVisit = localProcedure.getCost() - localProcedure.getCost() / 100 * event.getLocalCustomer().getDiscount();
-    }
-
-    public int getFinalPriceVisit() {
-        return finalPriceVisit;
-    }
-
-    public void setFinalPriceVisit(int finalPriceVisit) {
-        this.finalPriceVisit = finalPriceVisit;
     }
 
     public String getSelectedSpecialistId() {
@@ -152,22 +144,26 @@ public class MainPage implements Serializable {
         event.setStartDate(new Date());
         event.setEndDate(new Date());
         for (Visit visit : visitRepository.findAll()) {
-            if ((visit.getPayed()==null || !visit.getPayed()) && visit.getStart().before(yesterday())) {
-                //do nothing
-            }  else {
-                event = new MyEvent();
-                event.setStyleClass("color-red");
-                event.setTitle(visit.getProcedure().getName());
-                event.setStartDate(visit.getStart());
-                Date temp = new Date();
-                temp.setTime(visit.getStart().getTime() +
-                        visit.getProcedure().getDurationMin() * 60000);
-                event.setEndDate(temp);
-                event.setLocalVisit(visit);
-                event.setLocalCustomer(visit.getCustomer());
-                event.getLocalVisit().setFanalPrice(visit.getProcedure().getCost()
-                        - (visit.getProcedure().getCost() * event.getLocalCustomer().getDiscount() / 100));
-                eventModel.addEvent(event);
+            try {
+                if ((visit.getPayed() == null || !visit.getPayed()) && visit.getStart().before(yesterday())) {
+                    //do nothing
+                } else {
+                    event = new MyEvent();
+                    event.setStyleClass("color-red");
+                    event.setTitle(visit.getProcedure().getName());
+                    event.setStartDate(visit.getStart());
+                    Date temp = new Date();
+                    temp.setTime(visit.getStart().getTime() +
+                            visit.getProcedure().getDurationMin() * 60000);
+                    event.setEndDate(temp);
+                    event.setLocalVisit(visit);
+                    event.setLocalCustomer(visit.getCustomer());
+                    event.getLocalVisit().setFanalPrice(visit.getProcedure().getCost()
+                            - (visit.getProcedure().getCost() * event.getLocalCustomer().getDiscount() / 100));
+                    eventModel.addEvent(event);
+                }
+            } catch (NullPointerException e){
+                System.out.println("Exception");
             }
         }
 
@@ -213,39 +209,75 @@ public class MainPage implements Serializable {
 
     public void addEvent(ActionEvent actionEvent) {
         if (event.getId() == null) {
+            saveVisitInBase(event);
+            updateCustomerInBase(event);
+            isClientNew = false;
+            String title = makeEventTitle(event);
+            event.setTitle(title);
             eventModel.addEvent(event);
         } else {
+            makeEventTitle(event);
             eventModel.updateEvent(event);
-            visitRepository.save(event.getLocalVisit());
-            updateCustomerInBase();
-            return;
+            saveVisitInBase(event);
+            updateCustomerInBase(event);
+            isClientNew = false;
         }
-        Visit visit = event.getLocalVisit();
-        visit.setProcedure(procedureRepository.findById(localProcedure.getId()).get());
-        visit.setFanalPrice(finalPriceVisit);
-        visit.setStart(event.getStartDate());
-        visit.getLocalSpecalist().add(findSpectById(selectedSpecialistId));
-        visit.setCustomer(event.getLocalCustomer());
-        visit.setPayed(event.getLocalVisit().getPayed());
-        visitRepository.save(visit);
-        updateCustomerInBase();
-        isClientNew = false;
-//        event.getLocalCustomer().getListVisit().add;
     }
-//
-//    public void confirmEvent(ActionEvent actionEvent){
-//        visitRepository.save(event.getLocalVisit());
-//    }
 
-    public void updateCustomerInBase() {
+    public String makeEventTitle(MyEvent event) {
+        Visit visit = event.getLocalVisit();
+        StringBuilder sb = new StringBuilder();
+        sb.append(event.getSelectedProcedureName());
+        sb.append('\n');
+        sb.append(visit.getStart().toString());
+        sb.append('\n');
+        Date temp = new Date();
+        temp.setTime(visit.getStart().getTime() +
+                visit.getProcedure().getDurationMin() * 60000);
+        sb.append(temp.toString());
+        sb.append('\n');
+        sb.append(visit.getLocalSpecalist().get(0).getName());
+        return sb.toString();
+    }
+
+
+    public void updateCustomerInBase(MyEvent event) {
         Customer example = new Customer();
         example.setSurName(event.getLocalCustomer().getSurName());
-        example.setSurName(event.getLocalCustomer().getTelNumber());
+        example.setTelNumber(event.getLocalCustomer().getTelNumber());
         Optional<Customer> existing = customerRepository.findOne(Example.of(example));
         if (existing.isPresent()) {
             Customer temp = existing.get();
             temp.getListVisit().add(event.getLocalVisit());
             customerRepository.save(temp);
+        }
+    }
+
+    public void saveVisitInBase(MyEvent event) {
+        if (isVisitExist(event.getLocalVisit())){
+            event.getLocalVisit().setCustomer(event.getLocalCustomer());
+            event.getLocalVisit().setStart(event.getStartDate());
+            event.getLocalVisit().getLocalSpecalist().add(0,findSpectById(event.getSelectedSpecialistId()));
+            visitRepository.save(event.getLocalVisit());
+        } else {
+            Visit visit = event.getLocalVisit();
+            visit.setProcedure(procedureRepository.findById(localProcedure.getId()).get());
+            visit.setFanalPrice(event.getLocalVisit().getFanalPrice());
+            visit.setStart(event.getStartDate());
+            visit.getLocalSpecalist().add(findSpectById(event.getSelectedSpecialistId()));
+            visit.setCustomer(event.getLocalCustomer());
+            visit.setPayed(event.getLocalVisit().getPayed());
+            visitRepository.save(visit);
+        }
+    }
+
+    public boolean isVisitExist(Visit visit) {
+        Visit example = visit;
+        if (visit.getId()==null) {
+            return false;
+        } else {
+            Optional<Visit> existing = visitRepository.findById(visit.getId());
+            return existing.isPresent();
         }
     }
 
@@ -259,17 +291,9 @@ public class MainPage implements Serializable {
     }
 
 
-    public Long fingVisitId() {
-        Visit example = new Visit();
-        example.setStart(event.getLocalVisit().getStart());
-        Optional<Visit> existing = visitRepository.findOne(Example.of(example));
-        if (existing.isPresent()) {
-            return existing.get().getId();
-        } else return null;
-    }
-
     public void onEventSelect(SelectEvent selectEvent) {
         event = (MyEvent) selectEvent.getObject();
+        selectedSpecialistId = String.valueOf(event.getLocalVisit().getLocalSpecalist().get(0).getId());
     }
 
     public void onDateSelect(SelectEvent selectEvent) {
@@ -297,16 +321,17 @@ public class MainPage implements Serializable {
         if (existing.isPresent()) {
             sendMessage("Customer is not new, please find it in base");
         } else {
-            customerRepository.save(newCustomer);}
+            customerRepository.save(newCustomer);
+        }
+        event.setLocalCustomer(newCustomer);
         newCustomer = new Customer();
         isMan = false;
         isClientNew = false;
-        event.setLocalCustomer(newCustomer);
+
     }
 
     public List<SelectItem> selectTitleProcedure() {
-//        SelectItemGroup g1 = new SelectItemGroup("Hair cat");
-//        SelectItemGroup g2 = new SelectItemGroup("Massage");
+
         List<SelectItem> list = new ArrayList<>();
         for (Procedure procedure : procedureRepository.findAll()) {
             list.add(new SelectItem(procedure.getName(), procedure.getName()));
@@ -323,7 +348,7 @@ public class MainPage implements Serializable {
     }
 
     public List<SelectItem> selectSpecialist() {
-        selectedSpecialistId = null;
+//        selectedSpecialistId = null;
         List<SelectItem> list = new ArrayList<>();
         for (Specialist specialist : specialistRepository.findAll()) {
             list.add(new SelectItem(specialist.getId(), specialist.getName()));
@@ -380,7 +405,7 @@ public class MainPage implements Serializable {
         return filteredCustomer;
     }
 
-    public void setClientMan(){
+    public void setClientMan() {
         newCustomer.setMan(isMan);
     }
 

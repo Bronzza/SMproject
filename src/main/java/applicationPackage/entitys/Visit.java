@@ -20,8 +20,8 @@ public class Visit {
     @ManyToOne
     private Customer customer;
 
-    @ManyToMany(mappedBy = "visit", cascade = CascadeType.ALL)
-    private List<Specialist> localSpecalist = new ArrayList<>();
+    @ManyToOne /*(mappedBy = "visit", cascade = CascadeType.ALL)*/
+    private Specialist localSpecalist = new Specialist();
 
     private Integer fanalPrice;
 
@@ -62,11 +62,11 @@ public class Visit {
         this.start = start;
     }
 
-    public List<Specialist> getLocalSpecalist() {
+    public Specialist getLocalSpecalist() {
         return localSpecalist;
     }
 
-    public void setLocalSpecalist(List<Specialist> localSpecalist) {
+    public void setLocalSpecalist(Specialist localSpecalist) {
         this.localSpecalist = localSpecalist;
     }
 
@@ -85,5 +85,4 @@ public class Visit {
     public void setPayed(Boolean payed) {
         isPayed = payed;
     }
-
 }

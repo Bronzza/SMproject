@@ -18,7 +18,9 @@ public class MyEvent extends DefaultScheduleEvent {
 
     private String name;
     private Visit localVisit = new Visit();
-    private Customer localCustomer = new Customer();;
+    private Customer localCustomer = new Customer();
+    private String selectedSpecialistId;
+    private String selectedProcedureName;
 
     public MyEvent(String name) {
         this.name = name;
@@ -56,5 +58,19 @@ public class MyEvent extends DefaultScheduleEvent {
         return localCustomer;
     }
 
+    public String getSelectedSpecialistId() {
+        return selectedSpecialistId;
+    }
 
+    public void setSelectedSpecialistId(String selectedSpecialistId) {
+        this.selectedSpecialistId = selectedSpecialistId;
+    }
+
+    public String getSelectedProcedureName() {
+        return selectedProcedureName;
+    }
+
+    public void setSelectedProcedureName(String selectedProcedureName) {
+        this.selectedProcedureName = selectedProcedureName;
+    }
 }
