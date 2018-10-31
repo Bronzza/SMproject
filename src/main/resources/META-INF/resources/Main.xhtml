@@ -10,7 +10,17 @@
 <h:head>
     <style type="text/css">
         .color-red {
-            background: coral;
+            background: darksalmon;
+        }
+    </style>
+    <style type="text/css">
+        .color-green {
+            background: darkkhaki;
+        }
+    </style>
+    <style type="text/css">
+        .color-blue {
+            background: deepskyblue;
         }
     </style>
     <title>Login page</title>
@@ -146,14 +156,15 @@
                         <p:inputText id="NewClientName" value="#{mainPage.newCustomer.name}" required="true"/>
 
                         <p:outputLabel value="Client's phone numb:"/>
-                        <p:inputMask id="NewClientPhone" value="#{mainPage.newCustomer.telNumber}" mask="(999) 999-99-99"
+                        <p:inputMask id="NewClientPhone" value="#{mainPage.newCustomer.telNumber}"
+                                     mask="(999) 999-99-99"
                                      required="true"/>
 
                         <p:outputLabel value="Write an e-mail (optional)"/>
                         <p:inputText id="email" value="#{mainPage.newCustomer.email}"/>
 
                         <p:outputLabel value="Notes about customer"/>
-                        <p:inputTextarea value="#{mainPage.newCustomer.notes}" rows="2" cols="20" />
+                        <p:inputTextarea value="#{mainPage.newCustomer.notes}" rows="2" cols="20"/>
 
                         <p:outputLabel value="Man or Woman:"/>
                         <p:inputSwitch id="newSex" value="#{mainPage.man}" offLabel="Woman" onLabel="Man"

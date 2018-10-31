@@ -6,6 +6,7 @@ import applicationPackage.Repositories.ProcedureRepository;
 import applicationPackage.Repositories.SpecialistRepository;
 import applicationPackage.Repositories.VisitRepository;
 import applicationPackage.entitys.*;
+import applicationPackage.utils.DateFormater;
 import org.primefaces.event.ScheduleEntryMoveEvent;
 import org.primefaces.event.ScheduleEntryResizeEvent;
 import org.primefaces.event.SelectEvent;
@@ -15,18 +16,13 @@ import org.springframework.data.domain.Example;
 import javax.annotation.PostConstruct;
 import javax.faces.application.FacesMessage;
 
-import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
-import javax.faces.convert.Converter;
 import javax.faces.event.ActionEvent;
 import javax.faces.model.SelectItem;
 
-import javax.faces.model.SelectItemGroup;
 import javax.inject.Inject;
 import javax.inject.Named;
 import java.io.Serializable;
-import java.text.DateFormat;
-import java.text.SimpleDateFormat;
 import java.util.*;
 
 @Named
@@ -112,7 +108,6 @@ public class MainPage implements Serializable {
     }
 
 
-
     public VisitRepository getVisitRepository() {
         return visitRepository;
     }
@@ -136,27 +131,37 @@ public class MainPage implements Serializable {
         event.setStartDate(new Date());
         event.setEndDate(new Date());
         for (Visit visit : visitRepository.findAll()) {
-            try {
-                if ((visit.getPayed() == null || !visit.getPayed()) && visit.getStart().before(yesterday())) {
-                    //do nothing
-                } else {
-                    event = new MyEvent();
-                    event.setStyleClass("color-red");
-                    event.setTitle(visit.getProcedure().getName());
-                    event.setStartDate(visit.getStart());
-                    Date temp = new Date();
-                    temp.setTime(visit.getStart().getTime() +
-                            visit.getProcedure().getDurationMin() * 60000);
-                    event.setEndDate(temp);
-                    event.setLocalVisit(visit);
-                    event.setLocalCustomer(visit.getCustomer());
-                    event.getLocalVisit().setFanalPrice(visit.getProcedure().getCost()
-                            - (visit.getProcedure().getCost() * event.getLocalCustomer().getDiscount() / 100));
-                    eventModel.addEvent(event);
+//            try {
+            if ((visit.getPayed() == null || !visit.getPayed()) && visit.getStart().before(yesterday())) {
+                //do nothing
+            } else {
+                event = new MyEvent();
+                event.setLocalVisit(visit);
+                //сделать выбор цветов мастера отдельным методом. в добавлении мастера выбирать
+                //его цвет и сетить в мейн.хштмл (пока не знаю как сетить)
+                switch (event.getLocalVisit().getLocalSpecalist().getName()){
+                    case "Fren":
+                        event.setStyleClass("color-red");
+                        break;
+                    case "Dape":
+                        event.setStyleClass("color-green");
+                        break;
+                    case "Natali":
+                        event.setStyleClass("color-blue");
+                        break;
                 }
-            } catch (NullPointerException e){
-                System.out.println("Exception");
+                event.setStartDate(visit.getStart());
+                event.setEndDate(makeEndDate(event.getLocalVisit()));
+                event.setLocalCustomer(visit.getCustomer());
+                event.getLocalVisit().setFanalPrice(visit.getProcedure().getCost()
+                        - (visit.getProcedure().getCost() * event.getLocalCustomer().getDiscount() / 100));
+                String title = makeEventTitle(event);
+                event.setTitle(title);
+                eventModel.addEvent(event);
             }
+//            } catch (NullPointerException e) {
+//                System.out.println("Exception");
+//            }
         }
 
     }
@@ -220,15 +225,20 @@ public class MainPage implements Serializable {
     public String makeEventTitle(MyEvent event) {
         Visit visit = event.getLocalVisit();
         StringBuilder sb = new StringBuilder();
-        sb.append(event.getSelectedProcedureName());
+        if (event.getSelectedProcedureName() == null) {
+            sb.append(event.getLocalVisit().getProcedure().getName());
+            sb.append('\n');
+        } else {
+            sb.append(event.getSelectedProcedureName());
+            sb.append('\n');
+        }
+        sb.append(event.getLocalVisit().getCustomer().toString());
         sb.append('\n');
-        sb.append(visit.getStart().toString());
+        sb.append(DateFormater.formatData(visit.getStart(), true));
         sb.append('\n');
-        Date temp = new Date();
-        temp.setTime(visit.getStart().getTime() +
-                visit.getProcedure().getDurationMin() * 60000);
-        sb.append(temp.toString());
+        sb.append(DateFormater.formatData(makeEndDate(event.getLocalVisit()), true));
         sb.append('\n');
+        sb.append("Specialist: ");
         sb.append(visit.getLocalSpecalist().getName());
         return sb.toString();
     }
@@ -247,7 +257,7 @@ public class MainPage implements Serializable {
     }
 
     public void saveVisitInBase(MyEvent event) {
-        if (isVisitExist(event.getLocalVisit())){
+        if (isVisitExist(event.getLocalVisit())) {
             event.getLocalVisit().setCustomer(event.getLocalCustomer());
             event.getLocalVisit().setStart(event.getStartDate());
             event.getLocalVisit().setLocalSpecalist(findSpectById(event.getSelectedSpecialistId()));
@@ -266,7 +276,7 @@ public class MainPage implements Serializable {
 
     public boolean isVisitExist(Visit visit) {
         Visit example = visit;
-        if (visit.getId()==null) {
+        if (visit.getId() == null) {
             return false;
         } else {
             Optional<Visit> existing = visitRepository.findById(visit.getId());
@@ -403,13 +413,19 @@ public class MainPage implements Serializable {
     }
 
     public void calculateEndDate() {
-        Calendar calendar = Calendar.getInstance();
         event.getEndDate().setTime(event.getStartDate().getTime() + localProcedure.getDurationMin() * 60000);
+    }
+
+    public Date makeEndDate(Visit visit) {
+        Date resultDate = new Date();
+        resultDate.setTime(visit.getStart().getTime() +
+                visit.getProcedure().getDurationMin() * 60000);
+        return resultDate;
     }
 
     public String buttonClients() {
         sendMessage("Going to Clients page");
-        return "goToLogin";
+        return "goToClients";
     }
 
     private Date yesterday() {

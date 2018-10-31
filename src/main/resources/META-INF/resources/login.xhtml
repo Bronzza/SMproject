@@ -24,10 +24,10 @@
     <h:form prependId="false">
 
         <p:panelGrid columns="2" style="margin-left: auto; margin-right: auto; margin-top:15% ">
-            <p:outputLabel value="Имя:"/>
+            <p:outputLabel value="Enter you e-mail:"/>
             <p:inputText id="username"/>
 
-            <p:outputLabel value="Пароль:"/>
+            <p:outputLabel value="Password: "/>
             <p:password id="password"/>
 
         </p:panelGrid>
@@ -40,7 +40,7 @@
         </p:panelGrid>
     </h:form>
     <sec:authorize access="!hasRole('ROLE_USER')">
-        bbb
+        not autorized (sample)
     </sec:authorize>
 </h:body>
 </html>

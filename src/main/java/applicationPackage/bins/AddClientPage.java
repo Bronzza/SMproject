@@ -5,6 +5,7 @@ import applicationPackage.Enums.AccessRights;
 import applicationPackage.Repositories.UsersRepository;
 import applicationPackage.entitys.Customer;
 import applicationPackage.entitys.User;
+import applicationPackage.utils.BirthDayChecker;
 import applicationPackage.utils.EmailChecker;
 
 import javax.faces.application.FacesMessage;
@@ -27,8 +28,6 @@ import static applicationPackage.Enums.AccessRights.VIEWER;
 @ViewScoped
 public class AddClientPage implements Serializable {
 
-    private AccessRights accessRights = VIEWER;
-
     String passwordRegistration;
 
     @Inject
@@ -45,14 +44,6 @@ public class AddClientPage implements Serializable {
     private boolean isManReg;
     private String notesField;
 
-    public AccessRights getAccessRights() {
-        return accessRights;
-    }
-
-    public void setAccessRights(AccessRights accessRights) {
-        this.accessRights = accessRights;
-    }
-
     public String getEmailRegistration() {
         return emailRegistration;
     }
@@ -68,7 +59,6 @@ public class AddClientPage implements Serializable {
     public void setTelNumberRegistration(String telNumberRegistration) {
         this.telNumberRegistration = telNumberRegistration;
     }
-
 
     public CustomerRepository getCr() {
         return cr;
@@ -114,12 +104,12 @@ public class AddClientPage implements Serializable {
         if (!EmailChecker.checkEmail(emailRegistration)) {
             sendMessage("Incorrect e-mail adress");
             return "";
-        } else if (!checkDate(birthdayRegistration)) {
+        } else if (!BirthDayChecker.checkDate(birthdayRegistration)) {
             sendMessage("Incorrect birthday date ");
             return "";
         } else {
-            User user = new User();
             Customer customerTemp = new Customer();
+
             customerTemp.setPassword(passwordRegistration);
             customerTemp.setName(name);
             customerTemp.setSurName(surName);
@@ -130,13 +120,6 @@ public class AddClientPage implements Serializable {
             customerTemp.setNotes(notesField);
             cr.save(customerTemp);
 
-            user.setPassword(passwordRegistration);
-            user.setBirthday(birthdayRegistration);
-            user.seteMail(emailRegistration);
-            user.setMan(isManReg);
-            user.setName(name);
-            user.setSurName(surName);
-            ur.save(user);
             sendMessage("Your data is saved");
             return "goToRegist";
         }
@@ -157,52 +140,6 @@ public class AddClientPage implements Serializable {
     public void setNotesField(String notesField) {
         this.notesField = notesField;
     }
-
-    public boolean checkDate(String date) {
-        StringTokenizer st = new StringTokenizer(date, "/");
-        String[] delimBrithDay = new String[3];
-        int i = 0;
-        while (st.hasMoreElements()) {
-            delimBrithDay[i] = (String) st.nextElement();
-            i++;
-        }
-        boolean isDate = false;
-        Calendar calendar = Calendar.getInstance();
-        int year = Calendar.getInstance().get(Calendar.YEAR);
-        try {
-            if (Integer.parseInt(delimBrithDay[1]) > 0 && Integer.parseInt(delimBrithDay[1]) <= 12 &&
-                    Integer.parseInt(delimBrithDay[2]) > 1920 &&
-                    (year - Integer.parseInt(delimBrithDay[2]) > 5)) {
-                switch (Integer.parseInt(delimBrithDay[1])) {
-                    case 1:
-                    case 3:
-                    case 5:
-                    case 7:
-                    case 8:
-                    case 10:
-                    case 12:
-                        if (Integer.parseInt(delimBrithDay[0]) < 0 && Integer.parseInt(delimBrithDay[0]) >= 31)
-                            break;
-                    case 4:
-                    case 6:
-                    case 9:
-                    case 11:
-                        if (Integer.parseInt(delimBrithDay[0]) < 0 && Integer.parseInt(delimBrithDay[0]) >= 30)
-                            break;
-                    case 2:
-                        if (Integer.parseInt(delimBrithDay[0]) < 0 && Integer.parseInt(delimBrithDay[0]) >= 29)
-                            break;
-                    default:
-                        isDate = true;
-                        break;
-                }
-            }
-        } catch (ClassCastException e) {
-            sendMessage("incorrect input of Date");
-        }
-        return isDate;
-    }
-
 
     public void sendMessage(String message) {
         FacesContext context = FacesContext.getCurrentInstance();
