@@ -34,13 +34,13 @@
         <br/>
 
         <p:panelGrid columns="2" style="margin-left: auto; margin-right: auto;">
-            <p:commandLink value="Вход" ajax="false"/>
+            <p:commandLink value="Enter" ajax="false"/>
             <p:commandLink partialSubmit="true" value="To registration page"
                            onclick="window.location.href='registration.xhtml'"/>
         </p:panelGrid>
     </h:form>
-    <sec:authorize access="!hasRole('ROLE_USER')">
-        not autorized (sample)
+    <sec:authorize access="hasRole('ROLE_USER')">
+        autorized (sample)
     </sec:authorize>
 </h:body>
 </html>

@@ -30,7 +30,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                     .authorizeRequests()
                     .antMatchers("/registration.xhtml").permitAll()
                     .antMatchers("/javax.faces.resource/**").permitAll()
-                    .antMatchers("/clients.xhtml").hasAnyRole()
+//                    .antMatchers("/clients.xhtml").authenticated()
                     .anyRequest().authenticated()
                     .and()
                     .formLogin()

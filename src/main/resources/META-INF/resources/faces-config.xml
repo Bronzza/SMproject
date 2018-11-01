@@ -26,6 +26,24 @@
         </navigation-case>
 
         <navigation-case>
+            <from-outcome>goToVisits</from-outcome>
+            <to-view-id>/visits.xhtml</to-view-id>
+            <redirect/>
+        </navigation-case>
+
+        <navigation-case>
+        <from-outcome>goToAddClient</from-outcome>
+        <to-view-id>/addclient.xhtml</to-view-id>
+        <redirect/>
+    </navigation-case>
+
+        <navigation-case>
+            <from-outcome>goToAddProcedures</from-outcome>
+            <to-view-id>/procedures.xhtml</to-view-id>
+            <redirect/>
+        </navigation-case>
+
+        <navigation-case>
             <from-outcome>goToLogin</from-outcome>
             <to-view-id>/login.xhtml</to-view-id>
             <redirect/>

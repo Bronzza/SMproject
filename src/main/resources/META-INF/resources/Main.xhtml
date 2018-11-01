@@ -20,7 +20,7 @@
     </style>
     <style type="text/css">
         .color-blue {
-            background: deepskyblue;
+            background: burlywood;
         }
     </style>
     <title>Login page</title>
@@ -33,18 +33,39 @@
                       maxSize="300" header="Menu bar" collapsible="true">
             <p:growl id="msgs" autoUpdate="true"/>
             <h:form>
-                <div> Position west</div>
-                <p:panelGrid columns="1">
-                    <p:commandButton style="size: auto" value="Clients" id="nonAjax" update="msgs"
-                                     action="#{mainPage.buttonClients()}" ajax="false"/>
-                </p:panelGrid>
+                <p:menu toggleable="true">
+                    <p:submenu label="Bases">
+                        <p:menuitem value="Clients base" action="#{mainPage.goToClientsButton}"
+                                    icon="fa fa-male"/>
+                        <p:menuitem value=" Visits base" action="#{mainPage.goToVisitsButton}" update="msgs"
+                                    icon="fa fa-dedent"/>
+                    </p:submenu>
+                    <p:submenu label="Statistic">
+                        <p:menuitem value="No button yet" action="#{mainPage.goToVisitsButton}" update="msgs"
+                                    icon="fa fa-bar-chart-o"/>
+                    </p:submenu>
+                    <p:submenu label="Settings">
+                        <p:menuitem value="Add Client page" action="#{mainPage.goToAddClientButton}"
+                                    icon="fa fa-plus-circle"/>
+                        <p:menuitem value="Add Procedures page" action="#{mainPage.goToAddProceduresButton}"
+                                    icon="fa fa-navicon"/>
+                    </p:submenu>
+                </p:menu>
             </h:form>
+
         </p:layoutUnit>
         <p:layoutUnit position="north" resizable="false" collapsible="true" minSize="100" header="Info panel">
-            <p:link value="logout" href="logout"/>
-            <div>Some information</div>
 
+            <div class="ui-g">
+                <div class="ui-g-12 ui-md-10 ">Some information</div>
 
+                <div class="ui-g-12 ui-md-2" style="alignment: center">
+                    <p:spacer width="17px"/>
+                    <p:clock pattern="HH:mm dd.MM.yy"/>
+                    <p:spacer width="10px"/>
+                    <p:button value="Logout" href="logout"/>
+                </div>
+            </div>
         </p:layoutUnit>
 
         <p:layoutUnit position="center" header="Logining to Application">
@@ -145,7 +166,8 @@
             </h:form>
 
             <h:form id="form2">
-                <p:dialog widgetVar="addClientDialog" header="Add new Client Details" showEffect="clip"
+                <p:dialog id="addClientDialog" widgetVar="addClientDialog" header="Add new Client Details"
+                          showEffect="clip"
                           hideEffect="clip" dynamic="true">
                     <h:panelGrid id="AddClientGrid" columns="2">
 
@@ -175,7 +197,7 @@
                         <p:commandButton type="reset" value="Reset" oncomplete="PF('addClientDialog').reset();"/>
                         <p:commandButton id="addNewClientButton" value="Save" actionListener="#{mainPage.addClient()}"
                                          oncomplete="PF('addClientDialog').hide(); PF('myschedule').update();"
-                                         update=":form1:eventDetails"/>
+                                         update=":form1:eventDetails, :form2:addClientDialog"/>
                     </h:panelGrid>
                     <p:keyFilter id="emailFilter" for="email" mask="/[a-z0-9_\.\-@]/i"/>
                 </p:dialog>

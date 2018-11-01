@@ -428,6 +428,27 @@ public class MainPage implements Serializable {
         return "goToClients";
     }
 
+    public String goToClientsButton (){
+        sendMessage("Clients Page");
+        return "goToClients";
+    }
+
+    public String goToVisitsButton (){
+        sendMessage("Visits Page");
+        return "goToVisits";
+    }
+
+    public String goToAddClientButton(){
+        sendMessage("New Clients Page");
+        return "goToAddClient";
+    }
+
+    public String goToAddProceduresButton(){
+        sendMessage("New Procedure Page");
+        return "goToAddProcedures";
+    }
+
+
     private Date yesterday() {
         final Calendar cal = Calendar.getInstance();
         cal.add(Calendar.DATE, -1);
