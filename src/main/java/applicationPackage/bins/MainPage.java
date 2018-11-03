@@ -234,9 +234,9 @@ public class MainPage implements Serializable {
         }
         sb.append(event.getLocalVisit().getCustomer().toString());
         sb.append('\n');
-        sb.append(DateFormater.formatData(visit.getStart(), true));
+        sb.append(DateFormater.formatDate(visit.getStart(), true));
         sb.append('\n');
-        sb.append(DateFormater.formatData(makeEndDate(event.getLocalVisit()), true));
+        sb.append(DateFormater.formatDate(makeEndDate(event.getLocalVisit()), true));
         sb.append('\n');
         sb.append("Specialist: ");
         sb.append(visit.getLocalSpecalist().getName());
