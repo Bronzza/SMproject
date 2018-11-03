@@ -41,7 +41,7 @@
                                     icon="fa fa-dedent"/>
                     </p:submenu>
                     <p:submenu label="Statistic">
-                        <p:menuitem value="No button yet" action="#{mainPage.goToVisitsButton}" update="msgs"
+                        <p:menuitem value="Chart page" action="#{mainPage.goToChartsButton}" update="msgs"
                                     icon="fa fa-bar-chart-o"/>
                     </p:submenu>
                     <p:submenu label="Settings">
@@ -108,7 +108,7 @@
                         <p:autoComplete value="#{mainPage.mainPageCustomer}"
                                         completeMethod="#{mainPage.completeCustomer}"
                                         converter="#{customerConverter}" dynamic="true" forceSelection="true">
-                            <p:ajax id="aj" listener="#{mainPage.setCustomerInfo()}"
+                            <p:ajax id="aj" listener="#{mainPage.setCustomerInfoAuto()}"
                                     update=":form1:Clientphone, :form1:Clientname"/>
                         </p:autoComplete>
 

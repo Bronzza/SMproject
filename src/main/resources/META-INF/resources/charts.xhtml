@@ -42,8 +42,7 @@
                             <f:selectItem itemLabel="One year" itemValue="one year"/>
                         </h:selectOneMenu>
                     </p:panelGrid>
-                    <p:commandButton value="go" actionListener="#{chartsPage.init}">
-                        <p:ajax oncomplete="PF('eventGrafik').show();" update=":form1:char"/>
+                    <p:commandButton value="go" action="#{chartsPage.init}" update=":form1:char">
                     </p:commandButton>
                 </p:panelGrid>
 
@@ -52,10 +51,10 @@
 
         <p:layoutUnit position="center" header="Logining to Application">
             <h:form id="form1">
-                <p:dialog widgetVar="eventGrafik" showEffect="clip" hideEffect="blind" dynamic="true"
-                          style="width: 100%; height: 500px;">
-                    <p:chart id="char" model="#{chartsPage.barModel}" style="width: 500px   ; height: 500px;" type="bar"></p:chart>
-                </p:dialog>
+
+                    <p:chart id="char" model="#{chartsPage.barModel}" style="width: 500px   ; height: 500px;"
+                             type="#{chartsPage.type}"/>
+
             </h:form>
         </p:layoutUnit>
     </p:layout>

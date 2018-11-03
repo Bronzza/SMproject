@@ -25,7 +25,7 @@ public class Customer {
     private Integer discount = 0;
     private String notes;
 
-    @OneToMany(mappedBy = "customer")
+    @OneToMany(mappedBy = "customer", fetch = FetchType.EAGER)
     private List<Visit> listVisit;
 
     // info

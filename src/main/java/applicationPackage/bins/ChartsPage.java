@@ -10,23 +10,27 @@ import org.primefaces.model.chart.BarChartModel;
 import org.primefaces.model.chart.ChartSeries;
 
 import javax.annotation.PostConstruct;
+import javax.faces.view.ViewScoped;
 import javax.inject.Inject;
 import javax.inject.Named;
 import java.text.SimpleDateFormat;
 import java.util.*;
 
 @Named
+@ViewScoped
 public class ChartsPage {
     private BarChartModel barModel;
     private List selectedParemeters = new ArrayList();
     private String selectedPeriod = new String();
-    List<ChartSeries> listChartSeries;
+    private List<ChartSeries> listChartSeries;
 
 
     List<Visit> allVisits = new ArrayList<>();
     List<Visit> filteredVisits = new ArrayList<>();
     Long maxParam1 = new Long(0);
     Long maxParam2 = new Long(0);
+
+    private String type = "bar";
 
     public List<ChartSeries> makeCharts() {
 
@@ -45,7 +49,7 @@ public class ChartsPage {
         for (Object parametr : selectedParemeters) {
             Set<Date> setDates;
             if (String.valueOf(parametr).equals("Income")) {
-                setDates = new HashSet<>();
+                setDates = new TreeSet<>();
                 resultChart = new ChartSeries();
                 for (Visit visit : filteredVisits) {
                     setDates.add(visit.getStart());
@@ -170,6 +174,7 @@ public class ChartsPage {
     @PostConstruct
     public void init() {
         createBarModel();
+        listChartSeries.clear();
     }
 
     public BarChartModel getBarModel() {
@@ -234,5 +239,13 @@ public class ChartsPage {
 
     public void setSelectedPeriod(String selectedPeriod) {
         this.selectedPeriod = selectedPeriod;
+    }
+
+    public String getType() {
+        return type;
+    }
+
+    public void setType(String type) {
+        this.type = type;
     }
 }

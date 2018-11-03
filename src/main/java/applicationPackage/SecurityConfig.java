@@ -30,7 +30,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                     .authorizeRequests()
                     .antMatchers("/registration.xhtml").permitAll()
                     .antMatchers("/javax.faces.resource/**").permitAll()
-//                    .antMatchers("/clients.xhtml").authenticated()
+                    .antMatchers("/clients.xhtml").hasRole("VIEWER")
                     .anyRequest().authenticated()
                     .and()
                     .formLogin()
@@ -67,6 +67,6 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     public void configAuthentication(AuthenticationManagerBuilder auth) throws Exception {
         auth.jdbcAuthentication().dataSource(dataSource)
                 .usersByUsernameQuery("select e_mail as username, password, 1 as enabled from user where e_mail=?")
-                .authoritiesByUsernameQuery("select e_mail as username, 'ROLE_USER' as role from user where e_mail=?");
+                .authoritiesByUsernameQuery("select e_mail as username, access_rights as role from user where e_mail=?");
     }
 }
