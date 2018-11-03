@@ -157,6 +157,8 @@ public class MainPage implements Serializable {
                         - (visit.getProcedure().getCost() * event.getLocalCustomer().getDiscount() / 100));
                 String title = makeEventTitle(event);
                 event.setTitle(title);
+                event.setSelectedProcedureName(event.getLocalVisit().getProcedure().getName());
+                event.setSelectedSpecialistId(String.valueOf(event.getLocalVisit().getLocalSpecalist().getId()));
                 eventModel.addEvent(event);
             }
 //            } catch (NullPointerException e) {
@@ -376,6 +378,15 @@ public class MainPage implements Serializable {
         }
     }
 
+    public void setCustomerInfoAuto() {
+        for (Customer customer : customerRepository.findAll()) {
+            if (customer.getSurName().equals(mainPageCustomer.getSurName())) {
+                event.setLocalCustomer(customer);
+                return;
+            }
+        }
+    }
+
     public Boolean isClientNew() {
         return isClientNew;
     }
@@ -438,6 +449,10 @@ public class MainPage implements Serializable {
         return "goToVisits";
     }
 
+    public String goToChartsButton (){
+        sendMessage("Graffik Page");
+        return "goToChart";
+    }
     public String goToAddClientButton(){
         sendMessage("New Clients Page");
         return "goToAddClient";
