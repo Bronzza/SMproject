@@ -153,6 +153,36 @@ public class ProceduresPage implements Serializable{
         context.addMessage(null, new FacesMessage(message, null));
 //        context.addMessage(null, new FacesMessage("Second Message", "Additional Message Detail"));
     }
+
+    public String goToMainButton() {
+        sendMessage("Going to Main page");
+        return "goToMain";
+    }
+
+    public String goToClientsButton (){
+        sendMessage("Clients Page");
+        return "goToClients";
+    }
+
+    public String goToVisitsButton (){
+        sendMessage("Visits Page");
+        return "goToVisits";
+    }
+
+    public String goToChartsButton (){
+        sendMessage("Graffik Page");
+        return "goToChart";
+    }
+    public String goToAddClientButton(){
+        sendMessage("New Clients Page");
+        return "goToAddClient";
+    }
+
+    public String goToAddProceduresButton(){
+        sendMessage("New Procedure Page");
+        return "goToAddProcedures";
+    }
+
     public String goToMainPage(){
         sendMessage("Main page");
         return "goToMain";

@@ -21,30 +21,44 @@
         <p:layoutUnit position="north" resizable="false" collapsible="true" minSize="100" header="Control board">
 
             <h:form id="form">
-                <p:panelGrid columns="3">
-                    <p:panelGrid columns="1" cellpadding="5" cellspacing="2" style="text-align: center">
-                        <h:outputText value="Chose you parameter" style="font-weight: bold"/>
-                        <p:selectManyButton value="#{chartsPage.selectedParemeters}">
-                            <f:selectItem itemLabel="Total income" itemValue="Income"/>
-                            <f:selectItem itemLabel="New clients" itemValue="Clients"/>
-                        </p:selectManyButton>
-                    </p:panelGrid>
-                    <p:panelGrid columns="1" cellpadding="5" cellspacing="2" style="text-align: center">
-                        <h:outputText value="Chose period" style="font-weight: bold"/>
-                        <h:selectOneMenu value="#{chartsPage.selectedPeriod}">
-                            <f:selectItem itemLabel="Day" itemValue="day"/>
-                            <f:selectItem itemLabel="Current week" itemValue="current week"/>
-                            <f:selectItem itemLabel="Last 7 days" itemValue="7 days"/>
-                            <f:selectItem itemLabel="Current month" itemValue="current month"/>
-                            <f:selectItem itemLabel="Last 30 days" itemValue="30 days"/>
-                            <f:selectItem itemLabel="Half year" itemValue="half year"/>
-                            <f:selectItem itemLabel="Current year" itemValue="year"/>
-                            <f:selectItem itemLabel="One year" itemValue="one year"/>
-                        </h:selectOneMenu>
-                    </p:panelGrid>
-                    <p:commandButton value="go" action="#{chartsPage.init}" update=":form1:char">
-                    </p:commandButton>
-                </p:panelGrid>
+                <div class="ui-g">
+                    <div class="ui-g-12 ui-md-10 ">
+                        <p:panelGrid columns="3">
+                            <p:panelGrid columns="1" cellpadding="5" cellspacing="2" style="text-align: center">
+                                <h:outputText value="Chose you parameter" style="font-weight: bold"/>
+                                <p:selectManyButton value="#{chartsPage.selectedParemeters}">
+                                    <f:selectItem itemLabel="Total income" itemValue="Income"/>
+                                    <f:selectItem itemLabel="New clients" itemValue="Clients"/>
+                                </p:selectManyButton>
+                            </p:panelGrid>
+                            <p:panelGrid columns="1" cellpadding="5" cellspacing="2" style="text-align: center">
+                                <h:outputText value="Chose period" style="font-weight: bold"/>
+                                <h:selectOneMenu value="#{chartsPage.selectedPeriod}">
+                                    <f:selectItem itemLabel="Day" itemValue="day"/>
+                                    <f:selectItem itemLabel="Current week" itemValue="current week"/>
+                                    <f:selectItem itemLabel="Last 7 days" itemValue="7 days"/>
+                                    <f:selectItem itemLabel="Current month" itemValue="current month"/>
+                                    <f:selectItem itemLabel="Last 30 days" itemValue="30 days"/>
+                                    <f:selectItem itemLabel="Half year" itemValue="half year"/>
+                                    <f:selectItem itemLabel="Current year" itemValue="year"/>
+                                    <f:selectItem itemLabel="One year" itemValue="one year"/>
+                                </h:selectOneMenu>
+                            </p:panelGrid>
+                            <p:commandButton value="go" action="#{chartsPage.init}" update=":form1:char">
+                            </p:commandButton>
+                        </p:panelGrid>
+                    </div>
+
+                    <div class="ui-g-12 ui-md-2" style="alignment: center">
+                        <p:spacer height="15 px"/>
+                        <p:panelGrid columns="2" style="background-color: gray; text-align: center" >
+
+                        <p:commandButton value="To Main" action="#{proceduresPage.goToMainButton}"/>
+                        <p:button value="Logout" href="logout"/>
+                        </p:panelGrid>
+                    </div>
+                </div>
+
 
             </h:form>
         </p:layoutUnit>

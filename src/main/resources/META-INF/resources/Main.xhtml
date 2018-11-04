@@ -35,19 +35,19 @@
             <h:form>
                 <p:menu toggleable="true">
                     <p:submenu label="Bases">
-                        <p:menuitem value="Clients base" action="#{mainPage.goToClientsButton}"
-                                    icon="fa fa-male"/>
-                        <p:menuitem value=" Visits base" action="#{mainPage.goToVisitsButton}" update="msgs"
+                        <p:menuitem value="Clients base" action="#{proceduresPage.goToClientsButton}"
+                                    icon="fa fa-address-card"/>
+                        <p:menuitem value=" Visits base" action="#{proceduresPage.goToVisitsButton}" update="msgs"
                                     icon="fa fa-dedent"/>
                     </p:submenu>
                     <p:submenu label="Statistic">
-                        <p:menuitem value="Chart page" action="#{mainPage.goToChartsButton}" update="msgs"
+                        <p:menuitem value="Chart page " action="#{proceduresPage.goToChartsButton}" update="msgs"
                                     icon="fa fa-bar-chart-o"/>
                     </p:submenu>
                     <p:submenu label="Settings">
-                        <p:menuitem value="Add Client page" action="#{mainPage.goToAddClientButton}"
+                        <p:menuitem value="Add Client page" action="#{proceduresPage.goToAddClientButton}"
                                     icon="fa fa-plus-circle"/>
-                        <p:menuitem value="Add Procedures page" action="#{mainPage.goToAddProceduresButton}"
+                        <p:menuitem value="Add Procedures page" action="#{proceduresPage.goToAddProceduresButton}"
                                     icon="fa fa-navicon"/>
                     </p:submenu>
                 </p:menu>

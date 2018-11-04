@@ -18,7 +18,26 @@
                       maxSize="300" header="Menu bar" collapsible="true">
 
             <p:growl id="msgs" autoUpdate="true"/>
-            <div> Position west</div>
+            <h:form>
+                <p:menu toggleable="true">
+                    <p:menuitem value="Main Page" action="#{proceduresPage.goToMainButton}" update="msgs"
+                                icon="fa fa-calendar"/>
+                    <p:submenu label="Bases">
+                        <p:menuitem value="Clients base" action="#{proceduresPage.goToClientsButton}" update="msgs"
+                                    icon="fa fa-dedent"/>
+                    </p:submenu>
+                    <p:submenu label="Statistic">
+                        <p:menuitem value="Chart page" action="#{proceduresPage.goToChartsButton}" update="msgs"
+                                    icon="fa fa-bar-chart-o"/>
+                    </p:submenu>
+                    <p:submenu label="Settings">
+                        <p:menuitem value="Add Client page" action="#{proceduresPage.goToAddClientButton}"
+                                    icon="fa fa-plus-circle"/>
+                        <p:menuitem value="Add Procedures page" action="#{proceduresPage.goToAddProceduresButton}"
+                                    icon="fa fa-navicon"/>
+                    </p:submenu>
+                </p:menu>
+            </h:form>
 
         </p:layoutUnit>
         <p:layoutUnit position="north" resizable="false" collapsible="true" minSize="100" header="Info panel">

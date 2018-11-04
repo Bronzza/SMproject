@@ -18,11 +18,39 @@
                       maxSize="300" header="Menu bar" collapsible="true">
 
             <p:growl id="msgs" autoUpdate="true"/>
-            <div> Position west</div>
+            <h:form>
+                <p:menu toggleable="true">
+                    <p:menuitem value="Main Page" action="#{proceduresPage.goToMainButton}" update="msgs"
+                                icon="fa fa-calendar"/>
+                    <p:submenu label="Bases">
+                        <p:menuitem value=" Visits base" action="#{proceduresPage.goToVisitsButton}" update="msgs"
+                                    icon="fa fa-dedent"/>
+                    </p:submenu>
+                    <p:submenu label="Statistic">
+                        <p:menuitem value="Chart page" action="#{proceduresPage.goToChartsButton}" update="msgs"
+                                    icon="fa fa-bar-chart-o"/>
+                    </p:submenu>
+                    <p:submenu label="Settings">
+                        <p:menuitem value="Add Client page" action="#{proceduresPage.goToAddClientButton}"
+                                    icon="fa fa-plus-circle"/>
+                        <p:menuitem value="Add Procedures page" action="#{proceduresPage.goToAddProceduresButton}"
+                                    icon="fa fa-navicon"/>
+                    </p:submenu>
+                </p:menu>
+            </h:form>
 
         </p:layoutUnit>
         <p:layoutUnit position="north" resizable="false" collapsible="true" minSize="100" header="Info panel">
-            <div>Some information</div>
+            <div class="ui-g">
+                <div class="ui-g-12 ui-md-10 ">Some information</div>
+
+                <div class="ui-g-12 ui-md-2" style="alignment: center">
+                    <p:spacer width="12px"/>
+                    <p:clock pattern="HH:mm dd.MM.yy"/>
+                    <p:spacer width="10px"/>
+                    <p:button value="Logout" href="logout"/>
+                </div>
+            </div>
         </p:layoutUnit>
 
         <p:layoutUnit position="center" header="Logining to Application">

@@ -22,7 +22,7 @@ import java.util.StringTokenizer;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-import static applicationPackage.Enums.AccessRights.VIEWER;
+import static applicationPackage.Enums.AccessRights.ROLE_VIEWER;
 
 @Named
 @ViewScoped

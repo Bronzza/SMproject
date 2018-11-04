@@ -32,9 +32,10 @@
 
             <br/>
 
-            <p:panelGrid columns="1" style="margin-left: auto; margin-right: auto;">
+            <p:panelGrid columns="2" style="margin-left: auto; margin-right: auto;">
                 <p:commandButton value="Register new user" update="form1, msgs"
                                action="#{registrationPage.saveUserInformation}"/>
+                <p:commandButton action="#{proceduresPage.goToMainPage()}" value="To Main page" ajax="false"/>
             </p:panelGrid>
         </h:panelGrid>
 

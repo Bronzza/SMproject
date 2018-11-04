@@ -12,7 +12,7 @@
 </h:head>
 
 <h:body style="background-color: darkgrey">
-    <h1 align="center" style="margin-top: 50px">Welcome on Registration Page</h1>
+    <h1 align="center" style="margin-top: 50px">Welcome on creation new client page</h1>
     <p:separator/>
     <p:growl id="msgs" showDetail="true" autoUpdate="true"/>
     <h:form>
@@ -55,7 +55,11 @@
         </h:panelGrid>
         <p:keyFilter id="emailFilter" for="email" mask="/[a-z0-9_\.\-@]/i"/>
         <hr/>
-        <p:commandButton value="Save data" style="margin-left: 15%" action="#{addClientPage.saveRegistrationInfo}"/>
+
+        <p:commandButton value="Save data" style="margin-left: 22%; " action="#{addClientPage.saveRegistrationInfo}" />
+        <p:spacer width=" 10 px"/>
+       
+
     </h:form>
 </h:body>
 </html>
