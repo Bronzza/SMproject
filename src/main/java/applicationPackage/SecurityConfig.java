@@ -40,7 +40,8 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                     .defaultSuccessUrl("/main.xhtml")
                     .and()
                     .logout()
-                    .logoutSuccessUrl("/login.xhtml");
+                    .logoutSuccessUrl("/login.xhtml")
+                    .and().exceptionHandling().accessDeniedPage("/denied.xhtml");
         }
         catch (Exception ex) {
             throw new RuntimeException(ex);
