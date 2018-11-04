@@ -91,10 +91,9 @@ public class MainPage implements Serializable {
         example.setName(event.getSelectedProcedureName());
         Optional<Procedure> existing = procedureRepository.findOne(Example.of(example));
         if (existing.isPresent()) {
-            localProcedure = existing.get();
-            event.getLocalVisit().setProcedure(localProcedure);
-            event.getLocalVisit().setFanalPrice(localProcedure.getCost()
-                    - (localProcedure.getCost() * event.getLocalCustomer().getDiscount() / 100));
+            event.getLocalVisit().setProcedure(existing.get());
+            event.getLocalVisit().setFanalPrice(existing.get().getCost()
+                    - (existing.get().getCost() * event.getLocalCustomer().getDiscount() / 100));
         }
 //        finalPriceVisit = localProcedure.getCost() - localProcedure.getCost() / 100 * event.getLocalCustomer().getDiscount();
     }
@@ -137,19 +136,7 @@ public class MainPage implements Serializable {
             } else {
                 event = new MyEvent();
                 event.setLocalVisit(visit);
-                //сделать выбор цветов мастера отдельным методом. в добавлении мастера выбирать
-                //его цвет и сетить в мейн.хштмл (пока не знаю как сетить)
-                switch (event.getLocalVisit().getLocalSpecalist().getName()){
-                    case "Fren":
-                        event.setStyleClass("color-red");
-                        break;
-                    case "Dape":
-                        event.setStyleClass("color-green");
-                        break;
-                    case "Natali":
-                        event.setStyleClass("color-blue");
-                        break;
-                }
+                setStyleSpecialist(event);
                 event.setStartDate(visit.getStart());
                 event.setEndDate(makeEndDate(event.getLocalVisit()));
                 event.setLocalCustomer(visit.getCustomer());
@@ -176,11 +163,20 @@ public class MainPage implements Serializable {
         return eventModel;
     }
 
-    public Date getInitialDate() {
-        Calendar calendar = Calendar.getInstance();
-        calendar.set(calendar.get(Calendar.YEAR), Calendar.FEBRUARY, calendar.get(Calendar.DATE), 0, 0, 0);
-
-        return calendar.getTime();
+    public void setStyleSpecialist(MyEvent event) {
+        if (!event.getLocalVisit().getPayed()) {
+            switch (event.getLocalVisit().getLocalSpecalist().getName()) {
+                case "Fren":
+                    event.setStyleClass("color-red");
+                    break;
+                case "Dape":
+                    event.setStyleClass("color-green");
+                    break;
+                case "Natali":
+                    event.setStyleClass("color-blue");
+                    break;
+            }
+        }
     }
 
     private Calendar today() {
@@ -212,11 +208,13 @@ public class MainPage implements Serializable {
             updateCustomerInBase(event);
             isClientNew = false;
             String title = makeEventTitle(event);
+            setStyleSpecialist(event);
             event.setTitle(title);
             eventModel.addEvent(event);
         } else {
             String title = makeEventTitle(event);
             event.setTitle(title);
+            setStyleSpecialist(event);
             eventModel.updateEvent(event);
             saveVisitInBase(event);
             updateCustomerInBase(event);
@@ -266,7 +264,7 @@ public class MainPage implements Serializable {
             visitRepository.save(event.getLocalVisit());
         } else {
             Visit visit = event.getLocalVisit();
-            visit.setProcedure(procedureRepository.findById(localProcedure.getId()).get());
+            visit.setProcedure(event.getLocalVisit().getProcedure());
             visit.setFanalPrice(event.getLocalVisit().getFanalPrice());
             visit.setStart(event.getStartDate());
             visit.setLocalSpecalist(findSpectById(event.getSelectedSpecialistId()));
@@ -378,9 +376,9 @@ public class MainPage implements Serializable {
         }
     }
 
-    public void setCustomerInfoAuto() {
+    public void selectCustomerInfoPhone() {
         for (Customer customer : customerRepository.findAll()) {
-            if (customer.getSurName().equals(mainPageCustomer.getSurName())) {
+            if (customer.getTelNumber().equals(event.getLocalCustomer().getTelNumber())) {
                 event.setLocalCustomer(customer);
                 return;
             }
@@ -414,9 +412,23 @@ public class MainPage implements Serializable {
             Customer temp = allCustomer.get(i);
             if (temp.getSurName().toLowerCase().startsWith(query)) {
                 filteredCustomer.add(temp);
+            } else if (temp.getName().toLowerCase().startsWith(query)) {
+                filteredCustomer.add(temp);
             }
         }
         return filteredCustomer;
+    }
+
+    public List<String> findPhoneCustomer(String query) {
+        List<Customer> allCustomer = customerRepository.findAll();
+        List<String> filteredCustomerPhone = new ArrayList<>();
+        for (int i = 0; i < allCustomer.size(); i++) {
+            Customer temp = allCustomer.get(i);
+            if (temp.getTelNumber().toLowerCase().startsWith(query)) {
+                filteredCustomerPhone.add(temp.getTelNumber());
+            }
+        }
+        return filteredCustomerPhone;
     }
 
     public void setClientMan() {
@@ -445,5 +457,6 @@ public class MainPage implements Serializable {
         context.addMessage(null, new FacesMessage(message, null));
 //        context.addMessage(null, new FacesMessage("Second Message", "Additional Message Detail"));
     }
+
 
 }

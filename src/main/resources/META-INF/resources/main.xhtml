@@ -96,28 +96,20 @@
                             <p:ajax oncomplete="PF('addClientDialog').show(); " update=":form1:clientSurname"/>
                         </p:inputSwitch>
 
-                        <p:outputLabel value="Client surname:"/>
-                        <p:selectOneMenu id="clientSurname" value="#{mainPage.event.localCustomer.surName}">
-                            <f:selectItem itemLabel="Select One" itemValue=""/>
-                            <f:selectItems value="#{mainPage.selectCustomer()}"/>
-                            <p:ajax update=":form1:Clientphone, :form1:Clientname"
-                                    listener="#{mainPage.setCustomerInfo}"/>
-                        </p:selectOneMenu>
-
-                        <p:outputLabel value="Client surname AUTOCOMPLETE:"/>
-                        <p:autoComplete value="#{mainPage.mainPageCustomer}"
+                        <p:outputLabel value="Client Surname/name:"/>
+                        <p:autoComplete id="clientSurname" value="#{mainPage.event.localCustomer}"
                                         completeMethod="#{mainPage.completeCustomer}"
-                                        converter="#{customerConverter}" dynamic="true" forceSelection="true">
-                            <p:ajax id="aj" listener="#{mainPage.setCustomerInfoAuto()}"
-                                    update=":form1:Clientphone, :form1:Clientname"/>
+                                        converter="#{customerConverter}">
+                            <p:ajax event="itemSelect" update=":form1:Clientphone"/>
                         </p:autoComplete>
 
-                        <p:outputLabel value="Client name:"/>
-                        <p:inputText id="Clientname" value="#{mainPage.event.localCustomer.name}"/>
+                        <p:outputLabel value="Client Phone numer:"/>
+                        <p:autoComplete id="Clientphone" value="#{mainPage.event.localCustomer.telNumber}"
+                                        completeMethod="#{mainPage.findPhoneCustomer}">
+                            <p:ajax event="itemSelect" listener="#{mainPage.selectCustomerInfoPhone()}"
+                                     update=":form1:clientSurname"/>
+                        </p:autoComplete>
 
-                        <p:outputLabel value="Client's phone numb:"/>
-                        <p:inputText id="Clientphone" value="#{mainPage.event.localCustomer.telNumber}"
-                                     required="true"/>
 
                         <p:outputLabel value="Chose procedure"/>
                         <p:selectOneMenu value="#{mainPage.event.selectedProcedureName}">

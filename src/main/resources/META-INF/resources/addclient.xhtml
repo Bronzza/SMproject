@@ -45,7 +45,7 @@
             <p:inputMask value="#{addClientPage.birthdayRegistration}" mask="99/99/9999"/>
 
             <p:outputLabel value="Notes about yourself/customer"/>
-            <p:inputTextarea value="#{addClientPage.notesField}" rows="5" cols="20" />
+            <p:inputTextarea value="#{addClientPage.notesField}" rows="5" cols="20"/>
 
             <p:outputLabel value="Choose what is about you"/>
             <p:selectOneButton value="#{addClientPage.manReg}">
@@ -56,9 +56,8 @@
         <p:keyFilter id="emailFilter" for="email" mask="/[a-z0-9_\.\-@]/i"/>
         <hr/>
 
-        <p:commandButton value="Save data" style="margin-left: 22%; " action="#{addClientPage.saveRegistrationInfo}" />
-        <p:spacer width=" 10 px"/>
-       
+        <p:commandButton value="Save data" style="margin-left: 22%; " action="#{addClientPage.saveRegistrationInfo}"/>
+
 
     </h:form>
 </h:body>

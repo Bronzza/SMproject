@@ -121,7 +121,7 @@ public class AddClientPage implements Serializable {
             cr.save(customerTemp);
 
             sendMessage("Your data is saved");
-            return "goToRegist";
+            return "goToAddClient";
         }
     }
 

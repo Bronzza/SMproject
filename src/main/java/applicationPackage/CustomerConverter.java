@@ -26,7 +26,7 @@ public class CustomerConverter implements Converter {
 
             try {
                 for (Customer customer : customerRepository.findAll()) {
-                    if (customer.getSurName().toLowerCase().startsWith(s.toLowerCase())) {
+                    if (s.toLowerCase().contains(customer.getSurName().toLowerCase())) {
                         return customer;
                     }
                 }
@@ -43,8 +43,8 @@ public class CustomerConverter implements Converter {
     @Override
     public String getAsString(FacesContext facesContext, UIComponent uiComponent, Object object) {
         if (object != null) {
-            if (((Customer) object).getId() == null) return "bbb";
-            return String.valueOf(((Customer) object).getId());
+            if (((Customer)object).getSurName() == null) return "";
+            return object.toString();
         } else {
             return "";
         }
