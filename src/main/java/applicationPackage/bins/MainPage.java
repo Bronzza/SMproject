@@ -436,7 +436,7 @@ public class MainPage implements Serializable {
     }
 
     public void calculateEndDate() {
-        event.getEndDate().setTime(event.getStartDate().getTime() + localProcedure.getDurationMin() * 60000);
+        event.getEndDate().setTime(event.getStartDate().getTime() + event.getLocalVisit().getProcedure().getDurationMin() * 60000);
     }
 
     public Date makeEndDate(Visit visit) {
