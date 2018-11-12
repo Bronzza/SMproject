@@ -4,10 +4,7 @@ import applicationPackage.Repositories.VisitRepository;
 import applicationPackage.entitys.Customer;
 import applicationPackage.entitys.Visit;
 import applicationPackage.utils.DateFormater;
-import org.primefaces.model.chart.Axis;
-import org.primefaces.model.chart.AxisType;
-import org.primefaces.model.chart.BarChartModel;
-import org.primefaces.model.chart.ChartSeries;
+import org.primefaces.model.chart.*;
 
 import javax.annotation.PostConstruct;
 import javax.faces.view.ViewScoped;
@@ -19,7 +16,9 @@ import java.util.*;
 @Named
 @ViewScoped
 public class ChartsPage {
-    private BarChartModel barModel;
+    private ChartModel chartModel = new ChartModel();
+    private BarChartModel barModel = new BarChartModel();
+    private LineChartModel lineModel = new LineChartModel();
     private List selectedParemeters = new ArrayList();
     private String selectedPeriod = new String();
     private List<ChartSeries> listChartSeries;
@@ -27,6 +26,7 @@ public class ChartsPage {
 
     List<Visit> allVisits = new ArrayList<>();
     List<Visit> filteredVisits = new ArrayList<>();
+
     Long maxParam1 = new Long(0);
     Long maxParam2 = new Long(0);
 
@@ -41,7 +41,7 @@ public class ChartsPage {
         filteredVisits = new ArrayList<>();
 
         for (Visit visit : allVisits) {
-            if ((visit.getStart().after(fromDate) &&  !visit.getStart().after(new Date())) || sameDay(visit.getStart(), fromDate)) {
+            if ((visit.getStart().after(fromDate) && !visit.getStart().after(new Date())) || sameDay(visit.getStart(), fromDate)) {
                 filteredVisits.add(visit);
             }
         }
@@ -61,31 +61,32 @@ public class ChartsPage {
                             sum += visit.getFanalPrice();
                     }
 
-                    if (sum/100 > maxParam1) maxParam1 = sum/100;
+                    if (sum / 100 > maxParam1) maxParam1 = sum / 100;
                     //                    if (sum > 0)
                     resultChart.set(new SimpleDateFormat("dd-MM").format(date), sum / 100);
+
                 }
                 resultChart.setLabel("Income");
                 listChartSeries.add(resultChart);
             } else if (String.valueOf(parametr).equals("Clients")) {
-                    setDates = new HashSet<>();
-                    resultChart = new ChartSeries();
+                setDates = new HashSet<>();
+                resultChart = new ChartSeries();
+                for (Visit visit : filteredVisits) {
+                    setDates.add(visit.getStart());
+                }
+                for (Date date : setDates) {
+                    Long sum = new Long(0);
+                    Set<Customer> uniqueClientinDay = new HashSet<>();
                     for (Visit visit : filteredVisits) {
-                        setDates.add(visit.getStart());
+                        if (sameDay(date, visit.getStart()) && !uniqueClientinDay.contains(visit.getCustomer()))
+                            sum += 1;
+                        uniqueClientinDay.add(visit.getCustomer());
                     }
-                    for (Date date : setDates) {
-                        Long sum = new Long(0);
-                        Set <Customer> uniqueClientinDay = new HashSet<>();
-                        for (Visit visit : filteredVisits) {
-                            if (sameDay(date, visit.getStart()) && !uniqueClientinDay.contains(visit.getCustomer()))
-                                sum += 1;
-                                uniqueClientinDay.add(visit.getCustomer());
-                        }
 
-                        if (sum > maxParam2) maxParam2  = sum;
+                    if (sum > maxParam2) maxParam2 = sum;
 
-                        resultChart.set(new SimpleDateFormat("dd-MM").format(date), sum );
-                    }
+                    resultChart.set(new SimpleDateFormat("dd-MM").format(date), sum);
+                }
                 resultChart.setLabel("Clients");
                 listChartSeries.add(resultChart);
             }
@@ -173,7 +174,7 @@ public class ChartsPage {
 
     @PostConstruct
     public void init() {
-        createBarModel();
+        createModel();
         listChartSeries.clear();
     }
 
@@ -199,26 +200,48 @@ public class ChartsPage {
         for (ChartSeries chart : listChartSeries) {
             model.addSeries(chart);
         }
-
         return model;
     }
 
-    public void setAxis (BarChartModel barChartModel){
-
-        Axis xAxis = barModel.getAxis(AxisType.X);
-        xAxis.setLabel("Dates");
-        Axis yAxis = barModel.getAxis(AxisType.Y);
-        yAxis.setMin(0);
-        yAxis.setMax(maxParam1*1.2);
+    private LineChartModel initLineModel() {
+        LineChartModel modelLine = new LineChartModel();
+        listChartSeries = makeCharts();
+        for (ChartSeries chart : listChartSeries) {
+            modelLine.addSeries(chart);
+        }
+        return modelLine;
     }
 
-    private void createBarModel() {
-        barModel = initBarModel();
+    public void setAxis() {
+        Axis xAxis;
+        Axis yAxis;
+        if (type.equals("bar")) {
+            xAxis = barModel.getAxis(AxisType.X);
+            yAxis = barModel.getAxis(AxisType.Y);
+        } else if (type.equals("line")) {
+            lineModel.setShowPointLabels(true);
+            xAxis = lineModel.getAxes().put(AxisType.X, new CategoryAxis("Years"));
+            yAxis = lineModel.getAxis(AxisType.Y);
+        } else {
+            xAxis = barModel.getAxis(AxisType.X);
+            yAxis = barModel.getAxis(AxisType.Y);
+        }
+        xAxis.setLabel("Dates");
+        yAxis.setMin(0);
+        yAxis.setMax(maxParam1 * 1.2);
+    }
 
-        barModel.setTitle("Your Chart");
-        barModel.setLegendPosition("ne");
-
-        setAxis(barModel);
+    private void createModel() {
+        if (type.equals("bar")) {
+            chartModel = barModel;
+            chartModel = initBarModel();
+        } else if (type.equals("line")) {
+            chartModel = lineModel;
+            chartModel = initLineModel();
+        }
+        chartModel.setTitle("Your Chart");
+        chartModel.setLegendPosition("ne");
+        setAxis();
     }
 
     public void setBarModel(BarChartModel barModel) {
@@ -247,5 +270,21 @@ public class ChartsPage {
 
     public void setType(String type) {
         this.type = type;
+    }
+
+    public LineChartModel getLineModel() {
+        return lineModel;
+    }
+
+    public void setLineModel(LineChartModel lineModel) {
+        this.lineModel = lineModel;
+    }
+
+    public ChartModel getChartModel() {
+        return chartModel;
+    }
+
+    public void setChartModel(ChartModel chartModel) {
+        this.chartModel = chartModel;
     }
 }

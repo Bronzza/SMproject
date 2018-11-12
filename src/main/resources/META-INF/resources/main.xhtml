@@ -23,6 +23,16 @@
             background: burlywood;
         }
     </style>
+    <style type="text/css">
+    .color-light-blue {
+        background: chocolate ;
+    }
+</style>
+    <style type="text/css">
+        .color-tonia {
+            background: darkslateblue;
+        }
+    </style>
     <title>Login page</title>
 </h:head>
 
@@ -107,7 +117,7 @@
                         <p:autoComplete id="Clientphone" value="#{mainPage.event.localCustomer.telNumber}"
                                         completeMethod="#{mainPage.findPhoneCustomer}">
                             <p:ajax event="itemSelect" listener="#{mainPage.selectCustomerInfoPhone()}"
-                                     update=":form1:clientSurname"/>
+                                    update=":form1:clientSurname"/>
                         </p:autoComplete>
 
 
